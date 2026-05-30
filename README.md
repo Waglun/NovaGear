@@ -45,7 +45,7 @@
 
 ```bash
 git clone <repository_url>
-cd NovaGear
+cd config
 ```
 
 ### Создание виртуального окружения
