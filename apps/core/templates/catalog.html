@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse NovaGear catalog — gaming mice, keyboards, headsets, RGB gear and more.">
+  <title>Catalog — NovaGear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/chrome.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body data-page="catalog">
+  <div data-site-header></div>
+
+  <main>
+    <div class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="breadcrumb__sep">/</span>
+          <span>Catalog</span>
+        </nav>
+        <h1 class="page-hero__title">Gaming <span class="text-gradient">Catalog</span></h1>
+        <p class="page-hero__desc">12+ curated products for your battle station. Filter by category, price, or rating.</p>
+      </div>
+    </div>
+
+    <section class="catalog-layout" id="categories">
+      <div class="container catalog-layout__inner grid-12">
+        <aside class="catalog-sidebar col-span-3">
+          <div class="catalog-sidebar__block">
+            <h2 class="catalog-sidebar__title">Categories</h2>
+            <div class="filter-chips">
+              <button type="button" class="filter-chip filter-chip--active" data-filter-category="">All products</button>
+              <button type="button" class="filter-chip" data-filter-category="mice">Gaming Mice</button>
+              <button type="button" class="filter-chip" data-filter-category="keyboards">Keyboards</button>
+              <button type="button" class="filter-chip" data-filter-category="headsets">Headsets</button>
+              <button type="button" class="filter-chip" data-filter-category="mousepads">Mousepads</button>
+              <button type="button" class="filter-chip" data-filter-category="rgb">RGB Accessories</button>
+              <button type="button" class="filter-chip" data-filter-category="streaming">Streaming Gear</button>
+              <button type="button" class="filter-chip" data-filter-category="desk">Desk Setup</button>
+            </div>
+          </div>
+          <div class="catalog-sidebar__block">
+            <h2 class="catalog-sidebar__title">Max price</h2>
+            <select class="select" data-price-filter style="width:100%">
+              <option value="">Any price</option>
+              <option value="50">Up to $50</option>
+              <option value="100">Up to $100</option>
+              <option value="150">Up to $150</option>
+            </select>
+          </div>
+        </aside>
+
+        <div class="col-span-9 catalog-main">
+          <div class="catalog-toolbar">
+            <p class="catalog-toolbar__meta"><span data-results-count>0 products</span></p>
+            <div class="catalog-toolbar__controls">
+              <input type="search" class="input" data-catalog-search placeholder="Search in catalog..." style="max-width:220px">
+              <select class="select" data-catalog-sort aria-label="Sort products">
+                <option value="featured">Featured</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="rating">Top rated</option>
+                <option value="new">Newest</option>
+              </select>
+            </div>
+          </div>
+          <div class="products__grid" data-catalog-grid></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div data-site-footer></div>
+  <div class="toast" data-toast role="alert" aria-live="assertive" hidden><span data-toast-message></span></div>
+
+  <script src="js/products.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/catalog.js"></script>
+</body>
+</html>
