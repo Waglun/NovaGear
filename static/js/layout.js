@@ -48,8 +48,8 @@
             <span class="nav__badge nav__badge--wishlist" data-wishlist-count>0</span>
           </a>
           <div class="nav__auth" data-auth-guest>
-            <a href="login.html" class="btn btn--ghost btn--sm">Log in</a>
-            <a href="login.html#register" class="btn btn--primary btn--sm">Register</a>
+            <a href="/accounts/login/" class="btn btn--ghost btn--sm">Log in</a>
+            <a href="/accounts/register/" class="btn btn--primary btn--sm">Register</a>
           </div>
           <a href="profile.html" class="nav__user" data-auth-user hidden>
             <span class="nav__avatar" data-user-avatar>NG</span>
@@ -73,8 +73,8 @@
             <li><a href="profile.html" class="${navClass(page, "profile")}">Profile</a></li>
           </ul>
           <div class="nav-drawer__auth" data-auth-guest>
-            <a href="login.html" class="btn btn--outline btn--block">Log in</a>
-            <a href="login.html#register" class="btn btn--primary btn--block">Register</a>
+            <a href="/accounts/login/" class="btn btn--outline btn--block">Log in</a>
+            <a href="/accounts/register/" class="btn btn--primary btn--block">Register</a>
           </div>
           <div class="nav-drawer__auth" data-auth-user hidden>
             <a href="profile.html" class="btn btn--primary btn--block">My Profile</a>

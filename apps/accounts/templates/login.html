@@ -2,21 +2,71 @@
 
 {% block content %}
 
-<form class="max-w-sm mx-auto">
-  <div class="mb-5">
-    <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Your email</label>
-    <input type="email" id="email" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="name@flowbite.com" required />
-  </div>
-  <div class="mb-5">
-    <label for="password" class="block mb-2.5 text-sm font-medium text-heading">Your password</label>
-    <input type="password" id="password" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="••••••••" required />
-  </div>
-  <label for="remember" class="flex items-center mb-5">
-    <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft" required />
-    <p class="ms-2 text-sm font-medium text-heading select-none">I agree with the <a href="#" class="text-fg-brand hover:underline">terms and conditions</a>.</p>
-  </label>
-  <button type="submit" class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Submit</button>
-</form>
+<main class="auth-page">
+    <div class="container">
+      <div class="auth-card auth-card--wide glow-border">
+        <a href="{% url core:home %}" class="nav__logo auth-card__logo" aria-label="NovaGear home">
+          <span class="nav__logo-icon" aria-hidden="true"></span>
+          <span class="nav__logo-text">Nova<span class="text-gradient">Gear</span></span>
+        </a>
+        <h1 class="auth-card__title">Welcome back, gamer</h1>
+        <p class="auth-card__subtitle">Sign in to track orders, save wishlists, and checkout faster.</p>
 
+        <div class="tabs" role="tablist">
+          <button type="button" class="tabs__btn tabs__btn--active" data-auth-tab="login" role="tab" aria-selected="true">Log in</button>
+          <button type="button" class="tabs__btn" data-auth-tab="register" role="tab" aria-selected="false">Register</button>
+        </div>
+
+        <div data-auth-panel="login">
+          <form class="form-stack" data-login-form>
+            <div class="form-field">
+              <label for="login-email">Email</label>
+              <input type="email" id="login-email" class="input" name="email" placeholder="you@email.com" required autocomplete="email">
+            </div>
+            <div class="form-field">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" class="input" name="password" placeholder="••••••••" required autocomplete="current-password">
+            </div>
+            <div class="form-row">
+              <label class="checkbox-label">
+                <input type="checkbox" name="remember"> Remember me
+              </label>
+              <a href="#">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn btn--primary btn--block btn--lg">Sign in</button>
+          </form>
+        </div>
+
+        <div data-auth-panel="register" hidden>
+          <form class="form-stack" data-register-form>
+            <div class="form-field">
+              <label for="reg-name">Display name</label>
+              <input type="text" id="reg-name" class="input" name="displayName" placeholder="ProGamer_42" required autocomplete="name">
+            </div>
+            <div class="form-field">
+              <label for="reg-email">Email</label>
+              <input type="email" id="reg-email" class="input" name="email" placeholder="you@email.com" required autocomplete="email">
+            </div>
+            <div class="form-field">
+              <label for="reg-password">Password</label>
+              <input type="password" id="reg-password" class="input" name="password" placeholder="Min. 6 characters" required autocomplete="new-password">
+            </div>
+            <div class="form-field">
+              <label for="reg-confirm">Confirm password</label>
+              <input type="password" id="reg-confirm" class="input" name="passwordConfirm" placeholder="••••••••" required autocomplete="new-password">
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" required> I agree to the Terms &amp; Privacy Policy
+            </label>
+            <button type="submit" class="btn btn--primary btn--block btn--lg">Create account</button>
+          </form>
+        </div>
+
+        <p class="auth-card__subtitle" style="margin-top:var(--space-8);margin-bottom:0">
+          Demo mode: any email/password creates a local session for practice.
+        </p>
+      </div>
+    </div>
+  </main>
 
 {% endblock %}
