@@ -1,11 +1,17 @@
 {% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages.css' %}">
+{% endblock %}
+
 
 {% block content %}
-
-<main class="auth-page">
+  <main class="auth-page">
     <div class="container">
       <div class="auth-card auth-card--wide glow-border">
-        <a href="{% url core:home %}" class="nav__logo auth-card__logo" aria-label="NovaGear home">
+        <a href="{% url 'core:home' %}" class="nav__logo auth-card__logo" aria-label="NovaGear home">
           <span class="nav__logo-icon" aria-hidden="true"></span>
           <span class="nav__logo-text">Nova<span class="text-gradient">Gear</span></span>
         </a>
@@ -68,5 +74,7 @@
       </div>
     </div>
   </main>
+
+  <div class="toast" data-toast role="alert" aria-live="assertive" hidden><span data-toast-message></span></div>
 
 {% endblock %}

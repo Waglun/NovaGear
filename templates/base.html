@@ -14,7 +14,9 @@
   <link rel="stylesheet" href="{% static 'css/components.css' %}">
   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
   <link rel="stylesheet" href="{% static 'css/chrome.css' %}">
-  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  {% block extra_css %}
+  {% endblock %}
+
 </head>
 <body data-page="home">
 <!--  <div data-site-header></div>-->
