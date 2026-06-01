@@ -18,7 +18,10 @@
   {% endblock %}
 
 </head>
-<body data-page="home">
+{% block extra_body %}
+{% endblock %}
+
+
 <!--  <div data-site-header></div>-->
 <!--  Навигация-->
   {% include "partials/navbar.html" %}
@@ -40,6 +43,8 @@
   <script src="{% static 'js/store.js' %}"></script>
   <script src="{% static 'js/ui.js' %}"></script>
   <script src="{% static 'js/layout.js' %}"></script>
-  <script src="{% static 'js/app.js' %}"></script>
+  {% block extra_js %}
+  {% endblock %}
+
 </body>
 </html>

@@ -7,6 +7,11 @@
 {% endblock %}
 
 
+{% block extra_body %}
+<body data-page="auth">
+{% endblock %}
+
+
 {% block content %}
   <main class="auth-page">
     <div class="container">
@@ -77,4 +82,9 @@
 
   <div class="toast" data-toast role="alert" aria-live="assertive" hidden><span data-toast-message></span></div>
 
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'js/auth.js' %}"></script>
 {% endblock %}
