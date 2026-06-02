@@ -1,17 +1,111 @@
 {% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+{% endblock %}
+
 
 {% block content %}
+  <main class="profile-page">
+    <div class="container">
+      <div class="page-hero" style="padding-top:0;border:none;background:none">
+        <h1 class="page-hero__title">My <span class="text-gradient">Account</span></h1>
+        <p class="page-hero__desc">Manage your profile, orders, and preferences.</p>
+      </div>
 
-<div class="max-w-2xl mx-auto mt-10 bg-white p-6 rounded-lg shadow">
+      <div class="grid-12 profile-layout__inner">
+        <aside class="profile-sidebar col-span-3">
+          <div class="profile-sidebar__user">
+            <div class="profile-sidebar__avatar" data-user-avatar>NG</div>
+            <p class="profile-sidebar__name" data-profile-name>—</p>
+            <p class="profile-sidebar__email" data-profile-email>—</p>
+          </div>
+          <nav class="profile-nav" aria-label="Account sections">
+            <button type="button" class="profile-nav__item profile-nav__item--active" data-profile-tab="overview">Overview</button>
+            <button type="button" class="profile-nav__item" data-profile-tab="orders">Orders</button>
+            <button type="button" class="profile-nav__item" data-profile-tab="settings">Settings</button>
+          </nav>
+            <form method="post" action="{% url 'accounts:logout' %}">
+                {% csrf_token %}
+                <button type="submit"
+                        class="btn btn--outline btn--block">
+                    Sign out
+                </button>
+            </form>
+            <p class="profile-sidebar__name">
+                {{ request.user.username }}
+            </p>
 
-    <h1 class="text-3xl font-bold mb-4">
-        My Profile
-    </h1>
+            <p class="profile-sidebar__email">
+                {{ request.user.email }}
+            </p>
+        </aside>
 
-    <p><strong>Username:</strong> {{ user.username }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Phone:</strong> {{ user.phone }}</p>
+        <div class="col-span-9">
+          <div class="profile-panel" data-profile-panel="overview">
+            <h2 class="profile-panel__title">Overview</h2>
+            <div class="profile-stats">
+              <div class="profile-stat">
+                <span class="profile-stat__value">3</span>
+                <span class="profile-stat__label">Orders</span>
+              </div>
+              <div class="profile-stat">
+                <span class="profile-stat__value" data-profile-wishlist-count>0</span>
+                <span class="profile-stat__label">Wishlist</span>
+              </div>
+              <div class="profile-stat">
+                <span class="profile-stat__value" data-profile-since>—</span>
+                <span class="profile-stat__label">Member since</span>
+              </div>
+            </div>
+            <p style="color:var(--color-text-secondary);font-size:var(--text-sm)">
+              Member since <span data-profile-since-inline>—</span>.
+              <a href="wishlist.html" style="color:var(--color-accent-blue-bright)">View wishlist</a> ·
+              <a href="cart.html" style="color:var(--color-accent-blue-bright)">Go to cart</a>
+            </p>
+          </div>
 
-</div>
+          <div class="profile-panel" data-profile-panel="orders" hidden>
+            <h2 class="profile-panel__title">Order history</h2>
+            <div class="orders-table-wrap">
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody data-orders-body></tbody>
+              </table>
+            </div>
+          </div>
 
+          <div class="profile-panel" data-profile-panel="settings" hidden>
+            <h2 class="profile-panel__title">Profile settings</h2>
+            <form class="form-stack" data-profile-form style="max-width:400px">
+              <div class="form-field">
+                <label for="profile-name-input">Display name</label>
+                <input type="text" id="profile-name-input" class="input" name="displayName" required>
+              </div>
+              <div class="form-field">
+                <label for="profile-email-input">Email</label>
+                <input type="email" id="profile-email-input" class="input" name="email" required>
+              </div>
+              <button type="submit" class="btn btn--primary">Save changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}
+
+
+{% block extra_js %}
+  <script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}

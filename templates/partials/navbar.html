@@ -4,37 +4,54 @@
 
 <header class="header" id="header">
       <nav class="nav container grid-12" aria-label="Main navigation">
-        <a href="index.html" class="nav__logo" aria-label="NovaGear home">
+        <a href="{% url 'core:home' %}" class="nav__logo" aria-label="NovaGear home">
           <span class="nav__logo-icon" aria-hidden="true"></span>
           <span class="nav__logo-text">Nova<span class="text-gradient">Gear</span></span>
         </a>
         <ul class="nav__links" role="list">
-          <li><a href="index.html" class="${navClass(page, "home")}">Home</a></li>
-          <li><a href="catalog.html" class="${navClass(page, "catalog")}">Catalog</a></li>
-          <li><a href="wishlist.html" class="${navClass(page, "wishlist")}">Wishlist</a></li>
           <li>
-            <a href="cart.html" class="nav__link nav__link--cart ${page === "cart" ? "nav__link--active" : ""}" aria-label="Shopping cart">
+            <a href="{% url 'core:home' %}"
+               class="{% if request.resolver_match.url_name == 'home' %}nav__link nav__link--active{% else %}nav__link{% endif %}">
+              Home
+            </a>
+          </li>
+
+          <li>
+            <a href="{% url 'core:catalog' %}"
+               class="{% if request.resolver_match.url_name == 'catalog' %}nav__link nav__link--active{% else %}nav__link{% endif %}">
+              Catalog
+            </a>
+          </li>
+
+          <li>
+            <a href="{% url 'core:wishlist' %}"
+               class="{% if request.resolver_match.url_name == 'wishlist' %}nav__link nav__link--active{% else %}nav__link{% endif %}">
+              Wishlist
+            </a>
+          </li>
+          <li>
+            <<a href="{% url 'core:cart' %}" class="nav__link nav__link--cart {% if request.resolver_match.url_name == 'cart' %}nav__link--active{% endif %}">
               <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
               <span class="nav__badge" data-cart-count>0</span>
             </a>
           </li>
         </ul>
         <div class="nav__search">
-          <form class="search-form" action="catalog.html" method="get" role="search" aria-label="Site search">
+          <form class="search-form" action="{% url 'core:catalog' %}" method="get" role="search" aria-label="Site search">
             <svg class="search-form__icon icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
             <input type="search" class="search-form__input" name="q" placeholder="Search gear..." autocomplete="off">
           </form>
         </div>
         <div class="nav__actions">
-          <a href="wishlist.html" class="btn btn--ghost btn--icon nav__wishlist-btn" aria-label="Wishlist">
+          <a href="{% url 'core:wishlist' %}" class="btn btn--ghost btn--icon nav__wishlist-btn" aria-label="Wishlist">
             <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
             <span class="nav__badge nav__badge--wishlist" data-wishlist-count>0</span>
           </a>
           <div class="nav__auth" data-auth-guest>
-            <a href="/accounts/login/" class="btn btn--ghost btn--sm">Log in</a>
-            <a href="/accounts/register/" class="btn btn--primary btn--sm">Register</a>
+            <a href="{% url  'accounts:login' %}" class="btn btn--ghost btn--sm">Log in</a>
+            <a href="{% url 'accounts:login' %}#register" class="btn btn--primary btn--sm">Register</a>
           </div>
-          <a href="profile.html" class="nav__user" data-auth-user hidden>
+          <a href="{% url 'accounts:profile' %}" class="nav__user" data-auth-user hidden>
             <span class="nav__avatar" data-user-avatar>NG</span>
             <span class="nav__user-name" data-user-name>Account</span>
           </a>
@@ -45,22 +62,51 @@
       </nav>
       <div class="nav-drawer" data-nav-drawer hidden>
         <div class="nav-drawer__inner">
-          <form class="search-form search-form--full" action="catalog.html" method="get" role="search">
+          <form class="search-form search-form--full" action="{% url 'core:catalog' %}" method="get" role="search">
             <input type="search" class="search-form__input" name="q" placeholder="Search gear...">
           </form>
-          <ul class="nav-drawer__links" role="list">
-            <li><a href="index.html" class="${navClass(page, "home")}">Home</a></li>
-            <li><a href="catalog.html" class="${navClass(page, "catalog")}">Catalog</a></li>
-            <li><a href="wishlist.html" class="${navClass(page, "wishlist")}">Wishlist</a></li>
-            <li><a href="cart.html" class="${navClass(page, "cart")}">Cart</a></li>
-            <li><a href="profile.html" class="${navClass(page, "profile")}">Profile</a></li>
-          </ul>
+            <ul class="nav-drawer__links" role="list">
+                <li>
+                    <a href="{% url 'core:home' %}"
+                       class="{% if request.resolver_match.url_name == 'home' %}nav__link--active{% endif %}">
+                        Home
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'core:catalog' %}"
+                       class="{% if request.resolver_match.url_name == 'catalog' %}nav__link--active{% endif %}">
+                        Catalog
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'core:wishlist' %}"
+                       class="{% if request.resolver_match.url_name == 'wishlist' %}nav__link--active{% endif %}">
+                        Wishlist
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'core:cart' %}"
+                       class="{% if request.resolver_match.url_name == 'cart' %}nav__link--active{% endif %}">
+                        Cart
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'accounts:profile' %}"
+                       class="{% if request.resolver_match.url_name == 'profile' %}nav__link--active{% endif %}">
+                        Profile
+                    </a>
+                </li>
+            </ul>
           <div class="nav-drawer__auth" data-auth-guest>
-            <a href="/accounts/login/" class="btn btn--outline btn--block">Log in</a>
-            <a href="/accounts/register/" class="btn btn--primary btn--block">Register</a>
+            <a href="{% url  'accounts:login' %}" class="btn btn--outline btn--block">Log in</a>
+            <a href="{% url 'accounts:login' %}#register" class="btn btn--primary btn--block">Register</a>
           </div>
           <div class="nav-drawer__auth" data-auth-user hidden>
-            <a href="profile.html" class="btn btn--primary btn--block">My Profile</a>
+            <a href="{% url 'accounts:profile' %}" class="btn btn--primary btn--block">My Profile</a>
             <button type="button" class="btn btn--outline btn--block" data-logout>Sign out</button>
           </div>
         </div>

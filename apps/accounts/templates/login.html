@@ -50,6 +50,7 @@
 
         <div data-auth-panel="register" hidden>
           <form class="form-stack" data-register-form>
+            {% csrf_token %}
             <div class="form-field">
               <label for="reg-name">Display name</label>
               <input type="text" id="reg-name" class="input" name="displayName" placeholder="ProGamer_42" required autocomplete="name">

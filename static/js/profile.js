@@ -12,7 +12,7 @@
 
   function requireAuth() {
     if (!NovaGear.isLoggedIn()) {
-      window.location.href = "login.html?next=profile.html";
+      window.location.href = "/accounts/login/?next=/accounts/profile/";
       return false;
     }
     return true;

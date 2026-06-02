@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+  {% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+  {% endblock %}
+
+
+{% block extra_body %}
+<body data-page="cart">
+{% endblock %}
+
+
+{% block content %}
+  <main class="cart-page">
+    <div class="container">
+      <div class="page-hero" style="padding-top:0;border:none;background:none">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="breadcrumb__sep">/</span>
+          <span>Cart</span>
+        </nav>
+        <h1 class="page-hero__title">Shopping <span class="text-gradient">Cart</span></h1>
+      </div>
+
+      <div class="grid-12 cart-layout__inner">
+        <div class="col-span-8" data-cart-content></div>
+        <aside class="col-span-4 cart-summary" data-cart-summary hidden>
+          <h2 class="cart-summary__title">Order summary</h2>
+          <div class="cart-summary__row">
+            <span>Subtotal</span>
+            <span data-cart-subtotal>$0.00</span>
+          </div>
+          <div class="cart-summary__row">
+            <span>Shipping</span>
+            <span data-cart-shipping>—</span>
+          </div>
+          <div class="cart-summary__row cart-summary__row--total">
+            <span>Total</span>
+            <span data-cart-total>$0.00</span>
+          </div>
+          <button type="button" class="btn btn--primary" data-checkout>Proceed to checkout</button>
+          <p class="cart-summary__note">Free shipping on orders over $99</p>
+          <a href="catalog.html" class="btn btn--outline" style="margin-top:var(--space-3)">Continue shopping</a>
+        </aside>
+      </div>
+    </div>
+  </main>
+{% endblock %}
+
+
+  {% block extra_js %}
+  <script src="{% static 'js/cart-page.js' %}"></script>
+  {% endblock %}
+
