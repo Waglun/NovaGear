@@ -4,7 +4,6 @@
 const NovaGear = {
   STORAGE_CART: "novagear_cart",
   STORAGE_WISHLIST: "novagear_wishlist",
-  STORAGE_USER: "novagear_user",
 
   getCart() {
     try {
@@ -31,27 +30,6 @@ const NovaGear = {
     localStorage.setItem(this.STORAGE_WISHLIST, JSON.stringify(ids));
     this.updateWishlistBadge();
     this.syncWishlistButtons();
-  },
-
-  getUser() {
-    try {
-      return JSON.parse(localStorage.getItem(this.STORAGE_USER));
-    } catch {
-      return null;
-    }
-  },
-
-  setUser(user) {
-    if (user) {
-      localStorage.setItem(this.STORAGE_USER, JSON.stringify(user));
-    } else {
-      localStorage.removeItem(this.STORAGE_USER);
-    }
-    this.updateAuthUI();
-  },
-
-  isLoggedIn() {
-    return !!this.getUser();
   },
 
   getProductById(id) {
@@ -115,30 +93,6 @@ const NovaGear = {
       const active = ids.includes(btn.dataset.wishlistId);
       btn.classList.toggle("is-active", active);
       btn.setAttribute("aria-pressed", String(active));
-    });
-  },
-
-  updateAuthUI() {
-    const user = this.getUser();
-    document.querySelectorAll("[data-auth-guest]").forEach((el) => {
-      el.hidden = !!user;
-    });
-    document.querySelectorAll("[data-auth-user]").forEach((el) => {
-      el.hidden = !user;
-    });
-    document.querySelectorAll("[data-user-name]").forEach((el) => {
-      if (user) el.textContent = user.displayName || user.email.split("@")[0];
-    });
-    document.querySelectorAll("[data-user-avatar]").forEach((el) => {
-      if (user) {
-        const initials = (user.displayName || user.email)
-          .split(" ")
-          .map((w) => w[0])
-          .join("")
-          .slice(0, 2)
-          .toUpperCase();
-        el.textContent = initials;
-      }
     });
   },
 

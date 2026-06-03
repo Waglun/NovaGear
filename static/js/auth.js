@@ -22,6 +22,8 @@
 
     if (window.location.hash === "#register") {
       switchTab("register");
+     } else {
+        switchTab("login");
     }
   }
 
