@@ -34,7 +34,7 @@
             <div class="form-field">
               <label for="login-email">Email</label>
 <!--              <input type="email" id="login-email" class="input" name="email" placeholder="you@email.com" required autocomplete="email">-->
-              {{ login_form.username }}
+              {{ login_form.email }}
             </div>
             <div class="form-field">
               <label for="login-password">Password</label>
@@ -47,7 +47,7 @@
               </label>
               <a href="#">Forgot password?</a>
             </div>
-            <button type="submit" class="btn btn--primary btn--block btn--lg">Sign in</button>
+            <button type="submit" name="action" value="login" class="btn btn--primary btn--block btn--lg">Sign in</button>
           </form>
         </div>
 
@@ -78,7 +78,7 @@
                     {{ register_form.errors }}
                 </div>
             {% endif %}
-            <button type="submit" class="btn btn--primary btn--block btn--lg">Create account</button>
+            <button type="submit" name="action" value="register" class="btn btn--primary btn--block btn--lg">Create account</button>
           </form>
         </div>
 

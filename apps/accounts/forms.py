@@ -32,9 +32,20 @@ class RegisterForm(UserCreationForm):
 
 
 class LoginForm(forms.Form):
-    class Meta:
-        model = User
-        fields = (
-            "username",
-            "password",
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                "class": "input",
+                "placeholder": "you@email.com",
+                "autocomplete": "email",
+            }
         )
+    )
+    password = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "input"
+            }
+        )
+    )

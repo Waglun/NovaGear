@@ -136,3 +136,11 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 AUTH_USER_MODEL = "accounts.User"
+
+AUTHENTICATION_BACKENDS = [
+    "apps.accounts.backends.EmailBackend",
+]
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_COOKIE_AGE = 1209600  # 2 недели
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
