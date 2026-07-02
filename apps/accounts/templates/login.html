@@ -32,13 +32,11 @@
           <form method="post" class="form-stack" data-login-form>
             {% csrf_token %}
             <div class="form-field">
-              <label for="login-email">Email</label>
-<!--              <input type="email" id="login-email" class="input" name="email" placeholder="you@email.com" required autocomplete="email">-->
+              <label for="login-email">email</label>
               {{ login_form.email }}
             </div>
             <div class="form-field">
               <label for="login-password">Password</label>
-<!--              <input type="password" id="login-password" class="input" name="password" placeholder="••••••••" required autocomplete="current-password">-->
               {{ login_form.password }}
             </div>
             <div class="form-row">

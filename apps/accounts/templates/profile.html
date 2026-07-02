@@ -18,10 +18,23 @@
       <div class="grid-12 profile-layout__inner">
         <aside class="profile-sidebar col-span-3">
           <div class="profile-sidebar__user">
-            <div class="profile-sidebar__avatar" data-user-avatar>NG</div>
-            <p class="profile-sidebar__name" data-profile-name>—</p>
-            <p class="profile-sidebar__email" data-profile-email>—</p>
+            <div class="profile-sidebar__avatar">
+              {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
+              {% else %}
+                {{ user.username|first|upper }}
+              {% endif %}
+            </div>
+
+            <p class="profile-sidebar__name">
+              {{ user.username }}
+            </p>
+
+            <p class="profile-sidebar__email">
+              {{ user.email }}
+            </p>
           </div>
+
           <nav class="profile-nav" aria-label="Account sections">
             <button type="button" class="profile-nav__item profile-nav__item--active" data-profile-tab="overview">Overview</button>
             <button type="button" class="profile-nav__item" data-profile-tab="orders">Orders</button>
@@ -34,13 +47,6 @@
                     Sign out
                 </button>
             </form>
-            <p class="profile-sidebar__name">
-                {{ request.user.username }}
-            </p>
-
-            <p class="profile-sidebar__email">
-                {{ request.user.email }}
-            </p>
         </aside>
 
         <div class="col-span-9">
@@ -48,15 +54,15 @@
             <h2 class="profile-panel__title">Overview</h2>
             <div class="profile-stats">
               <div class="profile-stat">
-                <span class="profile-stat__value">3</span>
+                <span class="profile-stat__value">{{ orders_count }}</span>
                 <span class="profile-stat__label">Orders</span>
               </div>
               <div class="profile-stat">
-                <span class="profile-stat__value" data-profile-wishlist-count>0</span>
+                <span class="profile-stat__value">{{ wishlist_count }}</span>
                 <span class="profile-stat__label">Wishlist</span>
               </div>
               <div class="profile-stat">
-                <span class="profile-stat__value" data-profile-since>—</span>
+                <span class="profile-stat__value">{{ user.created_at|date:"d.m.Y" }}</span>
                 <span class="profile-stat__label">Member since</span>
               </div>
             </div>

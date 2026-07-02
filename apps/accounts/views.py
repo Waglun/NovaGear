@@ -15,18 +15,21 @@ def login_view(request):
         if request.POST.get('action') == 'login':
             login_form = LoginForm(data=request.POST)
 
-            print("LOGIN FORM SUBMITTED")
             if login_form.is_valid():
-                print("FORM IS VALID")
                 email = login_form.cleaned_data['email']
                 password = login_form.cleaned_data['password']
 
-                user = authenticate(request, email=email, password=password)
+                # Используем authenticate с параметром username (не email!)
+                user = authenticate(request, username=email, password=password)
 
                 if user:
+                    # Используем стандартный login
                     login(request, user)
+                    print(f"User logged in: {user.email}")
+                    print(f"Session key: {request.session.session_key}")
                     return redirect('core:home')
-                print(user)
+                else:
+                    print("Authentication failed")
 
         elif request.POST.get('action') == 'register':
             register_form = RegisterForm(request.POST)
@@ -49,7 +52,11 @@ def login_view(request):
 
 @login_required
 def profile_view(request):
-    return render(request, "profile.html")
+    context = {
+        "orders_count": 0,
+        "wishlist_count": 0,
+    }
+    return render(request, "profile.html", context)
 
 
 def logout_view(request):

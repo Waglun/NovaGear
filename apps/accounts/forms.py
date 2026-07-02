@@ -33,14 +33,13 @@ class RegisterForm(UserCreationForm):
 
 class LoginForm(forms.Form):
     email = forms.EmailField(
-        widget=forms.EmailInput(
-            attrs={
-                "class": "input",
-                "placeholder": "you@email.com",
-                "autocomplete": "email",
-            }
-        )
+        label='email',
+        widget=forms.EmailInput(attrs={
+            "class": "input",
+            "placeholder": "email",
+        })
     )
+
     password = forms.CharField(
         label='Password',
         widget=forms.PasswordInput(
