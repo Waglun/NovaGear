@@ -3,9 +3,12 @@
 
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+<link rel="stylesheet" href="{% static 'css/pages.css' %}" xmlns="http://www.w3.org/1999/html">
 {% endblock %}
 
+{% block extra_body %}
+<body data-page="profile">
+{% endblock %}
 
 {% block content %}
   <main class="profile-page">
@@ -67,7 +70,10 @@
               </div>
             </div>
             <p style="color:var(--color-text-secondary);font-size:var(--text-sm)">
-              Member since <span data-profile-since-inline>—</span>.
+              Member since
+              <strong>
+                  {{ user.created_at|date:"d F Y" }}
+              </strong>.
               <a href="wishlist.html" style="color:var(--color-accent-blue-bright)">View wishlist</a> ·
               <a href="cart.html" style="color:var(--color-accent-blue-bright)">Go to cart</a>
             </p>
@@ -93,17 +99,43 @@
 
           <div class="profile-panel" data-profile-panel="settings" hidden>
             <h2 class="profile-panel__title">Profile settings</h2>
-            <form class="form-stack" data-profile-form style="max-width:400px">
+            <form class="form-stack" method="post" enctype="multipart/form-data" style="max-width:400px">
+              {% csrf_token %}
+
               <div class="form-field">
-                <label for="profile-name-input">Display name</label>
-                <input type="text" id="profile-name-input" class="input" name="displayName" required>
+                <label>Display name</label>
+                {{ form.username }}
               </div>
+
               <div class="form-field">
-                <label for="profile-email-input">Email</label>
-                <input type="email" id="profile-email-input" class="input" name="email" required>
+                <label>Phone</label>
+                {{ form.phone }}
               </div>
-              <button type="submit" class="btn btn--primary">Save changes</button>
+
+              <div class="form-field">
+                <label>Email</label>
+                {{ form.email }}
+              </div>
+
+              <div class="form-field">
+                <label>Birth date</label>
+                {{ form.birthday }}
+              </div>
+
+              <div class="form-field">
+                <label>Avatar</label>
+                {{ form.avatar }}
+              </div>
+
+              <button type="submit" class="btn btn--primary">
+                Save changes
+              </button>
             </form>
+          </div>
+          <div class="profile-panel" data-profile-panel="settings" hidden>
+            <a href="{% url 'accounts:password_change' %}" style="color:var(--color-accent-blue-bright)">
+              Changes password
+            </a>
           </div>
         </div>
       </div>

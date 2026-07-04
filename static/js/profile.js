@@ -18,28 +18,6 @@
     return true;
   }
 
-  function renderProfile() {
-    const user = NovaGear.getUser();
-    if (!user) return;
-
-    document.querySelector("[data-profile-email]")?.replaceChildren(
-      document.createTextNode(user.email)
-    );
-    document.querySelector("[data-profile-name]")?.replaceChildren(
-      document.createTextNode(user.displayName || "—")
-    );
-    const since = user.memberSince || "—";
-    document.querySelector("[data-profile-since]")?.replaceChildren(document.createTextNode(since));
-    document.querySelectorAll("[data-profile-since-inline]").forEach((el) => {
-      el.replaceChildren(document.createTextNode(since));
-    });
-
-    const nameInput = document.querySelector("[data-profile-form] [name=displayName]");
-    if (nameInput) nameInput.value = user.displayName || "";
-
-    const emailInput = document.querySelector("[data-profile-form] [name=email]");
-    if (emailInput) emailInput.value = user.email || "";
-  }
 
   function renderOrders() {
     const tbody = document.querySelector("[data-orders-body]");
@@ -51,7 +29,8 @@
         <td><strong>${o.id}</strong></td>
         <td>${o.date}</td>
         <td><span class="status-badge status-badge--${o.status.toLowerCase()}">${o.status}</span></td>
-        <td>${NovaGear.formatPrice(o.total)}</td>
+        // <td>${NovaGear.formatPrice(o.total)}</td>
+        <td>${o.total}</td>
         <td><button type="button" class="btn btn--ghost btn--sm">View</button></td>
       </tr>`
     ).join("");
@@ -72,7 +51,6 @@
         displayName: form.displayName.value.trim(),
         email: form.email.value.trim(),
       });
-      renderProfile();
       NovaGear.showToast("Profile updated");
     });
   }
@@ -93,13 +71,12 @@
 
   function init() {
     if (document.body.dataset.page !== "profile") return;
-    if (!requireAuth()) return;
 
-    renderProfile();
     renderOrders();
     renderWishlistPreview();
     bindProfileForm();
     bindTabs();
+
   }
 
   document.addEventListener("DOMContentLoaded", init);

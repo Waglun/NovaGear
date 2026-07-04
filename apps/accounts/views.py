@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
-
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, ProfileForm, UserPasswordChangeForm
 
 
 def login_view(request):
@@ -56,7 +57,27 @@ def profile_view(request):
         "orders_count": 0,
         "wishlist_count": 0,
     }
-    return render(request, "profile.html", context)
+    if request.method == "POST":
+        form = ProfileForm(
+            request.POST,
+            request.FILES,
+            instance=request.user # указатель на обновление существующей записи в форме
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect("accounts:profile")
+
+    else:
+        form = ProfileForm(instance=request.user)
+
+    return render(request, "profile.html", {"form": form, "context": context})
+
+
+class UserPasswordChange(PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    # success_url = reverse_lazy("accounts:password_change_done")
+    template_name = "password_change_form.html"
 
 
 def logout_view(request):
