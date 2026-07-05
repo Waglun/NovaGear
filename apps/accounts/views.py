@@ -76,7 +76,7 @@ def profile_view(request):
 
 class UserPasswordChange(PasswordChangeView):
     form_class = UserPasswordChangeForm
-    # success_url = reverse_lazy("accounts:password_change_done")
+    success_url = reverse_lazy("accounts:password_change_done")
     template_name = "password_change_form.html"
 
 
