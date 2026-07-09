@@ -1,12 +1,8 @@
-
-
-{% block footer %}
-
 <footer class="footer">
       <div class="container">
         <div class="grid-12 footer__top">
           <div class="footer__brand col-span-4">
-            <a href="index.html" class="nav__logo footer__logo">
+            <a href="{% url 'core:home' %}" class="nav__logo footer__logo">
               <span class="nav__logo-icon" aria-hidden="true"></span>
               <span class="nav__logo-text">Nova<span class="text-gradient">Gear</span></span>
             </a>
@@ -21,19 +17,19 @@
           <nav class="footer__nav col-span-2" aria-label="Shop">
             <h3 class="footer__nav-title">Shop</h3>
             <ul role="list">
-              <li><a href="catalog.html">All Products</a></li>
-              <li><a href="catalog.html#categories">Categories</a></li>
-              <li><a href="catalog.html?sort=new">New Arrivals</a></li>
-              <li><a href="catalog.html?sort=rating">Best Sellers</a></li>
+              <li><a href="{% url 'core:catalog' %}">All Products</a></li>
+              <li><a href="{% url 'core:catalog' %}#categories">Categories</a></li>
+              <li><a href="{% url 'core:catalog' %}?sort=new">New Arrivals</a></li>
+              <li><a href="{% url 'core:catalog' %}?sort=rating">Best Sellers</a></li>
             </ul>
           </nav>
           <nav class="footer__nav col-span-2" aria-label="Account">
             <h3 class="footer__nav-title">Account</h3>
             <ul role="list">
-              <li><a href="login.html">Log in</a></li>
-              <li><a href="profile.html">Profile</a></li>
-              <li><a href="cart.html">Cart</a></li>
-              <li><a href="../../apps/core/templates/wishlist.html">Wishlist</a></li>
+              <li><a href="{% url  'accounts:login' %}">Log in</a></li>
+              <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
+              <li><a href="{% url 'core:cart' %}">Cart</a></li>
+              <li><a href="{% url 'core:wishlist' %}">Wishlist</a></li>
             </ul>
           </nav>
           <nav class="footer__nav col-span-2" aria-label="Company">
@@ -52,5 +48,3 @@
         </div>
       </div>
     </footer>
-
-{% endblock %}

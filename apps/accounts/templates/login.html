@@ -43,7 +43,7 @@
               <label class="checkbox-label">
                 <input type="checkbox" name="remember"> Remember me
               </label>
-              <a href="#">Forgot password?</a>
+              <a href="{% url 'accounts:password_reset' %}">Forgot password?</a>
             </div>
             <button type="submit" name="action" value="login" class="btn btn--primary btn--block btn--lg">Sign in</button>
           </form>

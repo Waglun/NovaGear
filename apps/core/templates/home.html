@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
+{% block title %}
+    <title>NovaGear — Premium Gaming Accessories</title>
+{% endblock %}
+
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
@@ -96,7 +101,7 @@
             <h3 class="category-card__title">Gaming Mice</h3>
             <span class="category-card__count">124 items</span>
           </a>
-          <a href=".{% url 'core:catalog' %}?category=keyboards" class="category-card col-span-3" data-category="keyboards">
+          <a href="{% url 'core:catalog' %}?category=keyboards" class="category-card col-span-3" data-category="keyboards">
             <span class="category-card__icon category-card__icon--keyboard" aria-hidden="true"></span>
             <h3 class="category-card__title">Keyboards</h3>
             <span class="category-card__count">98 items</span>

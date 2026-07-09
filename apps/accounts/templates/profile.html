@@ -2,6 +2,10 @@
 {% load static %}
 
 
+{% block title %}
+    <title>Profile | NovaGear</title>
+{% endblock %}
+
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/pages.css' %}" xmlns="http://www.w3.org/1999/html">
 {% endblock %}
@@ -74,8 +78,8 @@
               <strong>
                   {{ user.created_at|date:"d F Y" }}
               </strong>.
-              <a href="wishlist.html" style="color:var(--color-accent-blue-bright)">View wishlist</a> ·
-              <a href="cart.html" style="color:var(--color-accent-blue-bright)">Go to cart</a>
+              <a href="{% url 'core:wishlist' %}" style="color:var(--color-accent-blue-bright)">View wishlist</a> ·
+              <a href="{% url 'core:cart' %}" style="color:var(--color-accent-blue-bright)">Go to cart</a>
             </p>
           </div>
 
