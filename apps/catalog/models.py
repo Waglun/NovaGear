@@ -26,6 +26,7 @@ class Product(models.Model):
         ordering = ('name',)
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
+        app_label = 'catalog' # явно указываем ярлык приложения
 
 
 
@@ -54,6 +55,9 @@ class Brand(models.Model):
     def get_absolute_url(self):
         return reverse('brand', kwargs={'brand_slug': self.slug})
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = 'Бренд'
         verbose_name_plural = 'Бренды'
@@ -67,3 +71,7 @@ class ProductAttribute(models.Model):
 
     def __str__(self):
         return f"{self.name}: {self.value}"
+
+    class Meta:
+        verbose_name = 'Характеристика'
+        verbose_name_plural = 'Характеристики'

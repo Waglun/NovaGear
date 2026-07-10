@@ -35,8 +35,8 @@
             Curated gaming mice, keyboards, headsets, and RGB gear — shipped fast, built for winners.
           </p>
           <div class="hero__cta">
-            <a href="{% url 'core:catalog' %}" class="btn btn--primary btn--lg">Shop Collection</a>
-            <a href="{% url 'core:catalog' %}#categories" class="btn btn--outline btn--lg">Browse Categories</a>
+            <a href="{{% url 'catalog:catalog' %}" class="btn btn--primary btn--lg">Shop Collection</a>
+            <a href="{% url 'catalog:catalog' %}#categories" class="btn btn--outline btn--lg">Browse Categories</a>
           </div>
           <div class="hero__stats">
             <div class="stat">
@@ -96,37 +96,37 @@
           <p class="section__desc">Everything you need to complete your setup — from precision mice to streaming gear.</p>
         </header>
         <div class="grid-12 categories__grid">
-          <a href="{% url 'core:catalog' %}?category=mice" class="category-card col-span-3" data-category="mice">
+          <a href="{% url 'catalog:catalog' %}?category=mice" class="category-card col-span-3" data-category="mice">
             <span class="category-card__icon category-card__icon--mouse" aria-hidden="true"></span>
             <h3 class="category-card__title">Gaming Mice</h3>
             <span class="category-card__count">124 items</span>
           </a>
-          <a href="{% url 'core:catalog' %}?category=keyboards" class="category-card col-span-3" data-category="keyboards">
+          <a href="{% url 'catalog:catalog' %}?category=keyboards" class="category-card col-span-3" data-category="keyboards">
             <span class="category-card__icon category-card__icon--keyboard" aria-hidden="true"></span>
             <h3 class="category-card__title">Keyboards</h3>
             <span class="category-card__count">98 items</span>
           </a>
-          <a href="{% url 'core:catalog' %}?category=headsets" class="category-card col-span-3" data-category="headsets">
+          <a href="{% url 'catalog:catalog' %}?category=headsets" class="category-card col-span-3" data-category="headsets">
             <span class="category-card__icon category-card__icon--headset" aria-hidden="true"></span>
             <h3 class="category-card__title">Headsets</h3>
             <span class="category-card__count">76 items</span>
           </a>
-          <a href="{% url 'core:catalog' %}?category=mousepads" class="category-card col-span-3" data-category="mousepads">
+          <a href="{% url 'catalog:catalog' %}?category=mousepads" class="category-card col-span-3" data-category="mousepads">
             <span class="category-card__icon category-card__icon--pad" aria-hidden="true"></span>
             <h3 class="category-card__title">Mousepads</h3>
             <span class="category-card__count">54 items</span>
           </a>
-          <a href="{% url 'core:catalog' %}?category=rgb" class="category-card col-span-3" data-category="rgb">
+          <a href="{% url 'catalog:catalog' %}?category=rgb" class="category-card col-span-3" data-category="rgb">
             <span class="category-card__icon category-card__icon--rgb" aria-hidden="true"></span>
             <h3 class="category-card__title">RGB Accessories</h3>
             <span class="category-card__count">112 items</span>
           </a>
-          <a href="{% url 'core:catalog' %}?category=streaming" class="category-card col-span-3" data-category="streaming">
+          <a href="{% url 'catalog:catalog' %}?category=streaming" class="category-card col-span-3" data-category="streaming">
             <span class="category-card__icon category-card__icon--stream" aria-hidden="true"></span>
             <h3 class="category-card__title">Streaming Gear</h3>
             <span class="category-card__count">67 items</span>
           </a>
-          <a href="{% url 'core:catalog' %}?category=desk" class="category-card col-span-3 category-card--wide" data-category="desk">
+          <a href="{% url 'catalog:catalog' %}?category=desk" class="category-card col-span-3 category-card--wide" data-category="desk">
             <span class="category-card__icon category-card__icon--desk" aria-hidden="true"></span>
             <h3 class="category-card__title">Desk Setup</h3>
             <span class="category-card__count">43 items</span>
@@ -143,7 +143,7 @@
             <span class="section__eyebrow">Top picks</span>
             <h2 id="products-heading" class="section__title">Featured Products</h2>
           </div>
-          <a href="{% url 'core:catalog' %}" class="btn btn--outline">View all products</a>
+          <a href="{% url 'catalog:catalog' %}" class="btn btn--outline">View all products</a>
         </header>
         <div class="grid-12 products__grid" data-products-grid>
           <!-- Product cards injected by JS + static fallback -->
