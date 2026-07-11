@@ -14,7 +14,7 @@ class Product(models.Model):
     time_updated = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
     is_active = models.BooleanField(default=True, verbose_name='Статус публикации')
     category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='products', verbose_name='Категория')
-    brand = models.ForeignKey('Brand', on_delete=models.PROTECT, verbose_name='Бренд')
+    brand = models.ForeignKey('Brand', on_delete=models.PROTECT, related_name='products', verbose_name='Бренд')
     stock = models.PositiveIntegerField(default=0, verbose_name='Остаток')
     sku = models.CharField(max_length=100, blank=True, unique=True, null=True, verbose_name='Артикул')
     # supplier = models.ForeignKey("suppliers.Supplier", on_delete=models.PROTECT, null=True, blank=True)
@@ -53,12 +53,13 @@ class Brand(models.Model):
     logo = models.ImageField(upload_to='brands/', blank=True, null=True)
 
     def get_absolute_url(self):
-        return reverse('brand', kwargs={'brand_slug': self.slug})
+        return reverse('catalog:brand', kwargs={'brand_slug': self.slug})
 
     def __str__(self):
         return self.name
 
     class Meta:
+        ordering = ('name',)
         verbose_name = 'Бренд'
         verbose_name_plural = 'Бренды'
 

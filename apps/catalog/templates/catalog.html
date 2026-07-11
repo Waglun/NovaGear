@@ -35,14 +35,10 @@
           <div class="catalog-sidebar__block">
             <h2 class="catalog-sidebar__title">Categories</h2>
             <div class="filter-chips">
-              <button type="button" class="filter-chip filter-chip--active" data-filter-category="">All products</button>
-              <button type="button" class="filter-chip" data-filter-category="mice">Gaming Mice</button>
-              <button type="button" class="filter-chip" data-filter-category="keyboards">Keyboards</button>
-              <button type="button" class="filter-chip" data-filter-category="headsets">Headsets</button>
-              <button type="button" class="filter-chip" data-filter-category="mousepads">Mousepads</button>
-              <button type="button" class="filter-chip" data-filter-category="rgb">RGB Accessories</button>
-              <button type="button" class="filter-chip" data-filter-category="streaming">Streaming Gear</button>
-              <button type="button" class="filter-chip" data-filter-category="desk">Desk Setup</button>
+              <a href="{% url 'catalog:catalog' %}" class="filter-chip {% if not category_slug %}filter-chip--active{% endif %}">All products</a>
+              {% for category in categories %}
+                <a href="{% url 'catalog:catalog' %}?category={{ category.slug }}" class="filter-chip {% if category_slug == category.slug %}filter-chip--active{% endif %}">{{ category.name }}</a>
+              {% endfor %}
             </div>
           </div>
           <div class="catalog-sidebar__block">
@@ -58,7 +54,7 @@
 
         <div class="col-span-9 catalog-main">
           <div class="catalog-toolbar">
-            <p class="catalog-toolbar__meta"><span data-results-count>0 products</span></p>
+            <p class="catalog-toolbar__meta"><span>{{ products_count }} products</span></p>
             <div class="catalog-toolbar__controls">
               <input type="search" class="input" data-catalog-search placeholder="Search in catalog..." style="max-width:220px">
               <select class="select" data-catalog-sort aria-label="Sort products">
@@ -70,7 +66,39 @@
               </select>
             </div>
           </div>
-          <div class="products__grid" data-catalog-grid></div>
+          <div class="products__grid">
+            {% for product in products %}
+              <article class="product-card" data-product-id="{{ product.slug }}">
+                <div class="product-card__media">
+                  <div class="product-card__img product-card__img--placeholder product-card__img--mouse-1" role="img" aria-label="Nova Pro X Wireless">
+                    {% if product.image %}
+                      <img src="{{ product.image.url }}" class="product-card__image">
+                    {% endif %}
+                  </div>
+                  <button type="button" class="product-card__wishlist " data-wishlist-id="ng-mouse-001" aria-label="Add to wishlist" aria-pressed="false">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path></svg>
+                  </button>
+                </div>
+                <div class="product-card__body">
+                  <span class="product-card__category">{{ product.category.name }}</span>
+                  <h3 class="product-card__title"><a href="catalog.html">{{ product.name }}</a></h3>
+                  <div class="product-card__rating">
+                    <span class="product-card__stars" aria-label="Rating 4.8 out of 5">★★★★★</span>
+                    <span class="product-card__reviews">(342)</span>
+                  </div>
+                  <div class="product-card__footer">
+                    <div>
+                      <span class="product-card__price">{{ product.price }} Rub</span>
+                      {% if product.old_price %}
+                        <span class="product-card__price-old">{{ product.old_price }} Rub</span>
+                      {% endif %}
+                    </div>
+                    <button type="button" class="btn btn--primary btn--sm">Add to cart</button>
+                  </div>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </section>
