@@ -37,10 +37,21 @@
             <div class="filter-chips">
               <a href="{% url 'catalog:catalog' %}" class="filter-chip {% if not category_slug %}filter-chip--active{% endif %}">All products</a>
               {% for category in categories %}
-                <a href="{% url 'catalog:catalog' %}?category={{ category.slug }}" class="filter-chip {% if category_slug == category.slug %}filter-chip--active{% endif %}">{{ category.name }}</a>
+                <a href="?category={{ category.slug }}{% if brand_slug %}&brand={{ brand_slug }}{% endif %}" class="filter-chip {% if category_slug == category.slug %}filter-chip--active{% endif %}">{{ category.name }}</a>
               {% endfor %}
             </div>
           </div>
+
+          <div class="catalog-sidebar__block">
+            <h2 class="catalog-sidebar__title">Brands</h2>
+            <div class="filter-chips">
+              <a href="?{% if category_slug %}category={{ category_slug }}{% endif %}" class="filter-chip {% if not brand_slug %}filter-chip--active{% endif %}">All Brands</a>
+              {% for brand in brands %}
+                <a href="?brand={{ brand.slug }}{% if category_slug %}&category={{ category_slug }}{% endif %}" class="filter-chip {% if brand_slug == brand.slug %}filter-chip--active{% endif %}">{{ brand.name }}</a>
+              {% endfor %}
+            </div>
+          </div>
+
           <div class="catalog-sidebar__block">
             <h2 class="catalog-sidebar__title">Max price</h2>
             <select class="select" data-price-filter style="width:100%">
@@ -56,16 +67,36 @@
           <div class="catalog-toolbar">
             <p class="catalog-toolbar__meta"><span>{{ products_count }} products</span></p>
             <div class="catalog-toolbar__controls">
-              <input type="search" class="input" data-catalog-search placeholder="Search in catalog..." style="max-width:220px">
-              <select class="select" data-catalog-sort aria-label="Sort products">
-                <option value="featured">Featured</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="rating">Top rated</option>
-                <option value="new">Newest</option>
-              </select>
+              <form method="get" class="catalog-toolbar__controls">
+                {% if category_slug %}
+                    <input type="hidden" name="category" value="{{ category_slug }}">
+                {% endif %}
+
+                {% if brand_slug %}
+                    <input type="hidden" name="brand" value="{{ brand_slug }}">
+                {% endif %}
+
+                <input type="search" name="search" value="{{ search_query|default:'' }}" class="input" placeholder="Search in catalog..." style="max-width:220px">
+
+                <select name="sort" class="select" aria-label="Sort products">
+                  <option value="featured" {% if sort == 'featured' %}selected{% endif %}>
+                      Featured
+                  </option>
+                  <option value="price-asc" {% if sort == 'price-asc' %}selected{% endif %}>
+                      Price: Low to High
+                  </option>
+                  <option value="price-desc" {% if sort == 'price-desc' %}selected{% endif %}>
+                      Price: High to Low
+                  </option>
+                  <option value="new" {% if sort == 'new' %}selected{% endif %}>
+                      Newest
+                  </option>
+                </select>
+                <button class="btn btn--primary btn--sm">Apply</button>
+              </form>
             </div>
           </div>
+
           <div class="products__grid">
             {% for product in products %}
               <article class="product-card" data-product-id="{{ product.slug }}">

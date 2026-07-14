@@ -26,8 +26,6 @@ class Product(models.Model):
         ordering = ('name',)
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
-        app_label = 'catalog' # явно указываем ярлык приложения
-
 
 
 class Category(models.Model):
@@ -35,6 +33,8 @@ class Category(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='categories/', blank=True, null=True)
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='children')
+    is_active = models.BooleanField(default=True, verbose_name='Статус категории')
 
     def get_absolute_url(self):
         return reverse('catalog:category', kwargs={'cat_slug': self.slug})
@@ -43,6 +43,7 @@ class Category(models.Model):
         return self.name
 
     class Meta:
+        ordering = ('name',)
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
@@ -50,7 +51,9 @@ class Category(models.Model):
 class Brand(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True)
+    description = models.TextField(blank=True, verbose_name='Описание')
     logo = models.ImageField(upload_to='brands/', blank=True, null=True)
+    is_active = models.BooleanField(default=True, verbose_name='Статус бренда')
 
     def get_absolute_url(self):
         return reverse('catalog:brand', kwargs={'brand_slug': self.slug})
@@ -66,13 +69,26 @@ class Brand(models.Model):
 
 class ProductAttribute(models.Model):
     product = models.ForeignKey(Product, related_name='attributes', on_delete=models.CASCADE) # Связь многие к одному
-    name = models.CharField(max_length=100)
-    value = models.CharField(max_length=255)
-
+    name = models.CharField(max_length=100, verbose_name='Название характеристики')
+    value = models.CharField(max_length=255, verbose_name='Значение')
+    sort_order = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.name}: {self.value}"
 
     class Meta:
+        ordering = ('sort_order', 'name')
         verbose_name = 'Характеристика'
         verbose_name_plural = 'Характеристики'
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='products/', verbose_name='Изображение', blank=True, null=True)
+    sort_order = models.PositiveIntegerField(default=0, verbose_name='Порядок')
+
+    def __str__(self):
+        return f"{self.product.name} image"
+
+    class Meta:
+        ordering = ('sort_order',)
