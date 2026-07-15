@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Product, Category, Brand
 
 
 def catalog(request):
     products = Product.objects.filter(is_active=True).select_related('category', 'brand')
-    categories = Category.objects.all().order_by('name')
+    categories = Category.objects.all()
     brands = Brand.objects.all().order_by('name')
 
     search_query = request.GET.get('search')
@@ -27,22 +27,18 @@ def catalog(request):
     elif sort == 'price-desc':
         products = products.order_by('-price')
     elif sort == 'new':
-        products = products.order_by('-created_at')  # или -date_added, -id
-    elif sort == 'featured':
-        # Можно оставить без сортировки или сделать свою логику (например, по popularity)
-        pass
+        products = products.order_by('-time_created')
     else:
-        # на случай неизвестного значения
-        products = products.order_by('-created_at')
+        products = products.order_by('-time_created')
 
     context = {
         'products': products,
         'brands': brands,
         'categories': categories,
-        'products_count': products.count(),
         'category_slug': category_slug,
         'brand_slug': brand_slug,
         'sort': sort,
+        'search_query': search_query,
     }
 
     return render(
@@ -50,4 +46,19 @@ def catalog(request):
         'catalog.html',
         context
     )
+
+
+def product_detail(request, slug):
+    product = get_object_or_404(
+        Product.objects.select_related('brand', 'category')
+                        .prefetch_related('images', 'attributes'),
+        slug=slug
+    )
+
+    context = {
+        'product': product,
+    }
+
+    return render(request, 'product_detail.html', context)
+
 

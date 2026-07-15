@@ -3,125 +3,59 @@
  * Replace with Django API / template context later
  */
 
-const NOVAGEAR_PRODUCTS = [
-  {
-    id: "ng-mouse-001",
-    name: "Nova Pro X Wireless",
-    category: "Gaming Mice",
-    price: 89.99,
-    priceOld: 109.99,
-    rating: 4.8,
-    reviews: 342,
-    imageClass: "product-card__img--mouse-1",
-  },
-  {
-    id: "ng-kb-002",
-    name: "Pulse MK2 Mechanical",
-    category: "Keyboards",
-    price: 149.99,
-    priceOld: null,
-    rating: 4.9,
-    reviews: 218,
-    imageClass: "product-card__img--keyboard-1",
-  },
-  {
-    id: "ng-hs-003",
-    name: "Immersion 7.1 Headset",
-    category: "Headsets",
-    price: 79.99,
-    priceOld: 99.99,
-    rating: 4.7,
-    reviews: 156,
-    imageClass: "product-card__img--headset-1",
-  },
-  {
-    id: "ng-pad-004",
-    name: "Glide XL RGB Mousepad",
-    category: "Mousepads",
-    price: 34.99,
-    priceOld: null,
-    rating: 4.6,
-    reviews: 89,
-    imageClass: "product-card__img--pad-1",
-  },
-  {
-    id: "ng-rgb-005",
-    name: "Aurora Strip 2m Kit",
-    category: "RGB Accessories",
-    price: 29.99,
-    priceOld: 39.99,
-    rating: 4.5,
-    reviews: 412,
-    imageClass: "product-card__img--rgb-1",
-  },
-  {
-    id: "ng-stream-006",
-    name: "StreamCast Pro Mic",
-    category: "Streaming Gear",
-    price: 119.99,
-    priceOld: null,
-    rating: 4.8,
-    reviews: 97,
-    imageClass: "product-card__img--stream-1",
-  },
-  {
-    id: "ng-mouse-007",
-    name: "Stealth Lite Gaming Mouse",
-    category: "Gaming Mice",
-    price: 49.99,
-    priceOld: null,
-    rating: 4.4,
-    reviews: 203,
-    imageClass: "product-card__img--mouse-2",
-  },
-  {
-    id: "ng-desk-008",
-    name: "Elevate Pro Monitor Arm",
-    category: "Desk Setup",
-    price: 69.99,
-    priceOld: 84.99,
-    rating: 4.7,
-    reviews: 64,
-    imageClass: "product-card__img--desk-1",
-  },
-  {
-    id: "ng-kb-009",
-    name: "Compact 60% RGB Keyboard",
-    category: "Keyboards",
-    price: 99.99,
-    priceOld: null,
-    rating: 4.6,
-    reviews: 178,
-    imageClass: "product-card__img--keyboard-1",
-  },
-  {
-    id: "ng-hs-010",
-    name: "Cloud Wireless Headset",
-    category: "Headsets",
-    price: 129.99,
-    priceOld: 159.99,
-    rating: 4.8,
-    reviews: 91,
-    imageClass: "product-card__img--headset-1",
-  },
-  {
-    id: "ng-stream-011",
-    name: "Key Light Mini Panel",
-    category: "Streaming Gear",
-    price: 59.99,
-    priceOld: null,
-    rating: 4.5,
-    reviews: 134,
-    imageClass: "product-card__img--stream-1",
-  },
-  {
-    id: "ng-rgb-012",
-    name: "Nova RGB Fan Pack x3",
-    category: "RGB Accessories",
-    price: 44.99,
-    priceOld: 54.99,
-    rating: 4.4,
-    reviews: 267,
-    imageClass: "product-card__img--rgb-1",
-  },
-];
+// Simple product page scripts
+    let currentQty = 1;
+
+    function changeQty(delta) {
+      currentQty = Math.max(1, currentQty + delta);
+      document.getElementById('qty-value').textContent = currentQty;
+    }
+
+    function addToCart() {
+      const toast = document.querySelector('[data-toast]');
+      const toastMsg = document.querySelector('[data-toast-message]');
+      toastMsg.textContent = 'ProMouse X1 added to cart!';
+      toast.classList.add('is-visible');
+      toast.removeAttribute('hidden');
+
+      setTimeout(() => {
+        toast.classList.remove('is-visible');
+        setTimeout(() => toast.setAttribute('hidden', ''), 400);
+      }, 2800);
+    }
+
+    function toggleWishlist(btn) {
+      if (btn.classList.contains('is-active')) {
+        btn.innerHTML = `<span style="font-size: 1.2em;">♡</span> Add to Wishlist`;
+        btn.classList.remove('is-active');
+      } else {
+        btn.innerHTML = `<span style="font-size: 1.2em;">♥</span> In Wishlist`;
+        btn.classList.add('is-active');
+      }
+    }
+
+    function switchTab(n) {
+      document.querySelectorAll('.tabs__btn').forEach((b, i) => {
+        b.classList.toggle('tabs__btn--active', i === n);
+      });
+      document.querySelectorAll('.tab-content').forEach((c, i) => {
+        c.style.display = i === n ? 'block' : 'none';
+      });
+    }
+
+    // Thumbnail click
+    document.querySelectorAll('.product-thumbnail').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+
+        const newSrc = thumb.getAttribute('data-img');
+        document.getElementById('main-img').src = newSrc;
+      });
+    });
+
+    // Initialize
+    window.addEventListener('load', () => {
+      // You can load related products here from products.js if available
+    });
+
