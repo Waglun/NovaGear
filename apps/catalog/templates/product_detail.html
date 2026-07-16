@@ -18,13 +18,13 @@
     <div class="page-hero">
       <div class="container">
         <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="index.html">Home</a>
+          <a href="{% url 'core:home' %}">Home</a>
           <span class="breadcrumb__sep">/</span>
-          <a href="catalog.html">Catalog</a>
+          <a href="{% url 'catalog:catalog' %}">Catalog</a>
           <span class="breadcrumb__sep">/</span>
-          <span>ProMouse X1</span>
+          <span>{{ product.name }}</span>
         </nav>
-        <h1 class="page-hero__title">ProMouse X1</h1>
+        <h1 class="page-hero__title">{{ product.name }}</h1>
       </div>
     </div>
 
@@ -33,49 +33,52 @@
         <div class="grid-12" style="gap: var(--space-12);">
 
           <!-- Gallery -->
-          <div class="col-span-7">
+          <div class="col-span-6 lg:col-span-6">
             <div class="product-gallery">
               <div class="product-main-image" id="main-image">
-                <img src="https://picsum.photos/id/1015/800/800" alt="NovaGear ProMouse X1" id="main-img">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" id="main-img">
               </div>
 
-              <div class="product-thumbnails">
-                <div class="product-thumbnail active" data-img="https://picsum.photos/id/1015/800/800">
-                  <img src="https://picsum.photos/id/1015/300/300" alt="Main view">
+              {% if product.images.all|length > 1 %}
+                <div class="product-thumbnails">
+                  <div class="product-thumbnail active" data-img="{{ product.image.url }}">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                  </div>
+                  {% for image in product.images.all %}
+                    <div class="product-thumbnail active" data-img="{{ image.image.url }}">
+                      <img src="{{ image.image.url }}" alt="Main view">
+                    </div>
+                  {% endfor %}
                 </div>
-                <div class="product-thumbnail" data-img="https://picsum.photos/id/106/800/800">
-                  <img src="https://picsum.photos/id/106/300/300" alt="Side view">
-                </div>
-                <div class="product-thumbnail" data-img="https://picsum.photos/id/1074/800/800">
-                  <img src="https://picsum.photos/id/1074/300/300" alt="RGB lighting">
-                </div>
-                <div class="product-thumbnail" data-img="https://picsum.photos/id/201/800/800">
-                  <img src="https://picsum.photos/id/201/300/300" alt="Bottom view">
-                </div>
-              </div>
+              {% endif %}
             </div>
           </div>
 
           <!-- Product Info -->
-          <div class="col-span-5 product-info">
+          <div class="col-span-6 product-info">
             <div>
               <div class="product-brand">NovaGear</div>
-              <h1 class="product-title">ProMouse X1</h1>
+              <h1 class="product-title">{{ product.name }}</h1>
               <div class="product-meta">
-                <span>Article: <strong>NG-MX1-BLK</strong></span>
-                <span>Category: Gaming Mice</span>
+                <span>Article: <strong>{{ product.sku }}</strong></span>
+                <span>Category: {{ product.category }}</span>
               </div>
             </div>
 
             <!-- Price -->
             <div>
               <div style="display: flex; align-items: baseline; gap: var(--space-3);">
-                <span class="product-price">$79</span>
-                <span class="product-price-old">$99</span>
+                <span class="product-price">{{ product.price }} Rub</span>
+                <span class="product-price-old">{{ product.old_price }} Rub</span>
               </div>
               <div class="stock-status">
+                {% if product.stock > 0 %}
                 <span class="stock-dot"></span>
-                In stock • Ships immediately
+                  In stock • Ships immediately
+                {% else %}
+                <span class="stock-no-dot"></span>
+                  Out of stock • Expected to arrive
+                {% endif %}
               </div>
             </div>
 
@@ -86,41 +89,38 @@
                 <span class="qty-control__value" id="qty-value">1</span>
                 <button class="qty-control__btn" onclick="changeQty(1)">+</button>
               </div>
-
+              {% if product.stock > 0 %}
               <button class="btn btn--primary btn--lg" onclick="addToCart()">
-                Add to Cart — $79
+                Add to Cart — {{ product.price }} Rub
               </button>
-
+              {% else %}
+              <button class="btn btn--primary btn--lg btn--disabled" onclick="addToCart()">
+                Add to Cart — {{ product.price }} Rub
+              </button>
+              {% endif %}
               <button class="btn btn--outline" onclick="toggleWishlist(this)">
                 <span style="font-size: 1.2em;">♡</span> Add to Wishlist
               </button>
             </div>
 
-            <!-- Short description -->
-            <div>
-              <p style="color: var(--color-text-secondary); line-height: var(--leading-relaxed);">
-                Ultra-lightweight 59g gaming mouse with PixArt 3395 sensor, 8K DPI, and customizable RGB lighting. Perfect for FPS and competitive gaming.
-              </p>
-            </div>
+<!--            &lt;!&ndash; Short description &ndash;&gt;-->
+<!--            <div>-->
+<!--              <p style="color: var(&#45;&#45;color-text-secondary); line-height: var(&#45;&#45;leading-relaxed);">-->
+<!--                {{ product.description }}-->
+<!--              </p>-->
+<!--            </div>-->
 
             <!-- Quick specs -->
             <div class="specs-grid">
-              <div class="spec-item">
-                <div class="spec-label">Sensor</div>
-                <div class="spec-value">PixArt 3395</div>
-              </div>
-              <div class="spec-item">
-                <div class="spec-label">DPI</div>
-                <div class="spec-value">Up to 8000</div>
-              </div>
-              <div class="spec-item">
-                <div class="spec-label">Weight</div>
-                <div class="spec-value">59g</div>
-              </div>
-              <div class="spec-item">
-                <div class="spec-label">Switches</div>
-                <div class="spec-value">Huano 80M</div>
-              </div>
+
+              {% for attr in product.attributes.all %}
+                {% if attr.sort_order == 1 %}
+                  <div class="spec-item">
+                    <div class="spec-label">{{ attr.name }}</div>
+                    <div class="spec-value">{{ attr.value }}</div>
+                  </div>
+                {% endif %}
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -139,15 +139,19 @@
               <div class="col-span-8">
                 <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-4);">About this product</h2>
                 <p style="color: var(--color-text-secondary); line-height: var(--leading-relaxed); margin-bottom: var(--space-6);">
-                  The NovaGear ProMouse X1 redefines precision and comfort. Built with a lightweight honeycomb shell and premium components, it delivers unmatched performance for both casual and professional gamers.
+                  {{ product.description }}
                 </p>
                 <ul style="color: var(--color-text-secondary); line-height: 1.8;">
-                  <li>✓ 59-gram ultra-light design</li>
-                  <li>✓ Flagship PixArt 3395 optical sensor</li>
-                  <li>✓ 8 programmable buttons</li>
-                  <li>✓ Customizable 16.8M RGB lighting</li>
-                  <li>✓ PTFE feet for smooth glide</li>
-                  <li>✓ 2.4GHz + wired modes</li>
+                  {% for attr in product.attributes.all %}
+                    {% if attr.sort_order == 3 %}
+                      <li>✓ {{ attr.value }}</li>
+                    {% endif %}
+                  {% endfor %}
+<!--                  <li>✓ Flagship PixArt 3395 optical sensor</li>-->
+<!--                  <li>✓ 8 programmable buttons</li>-->
+<!--                  <li>✓ Customizable 16.8M RGB lighting</li>-->
+<!--                  <li>✓ PTFE feet for smooth glide</li>-->
+<!--                  <li>✓ 2.4GHz + wired modes</li>-->
                 </ul>
               </div>
               <div class="col-span-4">
@@ -172,24 +176,20 @@
             <table style="width: 100%; border-collapse: collapse;">
               <tr style="border-bottom: 1px solid var(--color-border);">
                 <td style="padding: var(--space-4); color: var(--color-text-muted); width: 40%;">Brand</td>
-                <td style="padding: var(--space-4); font-weight: var(--font-medium);">NovaGear</td>
+                <td style="padding: var(--space-4); font-weight: var(--font-medium);">{{ product.brand }}</td>
               </tr>
               <tr style="border-bottom: 1px solid var(--color-border);">
                 <td style="padding: var(--space-4); color: var(--color-text-muted);">Model</td>
-                <td style="padding: var(--space-4); font-weight: var(--font-medium);">ProMouse X1</td>
+                <td style="padding: var(--space-4); font-weight: var(--font-medium);">{{ product.name }}</td>
               </tr>
-              <tr style="border-bottom: 1px solid var(--color-border);">
-                <td style="padding: var(--space-4); color: var(--color-text-muted);">Connectivity</td>
-                <td style="padding: var(--space-4); font-weight: var(--font-medium);">2.4 GHz Wireless / USB-C Wired</td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--color-border);">
-                <td style="padding: var(--space-4); color: var(--color-text-muted);">Battery Life</td>
-                <td style="padding: var(--space-4); font-weight: var(--font-medium);">Up to 120 hours</td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--color-border);">
-                <td style="padding: var(--space-4); color: var(--color-text-muted);">Warranty</td>
-                <td style="padding: var(--space-4); font-weight: var(--font-medium);">2 years</td>
-              </tr>
+              {% for attr in product.attributes.all %}
+                {% if attr.sort_order < 3 %}
+                  <tr style="border-bottom: 1px solid var(--color-border);">
+                    <td style="padding: var(--space-4); color: var(--color-text-muted); width: 40%;">{{ attr.name }}</td>
+                    <td style="padding: var(--space-4); font-weight: var(--font-medium);">{{ attr.value }}</td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
             </table>
           </div>
 
@@ -216,10 +216,4 @@
   <script src="js/products.js"></script>
 {% endblock %}
 
-<!--  <div data-site-footer></div>-->
-<!--  <div class="toast" data-toast role="alert" aria-live="assertive" hidden><span data-toast-message></span></div>-->
 
-<!--  <script src="js/products.js"></script>-->
-<!--  <script src="js/store.js"></script>-->
-<!--  <script src="js/ui.js"></script>-->
-<!--  <script src="js/layout.js"></script>-->

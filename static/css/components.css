@@ -76,6 +76,29 @@
   padding: var(--space-2);
 }
 
+.btn--disabled,
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #475569 !important;           /* серый цвет */
+  color: #94a3b8 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.btn--disabled:hover,
+.btn:disabled:hover {
+  background: #475569 !important;
+  box-shadow: none !important;
+  transform: none;
+}
+
+/* Дополнительно для primary кнопки */
+.btn--primary.btn--disabled,
+.btn--primary:disabled {
+  background: linear-gradient(135deg, #475569, #334155) !important;
+}
+
 /* Inputs */
 .input {
   width: 100%;
