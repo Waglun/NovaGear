@@ -13,19 +13,9 @@
 
 
 {% block content %}
-
   <main>
-    <div class="page-hero">
-      <div class="container">
-        <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="{% url 'core:home' %}">Home</a>
-          <span class="breadcrumb__sep">/</span>
-          <span>Catalog</span>
-        </nav>
-        <h1 class="page-hero__title">Gaming <span class="text-gradient">Catalog</span></h1>
-        <p class="page-hero__desc">12+ curated products for your battle station. Filter by category, price, or rating.</p>
-      </div>
-    </div>
+    <!-- Breadcrumb -->
+    {% include 'includes/breadcrumb.html' %}
 
     <section class="catalog-layout" id="categories">
       <div class="container catalog-layout__inner grid-12">

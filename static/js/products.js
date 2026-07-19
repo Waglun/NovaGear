@@ -59,3 +59,33 @@
       // You can load related products here from products.js if available
     });
 
+document.addEventListener('DOMContentLoaded', function() {
+    initTabs();
+});
+
+function initTabs() {
+    const tabsContainer = document.querySelector('[data-tabs]');
+    if (!tabsContainer) return;
+
+    const tabButtons = tabsContainer.querySelectorAll('[data-tab]');
+    const tabContents = document.querySelectorAll('[data-tab-content]');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+
+            // Убираем активный класс у всех кнопок
+            tabButtons.forEach(btn => btn.classList.remove('tabs__btn--active'));
+            // Добавляем активный класс текущей кнопке
+            this.classList.add('tabs__btn--active');
+
+            // Скрываем все табы
+            tabContents.forEach(content => content.classList.add('hidden'));
+            // Показываем нужный таб
+            const targetContent = document.getElementById('tab-' + targetTab);
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+            }
+        });
+    });
+}

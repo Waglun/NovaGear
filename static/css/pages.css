@@ -352,6 +352,7 @@
   margin-bottom: var(--space-8);
 }
 
+/*tabs*/
 .tabs {
   display: flex;
   gap: var(--space-1);
@@ -378,6 +379,24 @@
   background: var(--color-bg-surface);
   color: var(--color-text-primary);
   box-shadow: var(--shadow-sm);
+}
+
+.tab-content {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    height: 0;
+    overflow: hidden;
+}
+
+.tab-content:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+    height: auto;
+}
+
+.hidden {
+    display: none; /* Оставляем для других элементов */
 }
 
 .form-stack {
@@ -690,6 +709,14 @@
   border: 2px solid transparent;
   cursor: pointer;
   transition: border-color var(--duration-fast);
+}
+
+.product-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* Заполняет контейнер, обрезая лишнее */
+  object-position: center;  /* Центрирует обрезку */
+  display: block;           /* Убирает лишний отступ снизу */
 }
 
 .product-thumbnail.active {

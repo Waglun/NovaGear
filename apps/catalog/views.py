@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 
 from .models import Product, Category, Brand
 
@@ -12,6 +13,11 @@ def catalog(request):
     category_slug = request.GET.get('category')
     brand_slug = request.GET.get('brand')
     sort = request.GET.get('sort', 'featured')
+
+    breadcrumbs = [
+        {'name': 'Home', 'url': 'core:home'},
+        {'name': 'Catalog', 'url': None},
+    ]
 
     if search_query:
         products = products.filter(name__icontains=search_query)
@@ -39,6 +45,7 @@ def catalog(request):
         'brand_slug': brand_slug,
         'sort': sort,
         'search_query': search_query,
+        'breadcrumbs': breadcrumbs,
     }
 
     return render(
@@ -55,8 +62,33 @@ def product_detail(request, slug):
         slug=slug
     )
 
+    quick_specs = []
+    description_bullets = []
+    table_specs = []
+    extra_bullets = []
+    breadcrumbs = [
+        {'name': 'Home', 'url': 'core:home'},
+        {'name': 'Catalog', 'url': 'catalog:catalog'},
+        {'name': product.name, 'url': None},
+    ]
+
+    for attr in product.attributes.all():
+        if attr.sort_order == 1:
+            quick_specs.append(attr)
+        if attr.sort_order == 2:
+            description_bullets.append(attr)
+        if attr.sort_order < 3:
+            table_specs.append(attr)
+        if attr.sort_order == 3:
+            extra_bullets.append(attr)
+
     context = {
         'product': product,
+        'quick_specs': quick_specs,
+        'description_bullets': description_bullets,
+        'table_specs': table_specs,
+        'extra_bullets': extra_bullets,
+        'breadcrumbs': breadcrumbs,
     }
 
     return render(request, 'product_detail.html', context)

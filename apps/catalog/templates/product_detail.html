@@ -15,18 +15,7 @@
 {% block content %}
   <main>
     <!-- Breadcrumb -->
-    <div class="page-hero">
-      <div class="container">
-        <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="{% url 'core:home' %}">Home</a>
-          <span class="breadcrumb__sep">/</span>
-          <a href="{% url 'catalog:catalog' %}">Catalog</a>
-          <span class="breadcrumb__sep">/</span>
-          <span>{{ product.name }}</span>
-        </nav>
-        <h1 class="page-hero__title">{{ product.name }}</h1>
-      </div>
-    </div>
+    {% include 'includes/breadcrumb.html' %}
 
     <section class="catalog-layout">
       <div class="container">
@@ -36,17 +25,18 @@
           <div class="col-span-6 lg:col-span-6">
             <div class="product-gallery">
               <div class="product-main-image" id="main-image">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" id="main-img">
+                {% with product.images.all|first as first_image %}
+                  {% if first_image %}
+                    <img src="{{ first_image.image.url }}" alt="{{ product.name }}" id="main-img">
+                  {% endif %}
+                {% endwith %}
               </div>
 
               {% if product.images.all|length > 1 %}
                 <div class="product-thumbnails">
-                  <div class="product-thumbnail active" data-img="{{ product.image.url }}">
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                  </div>
                   {% for image in product.images.all %}
-                    <div class="product-thumbnail active" data-img="{{ image.image.url }}">
-                      <img src="{{ image.image.url }}" alt="Main view">
+                    <div class="product-thumbnail {% if forloop.first %}active{% endif %}" data-img="{{ image.image.url }}">
+                      <img src="{{ image.image.url }}" alt="{{ product.name }}">
                     </div>
                   {% endfor %}
                 </div>
@@ -57,11 +47,11 @@
           <!-- Product Info -->
           <div class="col-span-6 product-info">
             <div>
-              <div class="product-brand">NovaGear</div>
+              <div class="product-brand">{{ product.brand }}</div>
               <h1 class="product-title">{{ product.name }}</h1>
               <div class="product-meta">
-                <span>Article: <strong>{{ product.sku }}</strong></span>
-                <span>Category: {{ product.category }}</span>
+                <span>Article: <strong>{{ product.sku|default:"N/A" }}</strong></span>
+                <span>Category: {{ product.category.name }}</span>
               </div>
             </div>
 
@@ -69,7 +59,9 @@
             <div>
               <div style="display: flex; align-items: baseline; gap: var(--space-3);">
                 <span class="product-price">{{ product.price }} Rub</span>
-                <span class="product-price-old">{{ product.old_price }} Rub</span>
+                {% if product.old_price %}
+                  <span class="product-price-old">{{ product.old_price }} Rub</span>
+                {% endif %}
               </div>
               <div class="stock-status">
                 {% if product.stock > 0 %}
@@ -84,17 +76,20 @@
 
             <!-- Add to cart -->
             <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+              {% if product.stock > 0 %}
               <div class="qty-control" style="width: fit-content;">
                 <button class="qty-control__btn" onclick="changeQty(-1)">–</button>
                 <span class="qty-control__value" id="qty-value">1</span>
                 <button class="qty-control__btn" onclick="changeQty(1)">+</button>
               </div>
+              {% endif %}
+
               {% if product.stock > 0 %}
               <button class="btn btn--primary btn--lg" onclick="addToCart()">
                 Add to Cart — {{ product.price }} Rub
               </button>
               {% else %}
-              <button class="btn btn--primary btn--lg btn--disabled" onclick="addToCart()">
+              <button class="btn btn--primary btn--lg btn--disabled" disabled>
                 Add to Cart — {{ product.price }} Rub
               </button>
               {% endif %}
@@ -112,14 +107,11 @@
 
             <!-- Quick specs -->
             <div class="specs-grid">
-
-              {% for attr in product.attributes.all %}
-                {% if attr.sort_order == 1 %}
+              {% for attr in quick_specs %}
                   <div class="spec-item">
                     <div class="spec-label">{{ attr.name }}</div>
                     <div class="spec-value">{{ attr.value }}</div>
                   </div>
-                {% endif %}
               {% endfor %}
             </div>
           </div>
@@ -127,14 +119,20 @@
 
         <!-- Tabs / Full description & specs -->
         <div style="margin-top: var(--space-16);">
-          <div class="tabs" style="max-width: 420px;">
-            <button class="tabs__btn tabs__btn--active" onclick="switchTab(0)">Description</button>
-            <button class="tabs__btn" onclick="switchTab(1)">Specifications</button>
-            <button class="tabs__btn" onclick="switchTab(2)">Reviews</button>
+          <div class="tabs" data-tabs>
+            <button class="tabs__btn tabs__btn--active" data-tab="description">Description</button>
+            <button class="tabs__btn" data-tab="specifications">Specifications</button>
+            <button class="tabs__btn" data-tab="reviews">Reviews</button>
           </div>
 
+<!--          <div class="tabs" style="max-width: 420px;">-->
+<!--            <button class="tabs__btn tabs__btn&#45;&#45;active" onclick="switchTab(0)">Description</button>-->
+<!--            <button class="tabs__btn" onclick="switchTab(1)">Specifications</button>-->
+<!--            <button class="tabs__btn" onclick="switchTab(2)">Reviews</button>-->
+<!--          </div>-->
+
           <!-- Description Tab -->
-          <div id="tab-0" class="tab-content">
+          <div id="tab-description" class="tab-content" data-tab-content>
             <div class="grid-12" style="gap: var(--space-12);">
               <div class="col-span-8">
                 <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-4);">About this product</h2>
@@ -142,16 +140,9 @@
                   {{ product.description }}
                 </p>
                 <ul style="color: var(--color-text-secondary); line-height: 1.8;">
-                  {% for attr in product.attributes.all %}
-                    {% if attr.sort_order == 3 %}
-                      <li>✓ {{ attr.value }}</li>
-                    {% endif %}
+                  {% for attr in extra_bullets %}
+                    <li>✓ {{ attr.value }}</li>
                   {% endfor %}
-<!--                  <li>✓ Flagship PixArt 3395 optical sensor</li>-->
-<!--                  <li>✓ 8 programmable buttons</li>-->
-<!--                  <li>✓ Customizable 16.8M RGB lighting</li>-->
-<!--                  <li>✓ PTFE feet for smooth glide</li>-->
-<!--                  <li>✓ 2.4GHz + wired modes</li>-->
                 </ul>
               </div>
               <div class="col-span-4">
@@ -172,7 +163,7 @@
           </div>
 
           <!-- Specifications Tab -->
-          <div id="tab-1" class="tab-content" style="display: none;">
+          <div id="tab-specifications" class="tab-content hidden" data-tab-content>
             <table style="width: 100%; border-collapse: collapse;">
               <tr style="border-bottom: 1px solid var(--color-border);">
                 <td style="padding: var(--space-4); color: var(--color-text-muted); width: 40%;">Brand</td>
@@ -182,19 +173,17 @@
                 <td style="padding: var(--space-4); color: var(--color-text-muted);">Model</td>
                 <td style="padding: var(--space-4); font-weight: var(--font-medium);">{{ product.name }}</td>
               </tr>
-              {% for attr in product.attributes.all %}
-                {% if attr.sort_order < 3 %}
-                  <tr style="border-bottom: 1px solid var(--color-border);">
-                    <td style="padding: var(--space-4); color: var(--color-text-muted); width: 40%;">{{ attr.name }}</td>
-                    <td style="padding: var(--space-4); font-weight: var(--font-medium);">{{ attr.value }}</td>
-                  </tr>
-                {% endif %}
+              {% for attr in table_specs %}
+                <tr style="border-bottom: 1px solid var(--color-border);">
+                  <td style="padding: var(--space-4); color: var(--color-text-muted); width: 40%;">{{ attr.name }}</td>
+                  <td style="padding: var(--space-4); font-weight: var(--font-medium);">{{ attr.value }}</td>
+                </tr>
               {% endfor %}
             </table>
           </div>
 
           <!-- Reviews Tab -->
-          <div id="tab-2" class="tab-content" style="display: none;">
+          <div id="tab-reviews" class="tab-content hidden" data-tab-content>
             <p style="color: var(--color-text-secondary);">Reviews coming soon. Be the first to review this product!</p>
           </div>
         </div>
@@ -213,7 +202,7 @@
 
 
 {% block extra_js %}
-  <script src="js/products.js"></script>
+  <script src='{% static "js/products.js" %}'></script>
 {% endblock %}
 
 
