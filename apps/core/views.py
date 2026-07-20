@@ -8,8 +8,3 @@ def home(request):
         print(f"Session data: {dict(request.session)}")
     print(f"Cookies in request: {request.COOKIES}")
     return render(request, 'home.html')
-
-
-
-def cart(request):
-    return render(request, 'cart.html')
