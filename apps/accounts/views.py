@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 
 from .forms import RegisterForm, LoginForm, ProfileForm, UserPasswordChangeForm
+from ..wishlist.models import Wishlist
 
 
 def login_view(request):
@@ -53,10 +54,8 @@ def login_view(request):
 
 @login_required
 def profile_view(request):
-    context = {
-        "orders_count": 0,
-        "wishlist_count": 0,
-    }
+    wishlist_count = Wishlist.objects.filter(user=request.user).count()
+
     if request.method == "POST":
         form = ProfileForm(
             request.POST,
@@ -71,7 +70,13 @@ def profile_view(request):
     else:
         form = ProfileForm(instance=request.user)
 
-    return render(request, "profile.html", {"form": form, "context": context})
+    context = {
+        "orders_count": 0,
+        "wishlist_count": wishlist_count,
+        "form": form,
+    }
+
+    return render(request, "profile.html", context)
 
 
 class UserPasswordChange(PasswordChangeView):

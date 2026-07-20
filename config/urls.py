@@ -23,7 +23,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("apps.core.urls")),
     path("accounts/", include("apps.accounts.urls")),
-    path("catalog/", include('apps.catalog.urls'))
+    path("catalog/", include('apps.catalog.urls')),
+    path('wishlist/', include('apps.wishlist.urls')),
 ]
 
 if settings.DEBUG:

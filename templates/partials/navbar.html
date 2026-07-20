@@ -20,7 +20,7 @@
           </li>
 
           <li>
-            <a href="{% url 'core:wishlist' %}"
+            <a href="{% url 'wishlist' %}"
                class="{% if request.resolver_match.url_name == 'wishlist' %}nav__link nav__link--active{% else %}nav__link{% endif %}">
               Wishlist
             </a>
@@ -39,17 +39,24 @@
           </form>
         </div>
         <div class="nav__actions">
-          <a href="{% url 'core:wishlist' %}" class="btn btn--ghost btn--icon nav__wishlist-btn" aria-label="Wishlist">
+          <a href="{% url 'wishlist' %}" class="btn btn--ghost btn--icon nav__wishlist-btn" aria-label="Wishlist">
             <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
             <span class="nav__badge nav__badge--wishlist" data-wishlist-count>0</span>
           </a>
-
             {% if user.is_authenticated %}
-              <a href="{% url 'accounts:profile' %}" class="nav__user">
-                <span class="nav__avatar" data-user-avatar>{{ user.username|first|upper }}</span>
-                <span class="nav__user-name" data-user-name>{{ user.username }}</span>
-              </a>
-                {% else %}
+                <a href="{% url 'accounts:profile' %}" class="nav__user">
+                    <span class="nav__avatar" data-user-avatar>
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
+                        {% else %}
+                            {{ user.username|first|upper }}
+                        {% endif %}
+                    </span>
+                <span class="nav__user-name" data-user-name>
+                    {{ user.username }}
+                </span>
+                </a>
+            {% else %}
               <div class="nav__auth">
                 <a href="{% url  'accounts:login' %}" class="btn btn--ghost btn--sm">Log in</a>
                 <a href="{% url 'accounts:login' %}#register" class="btn btn--primary btn--sm">Register</a>
@@ -82,7 +89,7 @@
                 </li>
 
                 <li>
-                    <a href="{% url 'core:wishlist' %}"
+                    <a href="{% url 'wishlist' %}"
                        class="{% if request.resolver_match.url_name == 'wishlist' %}nav__link--active{% endif %}">
                         Wishlist
                     </a>

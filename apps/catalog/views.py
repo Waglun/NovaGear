@@ -18,6 +18,7 @@ def catalog(request):
         {'name': 'Home', 'url': 'core:home'},
         {'name': 'Catalog', 'url': None},
     ]
+    wishlist_ids = set(request.user.wishlist.values_list('product_id', flat=True))
 
     if search_query:
         products = products.filter(name__icontains=search_query)
@@ -46,6 +47,7 @@ def catalog(request):
         'sort': sort,
         'search_query': search_query,
         'breadcrumbs': breadcrumbs,
+        'wishlist_ids': wishlist_ids,
     }
 
     return render(

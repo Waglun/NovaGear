@@ -87,16 +87,24 @@
 
           <div class="products__grid">
             {% for product in products %}
-              <article class="product-card" data-product-id="{{ product.slug }}">
+              <article class="product-card" id="product-{{ product.id }}" data-product-id="{{ product.slug }}">
                 <div class="product-card__media">
                   <div class="product-card__img product-card__img--placeholder" role="img" aria-label="{{ product.name }}">
                     {% if product.image %}
                       <img src="{{ product.image.url }}" class="product-card__image">
                     {% endif %}
                   </div>
-                  <button type="button" class="product-card__wishlist" data-wishlist-id="{{ product.slug }}" aria-label="Add to wishlist" aria-pressed="false">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path></svg>
-                  </button>
+                  <a href="{% url 'toggle_wishlist' product.id %}?next={{ request.path }}#product-{{ product.id }}"
+                     class="product-card__wishlist {% if product.id in wishlist_ids %}is-active{% endif %}"
+                     aria-label="{% if product.id in wishlist_ids %}Remove from{% else %}Add to{% endif %} wishlist">
+
+                    <svg width="18" height="18" viewBox="0 0 24 24"
+                         fill="{% if product.id in wishlist_ids %}#3b82f6{% else %}none{% endif %}"
+                         stroke="{% if product.id in wishlist_ids %}#3b82f6{% else %}#64748b{% endif %}"
+                         stroke-width="2">
+                      <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                    </svg>
+                  </a>
                 </div>
                 <div class="product-card__body">
                   <span class="product-card__category">{{ product.category.name }}</span>

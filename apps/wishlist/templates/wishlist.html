@@ -1,0 +1,92 @@
+<!--  <title>Wishlist — NovaGear</title>-->
+{% extends 'base.html' %}
+{% load static %}
+
+  {% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+  {% endblock %}
+
+
+{% block extra_body %}
+<body data-page="wishlist">
+{% endblock %}
+
+
+{% block content %}
+  <main>
+    <div class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="{% url 'core:home' %}">Home</a>
+          <span class="breadcrumb__sep">/</span>
+          <span>Wishlist</span>
+        </nav>
+        <h1 class="page-hero__title">Your <span class="text-gradient">Wishlist</span></h1>
+        <p class="page-hero__desc">Gear you've saved for later — add to cart when you're ready.</p>
+      </div>
+    </div>
+
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div class="empty-state empty-state--large" data-wishlist-empty hidden>
+          <div class="empty-state__icon" aria-hidden="true">♡</div>
+          <h2>No saved items yet</h2>
+          <p>Tap the heart on any product to save it here.</p>
+          <a href="{% url 'catalog:catalog' %}" class="btn btn--primary">Explore catalog</a>
+        </div>
+<!--        Спислк карточек товаров -->
+        {% if products %}
+          <div class="grid-12 products__grid">
+            {% for product in products %}
+              <article class="product-card" data-product-id="{{ product.slug }}">
+                <div class="product-card__media">
+                  <div class="product-card__img product-card__img--placeholder" role="img" aria-label="{{ product.name }}">
+                    {% if product.image %}
+                      <img src="{{ product.image.url }}" class="product-card__image">
+                    {% endif %}
+                  </div>
+                    <a href="{% url 'toggle_wishlist' product.id %}"
+                       class="product-card__wishlist {% if product.id in wishlist_ids %}is-active{% endif %}"
+                       aria-label="{% if product.id in wishlist_ids %}Remove from{% else %}Add to{% endif %} wishlist"
+                       aria-pressed="{% if product.id in wishlist_ids %}true{% else %}false{% endif %}">
+
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                      </svg>
+                    </a>
+                </div>
+                <div class="product-card__body">
+                  <span class="product-card__category">{{ product.category.name }}</span>
+                  <h3 class="product-card__title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+                  <div class="product-card__rating">
+                    <span class="product-card__stars">{{ product.rating|default:"★★★★★" }}</span>
+                    <span class="product-card__reviews">Stock | {{ product.stock|default:"0" }}</span>
+                  </div>
+                  <div class="product-card__footer">
+                    <div>
+                      <span class="product-card__price">{{ product.price }} Rub</span>
+                      {% if product.old_price %}
+                        <span class="product-card__price-old">{{ product.old_price }} Rub</span>
+                      {% endif %}
+                    </div>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn--primary btn--sm">Add to cart</a>
+                  </div>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+{% endblock %}
+
+  <div data-site-footer></div>
+  <div class="toast" data-toast role="alert" aria-live="assertive" hidden><span data-toast-message></span></div>
+
+  {% block extra_js %}
+  <script src="{% static 'js/wishlist-page.js' %}"></script>
+  {% endblock %}
+
+</body>
+</html>

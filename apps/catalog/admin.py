@@ -9,13 +9,13 @@ admin.site.register(ProductAttribute)
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    extra = 3
+    extra = 1
     max_num = 10
 
 
 class ProductAttributeInline(admin.TabularInline):
     model = ProductAttribute
-    extra = 3
+    extra = 1
 
 
 @admin.register(Product)

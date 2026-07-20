@@ -9,8 +9,7 @@ def home(request):
     print(f"Cookies in request: {request.COOKIES}")
     return render(request, 'home.html')
 
-def wishlist(request):
-    return render(request, 'wishlist.html')
+
 
 def cart(request):
     return render(request, 'cart.html')
