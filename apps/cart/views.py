@@ -31,10 +31,23 @@ def cart(request):
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, pk=product_id, is_active=True)
     cart, _ = Cart.objects.get_or_create(user=request.user)
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product,)
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
 
     if not created:
         cart_item.quantity += 1
         cart_item.save(update_fields=["quantity"])
 
+    print(cart.id)
+    print(cart.items.count())
+    print(list(cart.items.values()))
+
     return redirect(request.META.get("HTTP_REFERER", "catalog:catalog",))
+
+
+# @login_required
+# def update_quantity(request, item_id):
+#
+#
+#
+# @login_required
+# def remove_from_cart(request, item_id):

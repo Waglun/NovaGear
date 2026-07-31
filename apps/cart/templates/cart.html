@@ -1,5 +1,8 @@
+{% extends 'base.html' %}
+{% load static %}
+
 {% block extra_css %}
-<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="{% static 'css/pages.css' %}">
 {% endblock %}
 
 
@@ -12,8 +15,16 @@
   <main class="cart-page">
 
     <div class="container">
-      <!-- Breadcrumb -->
-      {% include 'includes/breadcrumb.html' %}
+      <div class="page-hero" style="padding-top:0;border:none;background:none">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="breadcrumb__sep">/</span>
+          <span>Cart</span>
+        </nav>
+        <h1 class="page-hero__title">Shopping <span class="text-gradient">Cart</span></h1>
+      </div>
+<!--      &lt;!&ndash; Breadcrumb &ndash;&gt;-->
+<!--      {% include 'includes/breadcrumb.html' %}-->
       <!--Если корзина пустая-->
       {% if is_empty %}
       <div class="grid-12 cart-layout__inner">
@@ -44,14 +55,15 @@
                     <th><span class="visually-hidden">Remove</span></th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {% for item in cart_items %}
                     <tr data-cart-row="{{ item.product.id }}">
                       <td class="cart-table__product">
                         <div class="cart-item">
-                          {% if product.image %}
+                          {% if item.product.image %}
                             <div class="cart-item__img product-card__img--placeholder product-card__img--mouse-1">
-                              <img src="{{ item.product.image.url }}" class="product-card__image">
+<!--                              <img src="{{ item.product.image.url }}" class="product-card__image">-->
                             </div>
                           {% endif %}
                           <span class="cart-item__name">{{ item.product.name }}</span>
@@ -105,6 +117,6 @@
   <div class="toast" data-toast role="alert" aria-live="assertive" hidden><span data-toast-message></span></div>
 
 {% block extra_js %}
-  <script src="js/cart-page.js"></script>
+  <script src="{% static 'js/cart-page.js' %}"></script>
 {% endblock %}
 

@@ -120,7 +120,13 @@
                         <span class="product-card__price-old">{{ product.old_price }} Rub</span>
                       {% endif %}
                     </div>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn--primary btn--sm">Add to cart</a>
+                    <form method="post" action="{% url 'cart:add_to_cart' product.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn--primary btn--sm">
+                        Add to Cart
+                      </button>
+                    </form>
+<!--                    <a href="{% url 'cart:add_to_cart' product.id %}" class="btn btn&#45;&#45;primary btn&#45;&#45;sm">Add to cart</a>-->
                   </div>
                 </div>
               </article>
