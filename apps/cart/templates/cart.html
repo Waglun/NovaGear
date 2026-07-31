@@ -12,10 +12,67 @@
   <main class="cart-page">
 
     <div class="container">
-                      <!-- Breadcrumb -->
-        {% include 'includes/breadcrumb.html' %}
+      <!-- Breadcrumb -->
+      {% include 'includes/breadcrumb.html' %}
+      <!--Если корзина пустая-->
+      {% if is_empty %}
       <div class="grid-12 cart-layout__inner">
-        <div class="col-span-8" data-cart-content></div>
+        <div class="col-span-8" data-cart-content="">
+          <div class="empty-state empty-state--large">
+            <div class="empty-state__icon" aria-hidden="true">🛒</div>
+            <h2>Your cart is empty</h2>
+            <p>Looks like you haven't added any gear yet.</p>
+            <a href="{% url 'catalog:catalog' %}" class="btn btn--primary">Browse catalog</a>
+          </div>
+        </div>
+      </div>
+      <!--Если корзина содержит товары-->
+      {% else %}
+
+      <div class="grid-12 cart-layout__inner">
+        <div class="col-span-8" data-cart-content>
+
+          <div class="col-span-8" data-cart-content="">
+            <div class="cart-table-wrap">
+              <table class="cart-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th><span class="visually-hidden">Remove</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in cart_items %}
+                    <tr data-cart-row="ng-mouse-001">
+                      <td class="cart-table__product">
+                        <div class="cart-item">
+                          <div class="cart-item__img product-card__img--placeholder product-card__img--mouse-1"></div>
+                          <span class="cart-item__name">{{ item.product.name }}</span>
+                        </div>
+                      </td>
+                      <td>{{ item.product.price }}</td>
+                      <td>
+                        <div class="qty-control">
+                          <button type="button" class="qty-control__btn" data-qty-minus="ng-mouse-001" aria-label="Decrease quantity">−</button>
+                          <span class="qty-control__value" data-qty-value="ng-mouse-001">{{ total_item }}</span>
+                          <button type="button" class="qty-control__btn" data-qty-plus="ng-mouse-001" aria-label="Increase quantity">+</button>
+                        </div>
+                      </td>
+                      <td class="cart-table__total" data-line-total="ng-mouse-001">{{ item.subtotal_price }}</td>
+                      <td>
+                        <button type="button" class="btn btn--ghost btn--sm" data-remove-cart="ng-mouse-001" aria-label="Remove item">Remove</button>
+                      </td>
+                    </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
         <aside class="col-span-4 cart-summary" data-cart-summary hidden>
           <h2 class="cart-summary__title">Order summary</h2>
           <div class="cart-summary__row">
@@ -28,13 +85,14 @@
           </div>
           <div class="cart-summary__row cart-summary__row--total">
             <span>Total</span>
-            <span data-cart-total>$0.00</span>
+            <span data-cart-total>{{ total_price }}</span>
           </div>
           <button type="button" class="btn btn--primary" data-checkout>Proceed to checkout</button>
           <p class="cart-summary__note">Free shipping on orders over $99</p>
           <a href="catalog.html" class="btn btn--outline" style="margin-top:var(--space-3)">Continue shopping</a>
         </aside>
       </div>
+      {% endif %}
     </div>
   </main>
 {% endblock %}
@@ -45,3 +103,45 @@
 {% block extra_js %}
   <script src="js/cart-page.js"></script>
 {% endblock %}
+
+
+
+<div class="col-span-8" data-cart-content="">
+  <div class="cart-table-wrap">
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total</th>
+          <th><span class="visually-hidden">Remove</span></th>
+        </tr>
+      </thead>
+      <tbody>
+
+          <tr data-cart-row="ng-mouse-001">
+            <td class="cart-table__product">
+              <div class="cart-item">
+                <div class="cart-item__img product-card__img--placeholder product-card__img--mouse-1"></div>
+                <span class="cart-item__name">Nova Pro X Wireless</span>
+              </div>
+            </td>
+            <td>$89.99</td>
+            <td>
+              <div class="qty-control">
+                <button type="button" class="qty-control__btn" data-qty-minus="ng-mouse-001" aria-label="Decrease quantity">−</button>
+                <span class="qty-control__value" data-qty-value="ng-mouse-001">1</span>
+                <button type="button" class="qty-control__btn" data-qty-plus="ng-mouse-001" aria-label="Increase quantity">+</button>
+              </div>
+            </td>
+            <td class="cart-table__total" data-line-total="ng-mouse-001">$89.99</td>
+            <td>
+              <button type="button" class="btn btn--ghost btn--sm" data-remove-cart="ng-mouse-001" aria-label="Remove item">Remove</button>
+            </td>
+          </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>

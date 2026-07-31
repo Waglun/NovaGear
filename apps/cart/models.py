@@ -5,23 +5,23 @@ from ..catalog.models import Product
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='cart')
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='cart')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     @property
     def total_price(self):
-        total_price = sum(item.product.price * item.quantity for item in self.items.all())
+        total_price = sum(item.subtotal_price for item in self.items.all())
         return total_price
 
     @property
     def total_item(self):
-        return self.items.count()
+        return sum(item.quantity for item in self.items.all())
 
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_item')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='cart_items')
     quantity = models.PositiveIntegerField(default=1)
 
     @property

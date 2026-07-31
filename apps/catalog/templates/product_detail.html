@@ -85,13 +85,19 @@
               {% endif %}
 
               {% if product.stock > 0 %}
-              <button class="btn btn--primary btn--lg" onclick="addToCart()">
-                Add to Cart — {{ product.price }} Rub
-              </button>
+              <form method="post" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+
+                <button class="btn btn--primary btn--lg" onclick="addToCart()">
+                  Add to Cart — {{ product.price }} Rub
+                </button>
+
+              </form>
               {% else %}
               <button class="btn btn--primary btn--lg btn--disabled" disabled>
-                Add to Cart — {{ product.price }} Rub
+                  Add to Cart — {{ product.price }} Rub
               </button>
+              </form>
               {% endif %}
               <button class="btn btn--outline" onclick="toggleWishlist(this)">
                 <span style="font-size: 1.2em;">♡</span> Add to Wishlist
