@@ -28,12 +28,6 @@
 
     <section class="section" style="padding-top:0">
       <div class="container">
-        <div class="empty-state empty-state--large" data-wishlist-empty hidden>
-          <div class="empty-state__icon" aria-hidden="true">♡</div>
-          <h2>No saved items yet</h2>
-          <p>Tap the heart on any product to save it here.</p>
-          <a href="{% url 'catalog:catalog' %}" class="btn btn--primary">Explore catalog</a>
-        </div>
 <!--        Спислк карточек товаров -->
         {% if products %}
           <div class="grid-12 products__grid">
@@ -75,6 +69,13 @@
               </article>
             {% endfor %}
           </div>
+        {% else %}
+        <div class="empty-state empty-state--large" data-wishlist-empty>
+          <div class="empty-state__icon" aria-hidden="true">♡</div>
+          <h2>No saved items yet</h2>
+          <p>Tap the heart on any product to save it here.</p>
+          <a href="{% url 'catalog:catalog' %}" class="btn btn--primary">Explore catalog</a>
+        </div>
         {% endif %}
       </div>
     </section>

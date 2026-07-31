@@ -13,12 +13,14 @@ def cart(request):
     cart_items = cart.items.select_related('product')
     total_price = cart.total_price
     total_item = cart.total_item
+    Shipping = 0 if total_price >= 5000 else 1200
 
     context = {
         'cart_items': cart_items,
         'total_price': total_price,
         'total_item': total_item,
         'is_empty': not cart_items.exists(),
+        'shipping': Shipping,
     }
 
     return render(request, 'cart.html', context)
