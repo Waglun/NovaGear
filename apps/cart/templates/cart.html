@@ -72,14 +72,27 @@
                       <td>{{ item.product.price }}</td>
                       <td>
                         <div class="qty-control">
-                          <button type="button" class="qty-control__btn" data-qty-minus="ng-mouse-001" aria-label="Decrease quantity">−</button>
-                          <span class="qty-control__value" data-qty-value="ng-mouse-001">{{ item.quantity }}</span>
-                          <button type="button" class="qty-control__btn" data-qty-plus="ng-mouse-001" aria-label="Increase quantity">+</button>
+                          <form method="post" action="{% url 'cart:update_quantity' item.id %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="action" value="decrement">
+                              <button type="submit" class="qty-control__btn">-</button>
+                          </form>
+
+                          <span class="qty-control__value">{{ item.quantity }}</span>
+
+                          <form method="post" action="{% url 'cart:update_quantity' item.id %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="action" value="increment">
+                              <button type="submit" class="qty-control__btn">+</button>
+                          </form>
                         </div>
                       </td>
-                      <td class="cart-table__total" data-line-total="ng-mouse-001">{{ item.subtotal_price }}</td>
+                      <td class="cart-table__total">{{ item.subtotal_price }}</td>
                       <td>
-                        <button type="button" class="btn btn--ghost btn--sm" data-remove-cart="ng-mouse-001" aria-label="Remove item">Remove</button>
+                        <form method="post" action="{% url 'cart:remove_from_cart' item.id %}">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn--ghost btn--sm" aria-label="Remove item">Remove</button>
+                        </form>
                       </td>
                     </tr>
                   {% endfor %}

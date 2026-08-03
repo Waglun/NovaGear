@@ -44,10 +44,29 @@ def add_to_cart(request, product_id):
     return redirect(request.META.get("HTTP_REFERER", "catalog:catalog",))
 
 
-# @login_required
-# def update_quantity(request, item_id):
-#
-#
-#
-# @login_required
-# def remove_from_cart(request, item_id):
+@login_required
+@require_POST
+def update_quantity(request, item_id):
+    cart_item = get_object_or_404(CartItem, pk=item_id, cart__user=request.user)
+    action = request.POST.get('action')
+    if action == 'increment':
+        cart_item.quantity += 1
+        cart_item.save(update_fields=["quantity"])
+    elif action == 'decrement':
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+            cart_item.save(update_fields=["quantity"])
+        else:
+            cart_item.delete()
+
+    return redirect(request.META.get("HTTP_REFERER", "cart:cart",))
+
+
+
+@login_required
+@require_POST
+def remove_from_cart(request, item_id):
+    cart_item = get_object_or_404(CartItem, pk=item_id, cart__user=request.user)
+    cart_item.delete()
+
+    return redirect("cart:cart")

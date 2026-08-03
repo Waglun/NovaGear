@@ -50,11 +50,7 @@ def catalog(request):
         'wishlist_ids': wishlist_ids,
     }
 
-    return render(
-        request,
-        'catalog.html',
-        context
-    )
+    return render(request, 'catalog.html', context)
 
 
 def product_detail(request, slug):

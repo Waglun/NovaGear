@@ -862,7 +862,7 @@
 /* Активное состояние - синий контур и заливка */
 .product-card__wishlist.is-active svg {
     stroke: var(--color-accent-blue); /* #3b82f6 */
-    fill: var(--color-accent-blue); /* #3b82f6 */
+    fill: rgb(192, 132, 252);
 }
 
 /* При наведении в активном состоянии - ярче */
