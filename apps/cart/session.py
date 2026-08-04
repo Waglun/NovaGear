@@ -1,4 +1,4 @@
-from NovaGear.apps.catalog.models import Product
+from .models import Product
 
 
 class SessionCart:
@@ -11,7 +11,7 @@ class SessionCart:
 
     def add(self, product_id, quantity=1):
         product_id = str(product_id)
-        if product_id is self.cart:
+        if product_id in self.cart:
             self.cart[product_id] += quantity
         else:
             self.cart[product_id] = quantity
@@ -24,10 +24,34 @@ class SessionCart:
         items = []
         for product in products:
             quantity = self.cart[str(product.id)]
-            items.append({
-                'product_id': product.id,
-                'quantity': quantity,
-                'subtotal_price': product.price * quantity,
-            })
+            items.append(SessionCartItem(product, quantity))
 
         return items
+
+    def total_price(self):
+        return sum(item.subtotal_price for item in self.items())
+
+    def total_item(self):
+        total_item = sum(self.cart.values())
+        return total_item
+
+    def is_empty(self):
+        return len(self.cart) == 0
+
+
+class SessionCartItem:
+    def __init__(self, product, quantity):
+        self.product = product
+        self.quantity = quantity
+
+    @property
+    def subtotal_price(self):
+        return self.product.price * self.quantity
+
+    @property
+    def id(self):
+        return self.product.id
+
+    @property
+    def price(self):
+        return self.product.price

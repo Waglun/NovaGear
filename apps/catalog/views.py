@@ -18,8 +18,11 @@ def catalog(request):
         {'name': 'Home', 'url': 'core:home'},
         {'name': 'Catalog', 'url': None},
     ]
-    wishlist_ids = set(request.user.wishlist.values_list('product_id', flat=True))
-
+    wishlist_ids = (
+        set(request.user.wishlist.values_list("product_id", flat=True))
+        if request.user.is_authenticated
+        else set()
+    )
     if search_query:
         products = products.filter(name__icontains=search_query)
 
