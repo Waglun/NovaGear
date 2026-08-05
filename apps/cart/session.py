@@ -18,6 +18,30 @@ class SessionCart:
 
         self.save()
 
+    def update(self, item_id, action):
+        product_id = str(item_id)
+
+        if product_id not in self.cart:
+            return
+
+        if action == 'increment':
+            self.cart[product_id] += 1
+
+        elif action == 'decrement':
+            if self.cart[product_id] > 1:
+                self.cart[product_id] -= 1
+            else:
+                del self.cart[product_id]
+
+        self.save()
+
+    def remove(self, product_id):
+        product_id = str(product_id)
+
+        if product_id in self.cart:
+            del self.cart[product_id]
+            self.save()
+
     def items(self):
         products = Product.objects.filter(id__in=self.cart.keys(), is_active=True)
 
@@ -41,16 +65,13 @@ class SessionCart:
 
 class SessionCartItem:
     def __init__(self, product, quantity):
+        self.id = product.id
         self.product = product
         self.quantity = quantity
 
     @property
     def subtotal_price(self):
         return self.product.price * self.quantity
-
-    @property
-    def id(self):
-        return self.product.id
 
     @property
     def price(self):

@@ -1,3 +1,5 @@
+from itertools import product
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
@@ -38,7 +40,6 @@ def cart(request):
     return render(request, 'cart.html', context)
 
 
-# @login_required
 @require_POST
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, pk=product_id, is_active=True)
@@ -55,29 +56,35 @@ def add_to_cart(request, product_id):
     return redirect(request.META.get("HTTP_REFERER", "catalog:catalog",))
 
 
-# @login_required
 @require_POST
 def update_quantity(request, item_id):
-    cart_item = get_object_or_404(CartItem, pk=item_id, cart__user=request.user)
     action = request.POST.get('action')
-    if action == 'increment':
-        cart_item.quantity += 1
-        cart_item.save(update_fields=["quantity"])
-    elif action == 'decrement':
-        if cart_item.quantity > 1:
-            cart_item.quantity -= 1
+
+    if request.user.is_authenticated:
+        cart_item = get_object_or_404(CartItem, pk=item_id, cart__user=request.user)
+        if action == 'increment':
+            cart_item.quantity += 1
             cart_item.save(update_fields=["quantity"])
-        else:
-            cart_item.delete()
+        elif action == 'decrement':
+            if cart_item.quantity > 1:
+                cart_item.quantity -= 1
+                cart_item.save(update_fields=["quantity"])
+            else:
+                cart_item.delete()
+    else:
+        session_cart = SessionCart(request)
+        session_cart.update(item_id, action)
 
     return redirect(request.META.get("HTTP_REFERER", "cart:cart",))
 
 
 
-@login_required
 @require_POST
 def remove_from_cart(request, item_id):
-    cart_item = get_object_or_404(CartItem, pk=item_id, cart__user=request.user)
-    cart_item.delete()
+    if request.user.is_authenticated:
+        cart_item = get_object_or_404(CartItem, pk=item_id, cart__user=request.user)
+        cart_item.delete()
+    else:
+        SessionCart(request).remove(item_id)
 
     return redirect("cart:cart")
