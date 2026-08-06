@@ -1,4 +1,4 @@
-from .models import Product
+from .models import Product, CartItem, Cart
 
 
 class SessionCart:
@@ -61,6 +61,20 @@ class SessionCart:
 
     def is_empty(self):
         return len(self.cart) == 0
+
+    def merge_to_database(self, user):
+        print("=== MERGE START ===")
+        cart, _ = Cart.objects.get_or_create(user=user)
+
+        for item in self.items():
+            cart_item, create = CartItem.objects.get_or_create(cart=cart, product=item.product, defaults={'quantity': item.quantity})
+
+            if not create:
+                cart_item.quantity += item.quantity
+                cart_item.save(update_fields=['quantity'])
+
+        self.cart.clear()
+        self.save()
 
 
 class SessionCartItem:

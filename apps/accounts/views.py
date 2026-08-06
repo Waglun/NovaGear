@@ -27,8 +27,6 @@ def login_view(request):
                 if user:
                     # Используем стандартный login
                     login(request, user)
-                    print(f"User logged in: {user.email}")
-                    print(f"Session key: {request.session.session_key}")
                     return redirect('core:home')
                 else:
                     print("Authentication failed")
