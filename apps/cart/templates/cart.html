@@ -23,6 +23,7 @@
         </nav>
         <h1 class="page-hero__title">Shopping <span class="text-gradient">Cart</span></h1>
       </div>
+
 <!--      &lt;!&ndash; Breadcrumb &ndash;&gt;-->
 <!--      {% include 'includes/breadcrumb.html' %}-->
       <!--Если корзина пустая-->
@@ -116,7 +117,8 @@
             <span>Total</span>
             <span data-cart-total>{{ total_price|add:shipping }}</span>
           </div>
-          <button type="button" class="btn btn--primary" data-checkout>Proceed to checkout</button>
+<!--          <button type="button" class="btn btn&#45;&#45;primary" data-checkout>Proceed to checkout</button>-->
+          <a href="{% url 'order:checkout' %}" class="btn btn--primary" style="margin-top:var(--space-3)">Proceed to checkout</a>
           <p class="cart-summary__note">Free shipping on orders over 5000 rub</p>
           <a href="{% url 'catalog:catalog' %}" class="btn btn--outline" style="margin-top:var(--space-3)">Continue shopping</a>
         </aside>
@@ -125,9 +127,6 @@
     </div>
   </main>
 {% endblock %}
-
-  <div data-site-footer></div>
-  <div class="toast" data-toast role="alert" aria-live="assertive" hidden><span data-toast-message></span></div>
 
 {% block extra_js %}
   <script src="{% static 'js/cart-page.js' %}"></script>

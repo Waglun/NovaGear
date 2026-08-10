@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages.css' %}">
+{% endblock %}
+
+
+{% block extra_body %}
+<body data-page="checkout">
+{% endblock %}
+
+{% block content %}
+  <main class="checkout-page">
+    <div class="container">
+      <div class="page-hero checkout-page__hero">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="{% url 'core:home' %}">Home</a>
+          <span class="breadcrumb__sep">/</span>
+          <a href="{% url 'cart:cart' %}">Cart</a>
+          <span class="breadcrumb__sep">/</span>
+          <span>Checkout</span>
+        </nav>
+        <h1 class="page-hero__title">Оформление <span class="text-gradient">заказа</span></h1>
+        <p class="page-hero__desc">Укажите адрес и контакты — мы отправим заказ в обработку.</p>
+      </div>
+
+      <div class="grid-12 checkout-layout__inner">
+        <!-- Django: method="post" action="" enctype same as view -->
+        <div class="col-span-7">
+          <form class="checkout-form glow-border" method="post" data-checkout-form novalidate>
+            {% csrf_token %}
+
+            <h2 class="checkout-form__title">Данные доставки</h2>
+
+            <div class="form-stack">
+              <div class="form-field">
+                <label for="id_address">Адрес доставки</label>
+                <textarea
+                  name="address"
+                  id="id_address"
+                  class="input input--textarea"
+                  rows="3"
+                  placeholder="Введите адрес доставки"
+                  required
+                ></textarea>
+                <!-- Django: {{ form.address.errors }} -->
+              </div>
+
+              <div class="form-field">
+                <label for="id_phone">Телефон</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  id="id_phone"
+                  class="input"
+                  maxlength="30"
+                  placeholder="+7 (999) 123-45-67"
+                  required
+                  autocomplete="tel"
+                >
+                <!-- Django: {{ form.phone.errors }} -->
+              </div>
+
+              <div class="form-field">
+                <label for="id_comment">Комментарий <span class="form-field__optional">(необязательно)</span></label>
+                <textarea
+                  name="comment"
+                  id="id_comment"
+                  class="input input--textarea"
+                  rows="3"
+                  placeholder="Комментарий к заказу"
+                ></textarea>
+                <!-- Django: {{ form.comment.errors }} -->
+              </div>
+              
+              <div class="checkout-form__actions">
+                <button type="submit" class="btn btn--primary btn--lg">Подтвердить заказ</button>
+                <a href="{% url 'cart:cart' %}" class="btn btn--outline">Вернуться в корзину</a>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <aside class="col-span-5 checkout-summary" data-checkout-summary>
+          <h2 class="checkout-summary__title">Ваш заказ</h2>
+          <ul class="checkout-items" data-checkout-items role="list"></ul>
+          <div class="checkout-summary__rows">
+            <div class="checkout-summary__row">
+              <span>Товары</span>
+              <span data-checkout-subtotal>—</span>
+            </div>
+            <div class="checkout-summary__row">
+              <span>Доставка</span>
+              <span data-checkout-shipping>—</span>
+            </div>
+            <div class="checkout-summary__row checkout-summary__row--total">
+              <span>Итого</span>
+              <span data-checkout-total>—</span>
+            </div>
+          </div>
+          <p class="checkout-summary__note">Бесплатная доставка при заказе от $99</p>
+        </aside>
+      </div>
+    </div>
+  </main>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/checkout-page.js' %}"></script>
+{% endblock %}
+
