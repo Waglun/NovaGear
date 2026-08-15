@@ -28,7 +28,10 @@
           <li>
             <a href="{% url 'cart:cart' %}" class="nav__link nav__link--cart {% if request.resolver_match.url_name == 'cart' %}nav__link--active{% endif %}">
               <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-              <span class="nav__badge" data-cart-count>0</span>
+              <span class="nav__badge" data-count="{{ cart_count }}">
+                  {{ cart_count }}
+              </span>
+              <!--              <span class="nav__badge" data-cart-count>0</span>-->
             </a>
           </li>
         </ul>

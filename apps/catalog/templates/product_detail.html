@@ -85,7 +85,7 @@
               {% endif %}
 
               {% if product.stock > 0 %}
-              <form method="post" action="{% url 'add_to_cart' product.id %}">
+              <form method="post" action="{% url 'cart:add_to_cart' product.id %}">
                 {% csrf_token %}
 
                 <button class="btn btn--primary btn--lg" onclick="addToCart()">

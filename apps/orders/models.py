@@ -16,7 +16,7 @@ class Order(models.Model):
     ], default='created')
     address = models.TextField(max_length=120)
     phone = models.CharField(max_length=120)
-    commet = models.TextField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
     total_price = models.DecimalField(max_digits=12, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -35,6 +35,9 @@ class OrderItem(models.Model):
 
     @property
     def subtotal_price(self):
+        if self.price is None or self.quantity is None:
+            return 0
+
         return self.price * self.quantity
 
     class Meta:

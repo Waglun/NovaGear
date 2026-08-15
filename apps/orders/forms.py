@@ -7,6 +7,7 @@ class OrderForm(forms.Form):
         widget=forms.Textarea(attrs={
             'rows': 3,
             'placeholder': 'Введите адрес доставки',
+            'class': 'input input--textarea',
         }),
     )
 
@@ -14,6 +15,7 @@ class OrderForm(forms.Form):
         label='Телефон',
         max_length=30,
         widget=forms.TextInput(attrs={
+            'class': 'input',
             'placeholder': '+7 (999) 123-45-67',
         }),
     )
@@ -22,6 +24,7 @@ class OrderForm(forms.Form):
         label='Комментарий',
         required=False,
         widget=forms.Textarea(attrs={
+            'class': 'input input--textarea',
             'rows': 3,
             'placeholder': 'Комментарий к заказу',
         }),

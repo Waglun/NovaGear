@@ -37,42 +37,20 @@
             <div class="form-stack">
               <div class="form-field">
                 <label for="id_address">Адрес доставки</label>
-                <textarea
-                  name="address"
-                  id="id_address"
-                  class="input input--textarea"
-                  rows="3"
-                  placeholder="Введите адрес доставки"
-                  required
-                ></textarea>
-                <!-- Django: {{ form.address.errors }} -->
+                {{ form.address }}
+                {{ form.address.errors }}
               </div>
 
               <div class="form-field">
                 <label for="id_phone">Телефон</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  id="id_phone"
-                  class="input"
-                  maxlength="30"
-                  placeholder="+7 (999) 123-45-67"
-                  required
-                  autocomplete="tel"
-                >
-                <!-- Django: {{ form.phone.errors }} -->
+                {{ form.phone }}
+                {{ form.phone.errors }}
               </div>
 
               <div class="form-field">
                 <label for="id_comment">Комментарий <span class="form-field__optional">(необязательно)</span></label>
-                <textarea
-                  name="comment"
-                  id="id_comment"
-                  class="input input--textarea"
-                  rows="3"
-                  placeholder="Комментарий к заказу"
-                ></textarea>
-                <!-- Django: {{ form.comment.errors }} -->
+                {{ form.comment }}
+                {{ form.comment.errors }}
               </div>
               
               <div class="checkout-form__actions">
@@ -85,22 +63,33 @@
 
         <aside class="col-span-5 checkout-summary" data-checkout-summary>
           <h2 class="checkout-summary__title">Ваш заказ</h2>
-          <ul class="checkout-items" data-checkout-items role="list"></ul>
+          <ul class="checkout-items" data-checkout-items role="list">
+            {% for item in cart_items %}
+            <li class="checkout-item">
+              <div class="checkout-item__img product-card__img--placeholder product-card__img--mouse-1"></div>
+              <div class="checkout-item__info">
+                <span class="checkout-item__name">{{ item.product.name }}</span>
+                <span class="checkout-item__meta">{{ item.quantity }} × {{ item.product.price }}</span>
+              </div>
+              <span class="checkout-item__line-total">{{ item.subtotal_price }}</span>
+            </li>
+            {% endfor %}
+          </ul>
           <div class="checkout-summary__rows">
             <div class="checkout-summary__row">
               <span>Товары</span>
-              <span data-checkout-subtotal>—</span>
+              <span data-checkout-subtotal>{{ total_price }}</span>
             </div>
             <div class="checkout-summary__row">
               <span>Доставка</span>
-              <span data-checkout-shipping>—</span>
+              <span data-checkout-shipping>{{ shipping }}</span>
             </div>
             <div class="checkout-summary__row checkout-summary__row--total">
               <span>Итого</span>
-              <span data-checkout-total>—</span>
+              <span data-checkout-total>{{ grand_total }}</span>
             </div>
           </div>
-          <p class="checkout-summary__note">Бесплатная доставка при заказе от $99</p>
+          <p class="checkout-summary__note">Бесплатная доставка при заказе от 5000₽</p>
         </aside>
       </div>
     </div>

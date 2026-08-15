@@ -17,6 +17,9 @@ def checkout(request):
     if not cart_items:
         return redirect('cart:cart')
 
+    shipping = 0 if total_price >= 5000 else 1200
+    grand_total = total_price + shipping
+
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -26,7 +29,7 @@ def checkout(request):
                     address=form.cleaned_data['address'],
                     phone=form.cleaned_data['phone'],
                     comment=form.cleaned_data['comment'],
-                    total_price=form.cleaned_data['total_price'],
+                    total_price=grand_total,
                 )
 
                 for item in cart_items:
@@ -49,6 +52,8 @@ def checkout(request):
         'form': form,
         'cart_items': cart_items,
         'total_price': total_price,
+        'shipping': shipping,
+        'grand_total': grand_total,
     }
 
     return render(request, 'checkout.html', context)

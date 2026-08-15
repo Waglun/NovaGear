@@ -146,19 +146,34 @@
 }
 
 .nav__badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
-  font-size: 10px;
-  font-weight: var(--font-bold);
-  line-height: 18px;
-  text-align: center;
-  background: var(--gradient-brand);
-  border-radius: var(--radius-full);
-  color: white;
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: 10px;
+    font-weight: var(--font-bold);
+    line-height: 18px;
+    text-align: center;
+    background: var(--gradient-brand);
+    border-radius: var(--radius-full);
+    color: white;
+
+
+  /*position: absolute;*/
+  /*top: -4px;*/
+  /*right: -4px;*/
+  /*min-width: 18px;*/
+  /*height: 18px;*/
+  /*padding: 0 5px;*/
+  /*font-size: 10px;*/
+  /*font-weight: var(--font-bold);*/
+  /*line-height: 18px;*/
+  /*text-align: center;*/
+  /*background: var(--gradient-brand);*/
+  /*border-radius: var(--radius-full);*/
+  /*color: white;*/
 }
 
 .nav__badge:empty,
