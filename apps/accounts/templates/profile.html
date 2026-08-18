@@ -6,185 +6,309 @@
     <title>Profile | NovaGear</title>
 {% endblock %}
 
+
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/pages.css' %}" xmlns="http://www.w3.org/1999/html">
+    <link rel="stylesheet" href="{% static 'css/pages.css' %}">
 {% endblock %}
+
 
 {% block extra_body %}
-<body data-page="profile">
+    <body data-page="profile">
 {% endblock %}
 
+
 {% block content %}
-  <main class="profile-page">
-    <div class="container">
-      <div class="page-hero" style="padding-top:0;border:none;background:none">
-        <h1 class="page-hero__title">My <span class="text-gradient">Account</span></h1>
-        <p class="page-hero__desc">Manage your profile, orders, and preferences.</p>
-      </div>
+    <main class="profile-page">
+        <div class="container">
 
-      <div class="grid-12 profile-layout__inner">
-        <aside class="profile-sidebar col-span-3">
-          <div class="profile-sidebar__user">
-            <div class="profile-sidebar__avatar">
-              {% if user.avatar %}
-                <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
-              {% else %}
-                {{ user.username|first|upper }}
-              {% endif %}
+            <div class="page-hero" style="padding-top:0;border:none;background:none">
+                <h1 class="page-hero__title">
+                    My <span class="text-gradient">Account</span>
+                </h1>
+
+                <p class="page-hero__desc">
+                    Manage your profile, orders, and preferences.
+                </p>
             </div>
 
-            <p class="profile-sidebar__name">
-              {{ user.username }}
-            </p>
 
-            <p class="profile-sidebar__email">
-              {{ user.email }}
-            </p>
-          </div>
+            <div class="grid-12 profile-layout__inner">
 
-          <nav class="profile-nav" aria-label="Account sections">
-            <button type="button" class="profile-nav__item profile-nav__item--active" data-profile-tab="overview">Overview</button>
-            <button type="button" class="profile-nav__item" data-profile-tab="orders">Orders</button>
-            <button type="button" class="profile-nav__item" data-profile-tab="settings">Settings</button>
-          </nav>
-            <form method="post" action="{% url 'accounts:logout' %}">
-                {% csrf_token %}
-                <button type="submit"
-                        class="btn btn--outline btn--block">
-                    Sign out
-                </button>
-            </form>
-        </aside>
+                <!-- Sidebar -->
+                <aside class="profile-sidebar col-span-3">
 
-        <div class="col-span-9">
-          <div class="profile-panel" data-profile-panel="overview">
-            <h2 class="profile-panel__title">Overview</h2>
-            <div class="profile-stats">
-              <div class="profile-stat">
-                <span class="profile-stat__value">{{ orders_count }}</span>
-                <span class="profile-stat__label">Orders</span>
-              </div>
-              <div class="profile-stat">
-                <span class="profile-stat__value">{{ wishlist_count }}</span>
-                <span class="profile-stat__label">Wishlist</span>
-              </div>
-              <div class="profile-stat">
-                <span class="profile-stat__value">{{ user.created_at|date:"d.m.Y" }}</span>
-                <span class="profile-stat__label">Member since</span>
-              </div>
-            </div>
-            <p style="color:var(--color-text-secondary);font-size:var(--text-sm)">
-              Member since
-              <strong>
-                  {{ user.created_at|date:"d F Y" }}
-              </strong>.
-              <a href="{% url 'wishlist' %}" style="color:var(--color-accent-blue-bright)">View wishlist</a> ·
-              <a href="{% url 'cart:cart' %}" style="color:var(--color-accent-blue-bright)">Go to cart</a>
-            </p>
-          </div>
-            <div class="profile-panel" data-profile-panel="orders" hidden>
-              <h2 class="profile-panel__title">Order history</h2>
-              <div class="orders-table-wrap">
-                <table class="orders-table">
-                  <thead>
-                      <tr>
-                          <th>Order</th>
-                          <th>Date</th>
-                          <th>Status</th>
-                          <th>Total</th>
-                          <th></th>
-                      </tr>
-                  </thead>
+                    <div class="profile-sidebar__user">
 
-                  <tbody>
-                    {% for order in orders %}
-                      <tr>
-                        <td>
-                            #{{ order.id }}
-                        </td>
+                        <div class="profile-sidebar__avatar">
+                            {% if user.avatar %}
+                                <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
+                            {% else %}
+                                {{ user.username|first|upper }}
+                            {% endif %}
+                        </div>
 
-                        <td>
-                            {{ order.created_at|date:"d.m.Y" }}
-                        </td>
+                        <p class="profile-sidebar__name">
+                            {{ user.username }}
+                        </p>
 
-                        <td>
-                            <span class="status-badge--delivered status-badge status-badge--{{ order.order_status }}">
-                                {{ order.get_order_status_display }}
-                            </span>
-                        </td>
+                        <p class="profile-sidebar__email">
+                            {{ user.email }}
+                        </p>
 
-                        <td>
-                            {{ order.total_price }} ₽
-                        </td>
+                    </div>
 
-                        <td>
-                            <a href="{% url 'orders:order_detail' order.id %}" class="btn btn--ghost">
-                                Подробнее
+
+                    <nav class="profile-nav" aria-label="Account sections">
+
+                        <button
+                            type="button"
+                            class="profile-nav__item profile-nav__item--active"
+                            data-profile-tab="overview"
+                        >
+                            Overview
+                        </button>
+
+                        <button
+                            type="button"
+                            class="profile-nav__item"
+                            data-profile-tab="orders"
+                        >
+                            Orders
+                        </button>
+
+                        <button
+                            type="button"
+                            class="profile-nav__item"
+                            data-profile-tab="settings"
+                        >
+                            Settings
+                        </button>
+
+                    </nav>
+
+
+                    <form method="post" action="{% url 'accounts:logout' %}">
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="btn btn--outline btn--block"
+                        >
+                            Sign out
+                        </button>
+                    </form>
+
+                </aside>
+
+
+                <!-- Content -->
+                <div class="col-span-9">
+                    <div class="col-span-9">
+                        <!-- Overview -->
+                        <div
+                            class="profile-panel"
+                            data-profile-panel="overview"
+                        >
+
+                            <h2 class="profile-panel__title">
+                                Overview
+                            </h2>
+
+
+                            <div class="profile-stats">
+
+                                <div class="profile-stat">
+                                    <span class="profile-stat__value">
+                                        {{ orders_count }}
+                                    </span>
+
+                                    <span class="profile-stat__label">
+                                        Orders
+                                    </span>
+                                </div>
+
+
+                                <div class="profile-stat">
+                                    <span class="profile-stat__value">
+                                        {{ wishlist_count }}
+                                    </span>
+
+                                    <span class="profile-stat__label">
+                                        Wishlist
+                                    </span>
+                                </div>
+
+
+                                <div class="profile-stat">
+                                    <span class="profile-stat__value">
+                                        {{ user.created_at|date:"d.m.Y" }}
+                                    </span>
+
+                                    <span class="profile-stat__label">
+                                        Member since
+                                    </span>
+                                </div>
+
+                            </div>
+
+
+                            <p style="color:var(--color-text-secondary);font-size:var(--text-sm)">
+                                Member since
+
+                                <strong>
+                                    {{ user.created_at|date:"d F Y" }}
+                                </strong>.
+
+                                <a
+                                    href="{% url 'wishlist' %}"
+                                    style="color:var(--color-accent-blue-bright)"
+                                >
+                                    View wishlist
+                                </a>
+
+                                ·
+
+                                <a
+                                    href="{% url 'cart:cart' %}"
+                                    style="color:var(--color-accent-blue-bright)"
+                                >
+                                    Go to cart
+                                </a>
+                            </p>
+
+                        </div>
+
+
+                        <!-- Orders -->
+                        <div class="profile-panel" data-profile-panel="orders" hidden>
+                            <h2 class="profile-panel__title">
+                                Order history
+                            </h2>
+
+
+                            <div class="orders-table-wrap">
+
+                                <table class="orders-table">
+
+                                    <thead>
+                                        <tr>
+                                            <th>Order</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Total</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody>
+                                        {% for order in orders %}
+                                            <tr>
+                                                <td>
+                                                    #{{ order.id }}
+                                                </td>
+                                                <td>
+                                                    {{ order.created_at|date:"d.m.Y" }}
+                                                </td>
+                                                <td>
+                                                    <span class="status-badge--delivered status-badge status-badge--{{ order.order_status }}">
+                                                        {{ order.get_order_status_display }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {{ order.total_price }} ₽
+                                                </td>
+
+
+                                                <td>
+                                                    <a
+                                                        href="{% url 'orders:order_detail' order.id %}"
+                                                        class="btn btn--ghost"
+                                                    >
+                                                        Подробнее
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+
+
+                                        {% empty %}
+
+                                            <tr>
+                                                <td colspan="5">
+                                                    Заказов пока нет.
+                                                </td>
+                                            </tr>
+
+                                        {% endfor %}
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Settings -->
+                        <div class="profile-panel" data-profile-panel="settings" hidden>
+                            <h2 class="profile-panel__title">Profile settings</h2>
+
+                            <form class="form-stack"
+                                  method="post"
+                                  enctype="multipart/form-data"
+                                  style="max-width:400px">
+
+                                {% csrf_token %}
+
+                                <div class="form-field">
+                                    <label>Display name</label>
+                                    {{ form.username }}
+                                </div>
+
+                                <div class="form-field">
+                                    <label>Phone</label>
+                                    {{ form.phone }}
+                                </div>
+
+                                <div class="form-field">
+                                    <label>Email</label>
+                                    {{ form.email }}
+                                </div>
+
+                                <div class="form-field">
+                                    <label>Birth date</label>
+                                    {{ form.birthday }}
+                                </div>
+
+                                <div class="form-field">
+                                    <label>Avatar</label>
+                                    {{ form.avatar }}
+                                </div>
+
+                                <button type="submit" class="btn btn--primary">
+                                    Save changes
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="profile-panel" data-profile-panel="settings" hidden>
+                            <a href="{% url 'accounts:password_change' %}"
+                               style="color:var(--color-accent-blue-bright)">
+                                Change password
                             </a>
-                        </td>
-                      </tr>
+                        </div>
+                  </div>
+                </div>
 
-                    {% empty %}
-                      <tr>
-                        <td colspan="5">
-                          Заказов пока нет.
-                        </td>
-                      </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-          </div>
             </div>
-          </div>
 
-          <div class="profile-panel" data-profile-panel="settings" hidden>
-            <h2 class="profile-panel__title">Profile settings</h2>
-            <form class="form-stack" method="post" enctype="multipart/form-data" style="max-width:400px">
-              {% csrf_token %}
-
-              <div class="form-field">
-                <label>Display name</label>
-                {{ form.username }}
-              </div>
-
-              <div class="form-field">
-                <label>Phone</label>
-                {{ form.phone }}
-              </div>
-
-              <div class="form-field">
-                <label>Email</label>
-                {{ form.email }}
-              </div>
-
-              <div class="form-field">
-                <label>Birth date</label>
-                {{ form.birthday }}
-              </div>
-
-              <div class="form-field">
-                <label>Avatar</label>
-                {{ form.avatar }}
-              </div>
-
-              <button type="submit" class="btn btn--primary">
-                Save changes
-              </button>
-            </form>
-          </div>
-          <div class="profile-panel" data-profile-panel="settings" hidden>
-            <a href="{% url 'accounts:password_change' %}" style="color:var(--color-accent-blue-bright)">
-              Changes password
-            </a>
-          </div>
         </div>
-      </div>
-    </div>
-  </main>
+    </main>
 {% endblock %}
 
 
 {% block extra_js %}
-  <script src="{% static 'js/profile.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}
