@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+{% endblock %}
+
+
+{% block extra_body %}
+<body data-page="order-detail">
+{% endblock %}
+
+
+{% block content %}
+  <main class="order-detail-page">
+    <div class="container">
+
+      <div class="page-hero order-detail-page__hero">
+
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="{% url 'core:home' %}">Главная</a>
+          <span class="breadcrumb__sep">/</span>
+
+          <a href="{% url 'accounts:profile' %}">Профиль</a>
+          <span class="breadcrumb__sep">/</span>
+
+          <span>Заказ #{{ order.id }}</span>
+        </nav>
+
+
+        <div class="order-detail-page__heading">
+
+          <div>
+            <h1 class="page-hero__title">
+              Заказ
+              <span class="text-gradient">#{{ order.id }}</span>
+            </h1>
+
+            <p class="page-hero__desc">
+              {{ order.created_at|date:"d.m.Y H:i" }}
+            </p>
+          </div>
+
+
+          <span class="status-badge--delivered status-badge status-badge--{{ order.order_status }}">
+            {{ order.get_order_status_display }}
+          </span>
+
+        </div>
+      </div>
+
+
+      <div class="grid-12 order-detail-layout__inner">
+
+        <div class="col-span-8">
+
+          <!-- Состав заказа -->
+          <section class="order-detail-panel">
+
+            <h2 class="order-detail-panel__title">
+              Состав заказа
+            </h2>
+
+
+            <div class="cart-table-wrap">
+
+              <table class="cart-table order-detail-table">
+
+                <thead>
+                  <tr>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Кол-во</th>
+                    <th>Сумма</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in order.items.all %}
+                    <tr>
+                      <td>
+                        <div class="cart-product order-item">
+                          {% if item.product.image %}
+                            <img
+                              src="{{ item.product.image.url }}"
+                              alt="{{ item.product.name }}"
+                              class="order-item__image"
+                            >
+                          {% endif %}
+                          <div class="cart-product__info">
+                            <a
+                              href="{% url 'catalog:product_detail' item.product.slug %}"
+                              class="order-item__name"
+                            >
+                              {{ item.product.name }}
+                            </a>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        {{ item.price }} ₽
+                      </td>
+                      <td>
+                        {{ item.quantity }}
+                      </td>
+                      <td>
+                        {{ item.subtotal }} ₽
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="4">
+                        В заказе нет товаров.
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+
+          <!-- Доставка -->
+          <section class="order-detail-panel order-detail-panel--delivery">
+            <h2 class="order-detail-panel__title">
+              Доставка
+            </h2>
+            <dl class="order-detail-meta">
+
+              <div class="order-detail-meta__row">
+                <dt>Адрес</dt>
+                <dd>{{ order.address }}</dd>
+              </div>
+              <div class="order-detail-meta__row">
+                <dt>Телефон</dt>
+                <dd>{{ order.phone }}</dd>
+              </div>
+              {% if order.comment %}
+                <div class="order-detail-meta__row">
+                  <dt>Комментарий</dt>
+                  <dd>{{ order.comment }}</dd>
+                </div>
+              {% endif %}
+            </dl>
+          </section>
+        </div>
+
+
+        <!-- Итог -->
+        <aside class="col-span-4 order-detail-summary">
+          <h2 class="order-detail-summary__title">
+            Итого
+          </h2>
+
+          <div class="order-detail-summary__rows">
+            <div class="order-detail-summary__row">
+              <span>Товары</span>
+              <span>{{ order.subtotal }} ₽</span>
+            </div>
+
+            <div class="order-detail-summary__row">
+              <span>Доставка</span>
+              <span>
+                {% if order.shipping == 0 %}
+                  Бесплатно
+                {% else %}
+                  {{ order.shipping }} ₽
+                {% endif %}
+              </span>
+
+            </div>
+
+            <div class="order-detail-summary__row order-detail-summary__row--total">
+              <span>Итого</span>
+              <span>
+                {{ order.total_price }} ₽
+              </span>
+            </div>
+          </div>
+
+          <div class="order-detail-summary__payment">
+            <span>Оплата</span>
+            <span class="status-badge status-badge--{{ order.payment_status }}">
+              {{ order.get_payment_status_display }}
+            </span>
+          </div>
+
+          <a href="{% url 'accounts:profile' %}" class="btn btn--outline btn--block">
+            К списку заказов
+          </a>
+
+          <a href="{% url 'catalog:catalog' %}" class="btn btn--ghost btn--block">
+            Продолжить покупки
+          </a>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+
+  <div data-site-footer></div>
+
+  <div
+    class="toast"
+    data-toast
+    role="alert"
+    aria-live="assertive"
+    hidden
+  >
+    <span data-toast-message></span>
+  </div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+  <script src="{% static 'js/order-detail-page.js' %}"></script>
+{% endblock %}

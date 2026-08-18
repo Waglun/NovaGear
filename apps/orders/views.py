@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from apps.cart.models import Cart
 
@@ -60,3 +60,16 @@ def checkout(request):
 
 
 
+@login_required
+def order_detail(request, order_id):
+    order = get_object_or_404(
+        Order.objects.prefetch_related('items__product'),
+        id=order_id,
+        user=request.user,
+    )
+
+    return render(
+        request,
+        'order_detail.html',
+        {'order': order},
+    )

@@ -118,7 +118,7 @@
             <span data-cart-total>{{ total_price|add:shipping }}</span>
           </div>
 <!--          <button type="button" class="btn btn&#45;&#45;primary" data-checkout>Proceed to checkout</button>-->
-          <a href="{% url 'order:checkout' %}" class="btn btn--primary" style="margin-top:var(--space-3)">Proceed to checkout</a>
+          <a href="{% url 'orders:checkout' %}" class="btn btn--primary" style="margin-top:var(--space-3)">Proceed to checkout</a>
           <p class="cart-summary__note">Free shipping on orders over 5000 ₽</p>
           <a href="{% url 'catalog:catalog' %}" class="btn btn--outline" style="margin-top:var(--space-3)">Continue shopping</a>
         </aside>

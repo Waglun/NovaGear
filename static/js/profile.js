@@ -31,7 +31,7 @@
         <td><span class="status-badge status-badge--${o.status.toLowerCase()}">${o.status}</span></td>
         // <td>${NovaGear.formatPrice(o.total)}</td>
         <td>${o.total}</td>
-        <td><button type="button" class="btn btn--ghost btn--sm">View</button></td>
+        <td><a href="order_detail.html?id=${encodeURIComponent(o.id)}" class="btn btn--ghost btn--sm">View</a></td>
       </tr>`
     ).join("");
   }

@@ -5,15 +5,29 @@ from apps.catalog.models import Product
 
 
 class Order(models.Model):
+    class OrderStatus(models.TextChoices):
+        NEW = 'new', 'Новый'
+        PROCESSING = 'processing', 'В обработке'
+        SHIPPED = 'shipped', 'Отправлен'
+        DELIVERED = 'delivered', 'Доставлен'
+        CANCELLED = 'cancelled', 'Отменен'
+
+    class PaymentStatus(models.TextChoices):
+        PENDING = 'pending', 'Ожидает оплаты'
+        PAID = 'paid', 'Оплачен'
+        FAILED = 'failed', 'Ошибка оплаты'
+
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='orders')
-    status = models.CharField(max_length=20, choices=[
-        ('created', 'Pending'),
-        ('paid', 'Canceled'),
-        ('supplier', 'Supplier'),
-        ('shipped', 'Shipped'),
-        ('delivered', 'Delivered'),
-        ('cancelled', 'Cancelled'),
-    ], default='created')
+    order_status = models.CharField(
+        max_length=20,
+        choices=OrderStatus.choices,
+        default=OrderStatus.NEW,
+    )
+    payment_status = models.CharField(
+        max_length=20,
+        choices=PaymentStatus.choices,
+        default=PaymentStatus.PENDING,
+    )
     address = models.TextField(max_length=120)
     phone = models.CharField(max_length=120)
     comment = models.TextField(blank=True, null=True)
