@@ -7,6 +7,7 @@ from django.urls import reverse, reverse_lazy
 
 from .forms import RegisterForm, LoginForm, ProfileForm, UserPasswordChangeForm
 from ..wishlist.models import Wishlist
+from ..orders.models import Order
 
 
 def login_view(request):
@@ -54,6 +55,8 @@ def login_view(request):
 def profile_view(request):
     wishlist_count = Wishlist.objects.filter(user=request.user).count()
 
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+
     if request.method == "POST":
         form = ProfileForm(
             request.POST,
@@ -69,7 +72,8 @@ def profile_view(request):
         form = ProfileForm(instance=request.user)
 
     context = {
-        "orders_count": 0,
+        "orders": orders,
+        "orders_count": orders.count(),
         "wishlist_count": wishlist_count,
         "form": form,
     }
