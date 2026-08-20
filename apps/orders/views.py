@@ -30,7 +30,8 @@ def checkout(request):
                     address=form.cleaned_data['address'],
                     phone=form.cleaned_data['phone'],
                     comment=form.cleaned_data['comment'],
-                    total_price=grand_total,
+                    total_price=total_price,
+                    grand_total=grand_total
                 )
 
                 for item in cart_items:
@@ -69,8 +70,10 @@ def order_detail(request, order_id):
         user=request.user,
     )
 
+    shipping = order.grand_total - order.total_price
+
     return render(
         request,
         'order_detail.html',
-        {'order': order},
+        {'order': order, 'shipping': shipping},
     )

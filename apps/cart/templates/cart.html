@@ -70,7 +70,7 @@
                           <span class="cart-item__name">{{ item.product.name }}</span>
                         </div>
                       </td>
-                      <td>{{ item.product.price }}</td>
+                      <td>{{ item.product.price }} ₽</td>
                       <td>
                         <div class="qty-control">
                           <form method="post" action="{% url 'cart:update_quantity' item.id %}">
@@ -88,7 +88,7 @@
                           </form>
                         </div>
                       </td>
-                      <td class="cart-table__total">{{ item.subtotal_price }}</td>
+                      <td class="cart-table__total">{{ item.subtotal_price }} ₽</td>
                       <td>
                         <form method="post" action="{% url 'cart:remove_from_cart' item.id %}">
                           {% csrf_token %}
@@ -107,17 +107,16 @@
           <h2 class="cart-summary__title">Order summary</h2>
           <div class="cart-summary__row">
             <span>Subtotal</span>
-            <span data-cart-subtotal>{{ total_price }}</span>
+            <span data-cart-subtotal>{{ total_price }} ₽</span>
           </div>
           <div class="cart-summary__row">
             <span>Shipping</span>
-            <span data-cart-shipping>{{ shipping }}</span>
+            <span data-cart-shipping>{{ shipping }} ₽</span>
           </div>
           <div class="cart-summary__row cart-summary__row--total">
             <span>Total</span>
-            <span data-cart-total>{{ total_price|add:shipping }}</span>
+            <span data-cart-total>{{ total_price|add:shipping }} ₽</span>
           </div>
-<!--          <button type="button" class="btn btn&#45;&#45;primary" data-checkout>Proceed to checkout</button>-->
           <a href="{% url 'orders:checkout' %}" class="btn btn--primary" style="margin-top:var(--space-3)">Proceed to checkout</a>
           <p class="cart-summary__note">Free shipping on orders over 5000 ₽</p>
           <a href="{% url 'catalog:catalog' %}" class="btn btn--outline" style="margin-top:var(--space-3)">Continue shopping</a>

@@ -134,7 +134,7 @@
           <div class="order-detail-summary__rows">
             <div class="order-detail-summary__row">
               <span>Товары</span>
-              <span>{{ order.subtotal }} ₽</span>
+              <span>{{ order.total_price }} ₽</span>
             </div>
 
             <div class="order-detail-summary__row">
@@ -143,7 +143,7 @@
                 {% if order.shipping == 0 %}
                   Бесплатно
                 {% else %}
-                  {{ order.shipping }} ₽
+                  {{ shipping }} ₽
                 {% endif %}
               </span>
             </div>
@@ -151,7 +151,7 @@
             <div class="order-detail-summary__row order-detail-summary__row--total">
               <span>Итого</span>
               <span>
-                {{ order.total_price }} ₽
+                {{ order.grand_total }} ₽
               </span>
             </div>
           </div>

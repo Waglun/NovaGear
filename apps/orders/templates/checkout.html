@@ -67,28 +67,28 @@
             <li class="checkout-item">
               <div class="checkout-item__img product-card__img--placeholder product-card__img--mouse-1"></div>
               <div class="checkout-item__info">
-                <span class="checkout-item__name">{{ item.product.name }}</span>
-                <span class="checkout-item__meta">{{ item.quantity }} × {{ item.product.price }}</span>
+                <span class="checkout-item__name">{{ item.product.name }} ₽</span>
+                <span class="checkout-item__meta">{{ item.quantity }} × {{ item.product.price }} ₽</span>
               </div>
-              <span class="checkout-item__line-total">{{ item.subtotal_price }}</span>
+              <span class="checkout-item__line-total">{{ item.subtotal_price }} ₽</span>
             </li>
             {% endfor %}
           </ul>
           <div class="checkout-summary__rows">
             <div class="checkout-summary__row">
               <span>Товары</span>
-              <span data-checkout-subtotal>{{ total_price }}</span>
+              <span data-checkout-subtotal>{{ total_price }} ₽</span>
             </div>
             <div class="checkout-summary__row">
               <span>Доставка</span>
-              <span data-checkout-shipping>{{ shipping }}</span>
+              <span data-checkout-shipping>{{ shipping }} ₽</span>
             </div>
             <div class="checkout-summary__row checkout-summary__row--total">
               <span>Итого</span>
-              <span data-checkout-total>{{ grand_total }}</span>
+              <span data-checkout-total>{{ grand_total }} ₽</span>
             </div>
           </div>
-          <p class="checkout-summary__note">Бесплатная доставка при заказе от 5000₽</p>
+          <p class="checkout-summary__note">Бесплатная доставка при заказе от 5000 ₽</p>
         </aside>
       </div>
     </div>
