@@ -22,6 +22,7 @@ def checkout(request):
 
     if request.method == 'POST':
         form = OrderForm(request.POST)
+
         if form.is_valid():
             with transaction.atomic():
                 order = Order.objects.create(

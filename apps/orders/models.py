@@ -18,16 +18,8 @@ class Order(models.Model):
         FAILED = 'failed', 'Ошибка оплаты'
 
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='orders')
-    order_status = models.CharField(
-        max_length=20,
-        choices=OrderStatus.choices,
-        default=OrderStatus.NEW,
-    )
-    payment_status = models.CharField(
-        max_length=20,
-        choices=PaymentStatus.choices,
-        default=PaymentStatus.PENDING,
-    )
+    order_status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.NEW)
+    payment_status = models.CharField(max_length=20, choices=PaymentStatus.choices, default=PaymentStatus.PENDING)
     address = models.TextField(max_length=120)
     phone = models.CharField(max_length=120)
     comment = models.TextField(blank=True, null=True)
