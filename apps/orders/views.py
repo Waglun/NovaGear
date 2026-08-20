@@ -45,7 +45,7 @@ def checkout(request):
 
                 cart.items.all().delete()
 
-            return redirect('orders:order_detail', order_id=order.id)
+            return redirect('orders:payment', order_id=order.id)
 
     else:
         form = OrderForm()
@@ -77,3 +77,7 @@ def order_detail(request, order_id):
         'order_detail.html',
         {'order': order, 'shipping': shipping},
     )
+
+@login_required
+def payment(request, order_id):
+    return render(request, 'payment.html')

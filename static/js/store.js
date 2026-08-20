@@ -231,7 +231,6 @@ const NovaGear = {
     this.updateCartBadge();
     this.updateWishlistBadge();
     this.syncWishlistButtons();
-    this.updateAuthUI();
     this.bindProductActions();
     this.bindCommonUI();
   },
