@@ -46,8 +46,20 @@
     cancelled: "status-badge--cancelled",
   };
 
-  function calcTotals(items) {
-    const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  function getOrderById(orderId) {
+    const stored = NovaGear.getOrders().find((o) => o.id === orderId);
+    if (stored) return stored;
+    return MOCK_ORDERS[orderId] || null;
+  }
+  function calcTotals(order) {
+    if (order.subtotal != null && order.total != null) {
+      return {
+        subtotal: order.subtotal,
+        shipping: order.shipping ?? 0,
+        total: order.total,
+      };
+    }
+    const items = order.items;    const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
     const shipping = subtotal > 99 ? 0 : 9.99;
     return { subtotal, shipping, total: subtotal + shipping };
   }
@@ -109,7 +121,7 @@
   }
 
   function renderOrder(order) {
-    const { subtotal, shipping, total } = calcTotals(order.items);
+    const { subtotal, shipping, total } = calcTotals(order);
     const statusKey = order.status.toLowerCase();
 
     document.querySelector("[data-order-breadcrumb]")?.replaceChildren(
@@ -156,7 +168,7 @@
     if (!requireAuth()) return;
 
     const orderId = getOrderIdFromUrl();
-    const order = orderId ? MOCK_ORDERS[orderId] : null;
+    const order = orderId ? getOrderById(orderId) : null;
 
     if (!order) {
       renderNotFound();

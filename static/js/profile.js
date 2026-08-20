@@ -18,12 +18,23 @@
     return true;
   }
 
+  function getAllOrders() {
+    const stored = NovaGear.getOrders().map((o) => ({
+      id: o.id,
+      date: o.date,
+      status: o.status,
+      total: o.total,
+    }));
+    const storedIds = new Set(stored.map((o) => o.id));
+    const merged = [...stored, ...MOCK_ORDERS.filter((o) => !storedIds.has(o.id))];
+    return merged.sort((a, b) => b.date.localeCompare(a.date));
+  }
 
   function renderOrders() {
     const tbody = document.querySelector("[data-orders-body]");
     if (!tbody) return;
 
-    tbody.innerHTML = MOCK_ORDERS.map(
+    tbody.innerHTML = getAllOrders().map(
       (o) => `
       <tr>
         <td><strong>${o.id}</strong></td>

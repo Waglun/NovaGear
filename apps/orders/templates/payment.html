@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Оплата заказа NovaGear.">
+  <title>Оплата заказа — NovaGear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/chrome.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="payment">
+  <div data-site-header></div>
+
+  <main class="payment-page">
+    <div class="container">
+      <div class="page-hero payment-page__hero">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="breadcrumb__sep">/</span>
+          <a href="cart.html">Cart</a>
+          <span class="breadcrumb__sep">/</span>
+          <a href="checkout.html">Checkout</a>
+          <span class="breadcrumb__sep">/</span>
+          <span>Payment</span>
+        </nav>
+        <h1 class="page-hero__title">Оплата <span class="text-gradient">заказа</span></h1>
+        <p class="page-hero__desc">Выберите способ оплаты и подтвердите платёж — это демо без реального списания.</p>
+      </div>
+
+      <div class="grid-12 payment-layout__inner">
+        <div class="col-span-7">
+          <section class="payment-delivery" data-payment-delivery hidden>
+            <h2 class="payment-delivery__title">Доставка</h2>
+            <dl class="payment-delivery__meta">
+              <div class="payment-delivery__row">
+                <dt>Адрес</dt>
+                <dd data-payment-address>—</dd>
+              </div>
+              <div class="payment-delivery__row">
+                <dt>Телефон</dt>
+                <dd data-payment-phone>—</dd>
+              </div>
+            </dl>
+          </section>
+
+          <form class="payment-form glow-border" method="post" data-payment-form novalidate>
+            <!-- Django: {% csrf_token %} -->
+
+            <div class="payment-form__header">
+              <h2 class="payment-form__title">Способ оплаты</h2>
+              <span class="payment-secure" aria-label="Безопасная оплата">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6l-8-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+                Безопасная оплата
+              </span>
+            </div>
+
+            <div class="payment-methods" role="radiogroup" aria-label="Способ оплаты">
+              <label class="payment-method">
+                <input type="radio" name="payment_method" value="card" checked data-payment-method>
+                <span class="payment-method__content">
+                  <span class="payment-method__icon" aria-hidden="true">💳</span>
+                  <span class="payment-method__label">Банковская карта</span>
+                </span>
+              </label>
+              <label class="payment-method">
+                <input type="radio" name="payment_method" value="apple" data-payment-method>
+                <span class="payment-method__content">
+                  <span class="payment-method__icon" aria-hidden="true"></span>
+                  <span class="payment-method__label">Apple Pay</span>
+                </span>
+              </label>
+              <label class="payment-method">
+                <input type="radio" name="payment_method" value="google" data-payment-method>
+                <span class="payment-method__content">
+                  <span class="payment-method__icon" aria-hidden="true">G</span>
+                  <span class="payment-method__label">Google Pay</span>
+                </span>
+              </label>
+            </div>
+
+            <div class="payment-card-fields" data-payment-card-fields>
+              <div class="form-field">
+                <label for="id_card_name">Имя на карте</label>
+                <input
+                  type="text"
+                  name="card_name"
+                  id="id_card_name"
+                  class="input"
+                  placeholder="IVAN IVANOV"
+                  autocomplete="cc-name"
+                >
+              </div>
+
+              <div class="form-field">
+                <label for="id_card_number">Номер карты</label>
+                <input
+                  type="text"
+                  name="card_number"
+                  id="id_card_number"
+                  class="input"
+                  inputmode="numeric"
+                  maxlength="19"
+                  placeholder="1234 5678 9012 3456"
+                  autocomplete="cc-number"
+                >
+              </div>
+
+              <div class="payment-form__row">
+                <div class="form-field">
+                  <label for="id_card_expiry">Срок действия</label>
+                  <input
+                    type="text"
+                    name="card_expiry"
+                    id="id_card_expiry"
+                    class="input"
+                    inputmode="numeric"
+                    maxlength="5"
+                    placeholder="MM/YY"
+                    autocomplete="cc-exp"
+                  >
+                </div>
+                <div class="form-field">
+                  <label for="id_card_cvv">CVV</label>
+                  <input
+                    type="password"
+                    name="card_cvv"
+                    id="id_card_cvv"
+                    class="input"
+                    inputmode="numeric"
+                    maxlength="4"
+                    placeholder="123"
+                    autocomplete="cc-csc"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <p class="payment-form__note" data-payment-wallet-note hidden>
+              Нажмите «Оплатить» — откроется имитация окна оплаты кошельком.
+            </p>
+
+            <div class="payment-form__actions">
+              <button type="submit" class="btn btn--primary btn--lg" data-payment-submit>
+                Оплатить <span data-payment-submit-amount>—</span>
+              </button>
+              <a href="checkout.html" class="btn btn--outline">Назад к оформлению</a>
+            </div>
+          </form>
+        </div>
+
+        <aside class="col-span-5 checkout-summary" data-payment-summary>
+          <h2 class="checkout-summary__title">Ваш заказ</h2>
+          <ul class="checkout-items" data-payment-items role="list"></ul>
+          <div class="checkout-summary__rows">
+            <div class="checkout-summary__row">
+              <span>Товары</span>
+              <span data-payment-subtotal>—</span>
+            </div>
+            <div class="checkout-summary__row">
+              <span>Доставка</span>
+              <span data-payment-shipping>—</span>
+            </div>
+            <div class="checkout-summary__row checkout-summary__row--total">
+              <span>К оплате</span>
+              <span data-payment-total>—</span>
+            </div>
+          </div>
+          <p class="checkout-summary__note">Демо-режим: средства не списываются</p>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <div class="payment-overlay" data-payment-overlay hidden aria-hidden="true">
+    <div class="payment-overlay__card" role="status" aria-live="polite">
+      <div class="payment-overlay__spinner" aria-hidden="true"></div>
+      <p class="payment-overlay__title" data-payment-overlay-title>Обработка платежа…</p>
+      <p class="payment-overlay__desc" data-payment-overlay-desc>Пожалуйста, подождите</p>
+    </div>
+  </div>
+
+  <div data-site-footer></div>
+  <div class="toast" data-toast role="alert" aria-live="assertive" hidden><span data-toast-message></span></div>
+
+  <script src="js/products.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/payment-page.js"></script>
+</body>
+</html>

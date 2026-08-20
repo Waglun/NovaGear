@@ -4,6 +4,9 @@
 const NovaGear = {
   STORAGE_CART: "novagear_cart",
   STORAGE_WISHLIST: "novagear_wishlist",
+  STORAGE_USER: "novagear_user",
+  STORAGE_PENDING_CHECKOUT: "novagear_pending_checkout",
+  STORAGE_ORDERS: "novagear_orders",
 
   getCart() {
     try {
@@ -51,6 +54,37 @@ const NovaGear = {
       else stars += "☆";
     }
     return stars;
+  },
+
+  getPendingCheckout() {
+    try {
+      return JSON.parse(localStorage.getItem(this.STORAGE_PENDING_CHECKOUT));
+    } catch {
+      return null;
+    }
+  },
+  setPendingCheckout(data) {
+    localStorage.setItem(this.STORAGE_PENDING_CHECKOUT, JSON.stringify(data));
+  },
+  clearPendingCheckout() {
+    localStorage.removeItem(this.STORAGE_PENDING_CHECKOUT);
+  },
+  getOrders() {
+    try {
+      return JSON.parse(localStorage.getItem(this.STORAGE_ORDERS)) || [];
+    } catch {
+      return [];
+    }
+  },
+  addOrder(order) {
+    const orders = this.getOrders();
+    orders.unshift(order);
+    localStorage.setItem(this.STORAGE_ORDERS, JSON.stringify(orders));
+    return order;
+  },
+  generateOrderId() {
+    const num = Math.floor(10000 + Math.random() * 90000);
+    return `NG-${num}`;
   },
 
   showToast(message) {
