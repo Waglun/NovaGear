@@ -81,17 +81,12 @@
                       <td>
                         <div class="cart-product order-item">
                           {% if item.product.image %}
-                            <img
-                              src="{{ item.product.image.url }}"
-                              alt="{{ item.product.name }}"
-                              class="order-item__image"
-                            >
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="order-item__image">
+                          {% else %}
+                            <div class="cart-item__img product-card__img--placeholder product-card__img--mouse-1"></div>
                           {% endif %}
                           <div class="cart-product__info">
-                            <a
-                              href="{% url 'catalog:product_detail' item.product.slug %}"
-                              class="order-item__name"
-                            >
+                            <a href="{% url 'catalog:product_detail' item.product.slug %}" class="order-item__name">
                               {{ item.product.name }}
                             </a>
                           </div>
@@ -104,7 +99,7 @@
                         {{ item.quantity }}
                       </td>
                       <td>
-                        {{ item.subtotal }} ₽
+                        {{ item.subtotal_price }} ₽
                       </td>
                     </tr>
                   {% empty %}
