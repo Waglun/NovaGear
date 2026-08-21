@@ -46,7 +46,7 @@
           </section>
 
           <form class="payment-form glow-border" method="post" data-payment-form novalidate>
-            <!-- Django: {% csrf_token %} -->
+             {% csrf_token %}
 
             <div class="payment-form__header">
               <h2 class="payment-form__title">Способ оплаты</h2>
@@ -66,13 +66,15 @@
                   <span class="payment-method__label">Банковская карта</span>
                 </span>
               </label>
+
               <label class="payment-method">
                 <input type="radio" name="payment_method" value="apple" data-payment-method>
                 <span class="payment-method__content">
-                  <span class="payment-method__icon" aria-hidden="true"></span>
+                  <span class="payment-method__icon" aria-hidden="true">Apple</span>
                   <span class="payment-method__label">Apple Pay</span>
                 </span>
               </label>
+
               <label class="payment-method">
                 <input type="radio" name="payment_method" value="google" data-payment-method>
                 <span class="payment-method__content">
@@ -85,56 +87,23 @@
             <div class="payment-card-fields" data-payment-card-fields>
               <div class="form-field">
                 <label for="id_card_name">Имя на карте</label>
-                <input
-                  type="text"
-                  name="card_name"
-                  id="id_card_name"
-                  class="input"
-                  placeholder="IVAN IVANOV"
-                  autocomplete="cc-name"
-                >
+                {{ form.card_name }}
               </div>
 
               <div class="form-field">
                 <label for="id_card_number">Номер карты</label>
-                <input
-                  type="text"
-                  name="card_number"
-                  id="id_card_number"
-                  class="input"
-                  inputmode="numeric"
-                  maxlength="19"
-                  placeholder="1234 5678 9012 3456"
-                  autocomplete="cc-number"
-                >
+                {{ form.card_number }}
               </div>
 
               <div class="payment-form__row">
                 <div class="form-field">
                   <label for="id_card_expiry">Срок действия</label>
-                  <input
-                    type="text"
-                    name="card_expiry"
-                    id="id_card_expiry"
-                    class="input"
-                    inputmode="numeric"
-                    maxlength="5"
-                    placeholder="MM/YY"
-                    autocomplete="cc-exp"
-                  >
+                  {{ form.card_expiry }}
                 </div>
+
                 <div class="form-field">
                   <label for="id_card_cvv">CVV</label>
-                  <input
-                    type="password"
-                    name="card_cvv"
-                    id="id_card_cvv"
-                    class="input"
-                    inputmode="numeric"
-                    maxlength="4"
-                    placeholder="123"
-                    autocomplete="cc-csc"
-                  >
+                  {{ form.card_cvv }}
                 </div>
               </div>
             </div>
@@ -144,10 +113,10 @@
             </p>
 
             <div class="payment-form__actions">
-              <button type="submit" class="btn btn--primary btn--lg" data-payment-submit>
-                Оплатить <span data-payment-submit-amount>—</span>
+              <button type="submit" class="btn btn--primary btn--lg">
+                Оплатить
               </button>
-              <a href="checkout.html" class="btn btn--outline">Назад к оформлению</a>
+              <a href="{% url 'orders:checkout' %}" class="btn btn--outline">Назад к оформлению</a>
             </div>
           </form>
         </div>
@@ -158,15 +127,15 @@
           <div class="checkout-summary__rows">
             <div class="checkout-summary__row">
               <span>Товары</span>
-              <span data-payment-subtotal>—</span>
+              <span>{{ total_price }} ₽</span>
             </div>
             <div class="checkout-summary__row">
               <span>Доставка</span>
-              <span data-payment-shipping>—</span>
+              <span>{{ shipping }}</span>
             </div>
             <div class="checkout-summary__row checkout-summary__row--total">
               <span>К оплате</span>
-              <span data-payment-total>—</span>
+              <span>{{ grand_total }} ₽</span>
             </div>
           </div>
           <p class="checkout-summary__note">Демо-режим: средства не списываются</p>
@@ -183,7 +152,6 @@
 <!--    </div>-->
 <!--  </div>-->
 
-  <div data-site-footer></div>
   <div class="toast" data-toast role="alert" aria-live="assertive" hidden><span data-toast-message></span></div>
 {% endblock %}
 

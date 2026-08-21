@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from apps.cart.models import Cart
 
-from .forms import OrderForm
+from .forms import OrderForm, PaymentForm
 from .models import Order, OrderItem
 
 
@@ -80,4 +80,33 @@ def order_detail(request, order_id):
 
 @login_required
 def payment(request, order_id):
-    return render(request, 'payment.html')
+    order = get_object_or_404(
+        Order.objects.prefetch_related('items__product'),
+        id=order_id,
+        user=request.user,
+    )
+
+    grand_total = order.grand_total
+    total_price = order.total_price
+    shipping = 'Бесплатно' if total_price >= 5000 else '1200 ₽'
+
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            with transaction.atomic():
+                pass
+
+            return redirect('accounts:profile', order_id=order_id)
+
+    else:
+        form = PaymentForm()
+
+    context = {
+        'form': form,
+        'order': order,
+        'total_price': total_price,
+        'grand_total': grand_total,
+        'shipping': shipping,
+    }
+
+    return render(request, 'payment.html' , context)
