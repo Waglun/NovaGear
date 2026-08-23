@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
@@ -11,12 +12,11 @@ from .models import Order, OrderItem
 @login_required
 def checkout(request):
     cart, _ = Cart.objects.get_or_create(user=request.user)
-    cart_items = cart.items.select_related('product')
-    total_price = cart.total_price
 
-    if not cart_items:
+    if not cart.items.exists():
         return redirect('cart:cart')
 
+    total_price = cart.total_price
     shipping = 0 if total_price >= 5000 else 1200
     grand_total = total_price + shipping
 
@@ -25,6 +25,18 @@ def checkout(request):
 
         if form.is_valid():
             with transaction.atomic():
+                cart_items = cart.items.select_related('product').select_for_update()
+
+                for item in cart_items:
+                    if item.product.stock < item.quantity:
+                        messages.error(
+                            request,
+                            f'Недостаточно товара "{item.product.name}" на складе. '
+                            f'Доступно: {item.product.stock}, '
+                            f'запрошено: {item.quantity}.'
+                        )
+                        return redirect('cart:cart')
+
                 order = Order.objects.create(
                     user=request.user,
                     address=form.cleaned_data['address'],
@@ -35,6 +47,9 @@ def checkout(request):
                 )
 
                 for item in cart_items:
+                    item.product.stock -= item.quantity
+                    item.product.save()
+
                     OrderItem.objects.create(
                         order=order,
                         product=item.product,
@@ -49,6 +64,8 @@ def checkout(request):
 
     else:
         form = OrderForm()
+
+    cart_items = cart.items.select_related('product')
 
     context = {
         'form': form,
