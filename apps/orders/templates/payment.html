@@ -45,7 +45,7 @@
             </dl>
           </section>
 
-          <form class="payment-form glow-border" method="post" data-payment-form novalidate>
+          <form class="payment-form glow-border" method="post">
              {% csrf_token %}
 
             <div class="payment-form__header">
@@ -85,25 +85,30 @@
             </div>
 
             <div class="payment-card-fields" data-payment-card-fields>
+              {{ form.non_field_errors }}
               <div class="form-field">
                 <label for="id_card_name">Имя на карте</label>
                 {{ form.card_name }}
+                {{ form.card_name.errors }}
               </div>
 
               <div class="form-field">
                 <label for="id_card_number">Номер карты</label>
                 {{ form.card_number }}
+                {{ form.card_number.errors }}
               </div>
 
               <div class="payment-form__row">
                 <div class="form-field">
                   <label for="id_card_expiry">Срок действия</label>
                   {{ form.card_expiry }}
+                  {{ form.card_expiry.errors }}
                 </div>
 
                 <div class="form-field">
                   <label for="id_card_cvv">CVV</label>
                   {{ form.card_cvv }}
+                  {{ form.card_cvv.errors }}
                 </div>
               </div>
             </div>
@@ -144,13 +149,6 @@
     </div>
   </main>
 
-<!--  <div class="payment-overlay" data-payment-overlay hidden aria-hidden="true">-->
-<!--    <div class="payment-overlay__card" role="status" aria-live="polite">-->
-<!--      <div class="payment-overlay__spinner" aria-hidden="true"></div>-->
-<!--      <p class="payment-overlay__title" data-payment-overlay-title>Обработка платежа…</p>-->
-<!--      <p class="payment-overlay__desc" data-payment-overlay-desc>Пожалуйста, подождите</p>-->
-<!--    </div>-->
-<!--  </div>-->
 
   <div class="toast" data-toast role="alert" aria-live="assertive" hidden><span data-toast-message></span></div>
 {% endblock %}

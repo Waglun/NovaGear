@@ -108,12 +108,20 @@ def payment(request, order_id):
     shipping = 'Бесплатно' if total_price >= 5000 else '1200 ₽'
 
     if request.method == 'POST':
+
         form = PaymentForm(request.POST)
         if form.is_valid():
-            with transaction.atomic():
-                pass
 
-            return redirect('accounts:profile', order_id=order_id)
+            with transaction.atomic():
+                order = Order.objects.select_for_update().get(id=order_id, user=request.user)
+                if order.payment_status == Order.PaymentStatus.PAID:
+                    return redirect('orders:payment', order_id=order.id) # Если заказ уже оплачен, при повторной отправке формы произойдет редирект
+
+                order.payment_status = Order.PaymentStatus.PAID
+                order.order_status = Order.OrderStatus.PROCESSING
+                order.save(update_fields=['payment_status', 'order_status'])
+
+            return redirect('orders:payment_success', order_id=order_id)
 
     else:
         form = PaymentForm()
@@ -127,3 +135,8 @@ def payment(request, order_id):
     }
 
     return render(request, 'payment.html' , context)
+
+
+@login_required
+def payment_success(request, order_id):
+    return render(request, 'payment_success.html', {'order_id': order_id})

@@ -15,6 +15,16 @@
   <main class="cart-page">
 
     <div class="container">
+      {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <div class="message message--{{ message.tags }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
       <div class="page-hero" style="padding-top:0;border:none;background:none">
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <a href="index.html">Home</a>

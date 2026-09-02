@@ -39,6 +39,7 @@ class PaymentForm(forms.Form):
             'class': 'input',
             'placeholder': "IVAN IVANOV",
             'style': 'text-transform: uppercase',
+            'autocomplete': 'cc-name',
         })
     )
 
@@ -48,7 +49,8 @@ class PaymentForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': 'input',
             'placeholder': "1234 5678 9012 3456",
-
+            'inputmode': 'numeric',
+            'autocomplete': 'cc-number',
         })
     )
 
@@ -58,15 +60,19 @@ class PaymentForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': 'input',
             'placeholder': "MM/YY",
+            'inputmode': 'numeric',
+            'autocomplete': 'cc-exp',
         })
     )
 
     card_cvv = forms.CharField(
         label= 'CVV',
-        max_length=4,
+        max_length=3,
         widget=forms.TextInput(attrs={
             'class': 'input',
             'placeholder': "123",
+            'inputmode': 'numeric',
+            'autocomplete': 'cc-csc',
         })
     )
 

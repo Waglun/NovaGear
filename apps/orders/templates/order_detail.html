@@ -167,7 +167,13 @@
             К списку заказов
           </a>
 
-          <a href="{% url 'catalog:catalog' %}" class="btn btn--ghost btn--block">
+          {% if order.payment_status == 'pending' %}
+            <a href="{% url 'orders:payment' order.id %}" class="btn btn--primary btn--block">
+              Оплатить заказ
+            </a>
+          {% endif %}
+
+          <a href="{% url 'catalog:catalog' %}" class="btn btn--outline btn--block">
             Продолжить покупки
           </a>
         </aside>
