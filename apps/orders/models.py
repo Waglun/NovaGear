@@ -39,6 +39,7 @@ class OrderItem(models.Model):
     product_name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=12, decimal_places=2)
     quantity = models.PositiveIntegerField()
+    stock_released = models.BooleanField(default=False) # Резерв товара удерживается в заказе
 
     @property
     def subtotal_price(self):

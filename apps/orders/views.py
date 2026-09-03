@@ -7,6 +7,7 @@ from apps.cart.models import Cart
 
 from .forms import OrderForm, PaymentForm
 from .models import Order, OrderItem
+from .services import release_order_stock
 
 
 @login_required
@@ -110,12 +111,23 @@ def payment(request, order_id):
     if request.method == 'POST':
 
         form = PaymentForm(request.POST)
+
         if form.is_valid():
+            payment_action = request.POST.get('payment_action')
+            if payment_action == 'failed':
+                with transaction.atomic():
+                    order = (Order.objects.select_for_update().get(id=order_id, user=request.user))
+                    release_order_stock(order)
+                    order.payment_status = Order.PaymentStatus.FAILED
+                    order.order_status = Order.OrderStatus.CANCELLED
+                    order.save(update_fields=['payment_status', 'order_status'])
+
+                return redirect('orders:payment_failed', order_id=order.id)
 
             with transaction.atomic():
                 order = Order.objects.select_for_update().get(id=order_id, user=request.user)
                 if order.payment_status == Order.PaymentStatus.PAID:
-                    return redirect('orders:payment', order_id=order.id) # Если заказ уже оплачен, при повторной отправке формы произойдет редирект
+                    return redirect('orders:payment_success', order_id=order.id) # Если заказ уже оплачен, при повторной отправке формы произойдет редирект
 
                 order.payment_status = Order.PaymentStatus.PAID
                 order.order_status = Order.OrderStatus.PROCESSING
@@ -140,3 +152,9 @@ def payment(request, order_id):
 @login_required
 def payment_success(request, order_id):
     return render(request, 'payment_success.html', {'order_id': order_id})
+
+
+@login_required
+def payment_failed(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'payment_failed.html',{'order': order})

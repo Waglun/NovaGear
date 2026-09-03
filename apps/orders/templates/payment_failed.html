@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages.css' %}">
+{% endblock %}
+
+
+{% block extra_body %}
+<body data-page="payment_failed">
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="page-hero" style="border:none;background:none">
+        <div class="profile-panel" data-profile-panel="settings">
+            <h1 class="profile-panel__title">Payment failed!</h1>
+            <p>An error occurred during the payment process.!</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'js/auth.js' %}"></script>
+{% endblock %}

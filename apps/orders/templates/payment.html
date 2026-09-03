@@ -118,9 +118,15 @@
             </p>
 
             <div class="payment-form__actions">
-              <button type="submit" class="btn btn--primary btn--lg">
+
+              <button type="submit" name="payment_action" value="success" class="btn btn--primary btn--lg">
                 Оплатить
               </button>
+
+              <button type="submit" name="payment_action" value="failed" class="btn btn--outline btn--lg">
+                Имитировать ошибку
+              </button>
+
               <a href="{% url 'orders:checkout' %}" class="btn btn--outline">Назад к оформлению</a>
             </div>
           </form>

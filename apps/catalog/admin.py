@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from .models import Product, Category, Brand, ProductAttribute, ProductImage
 
@@ -26,10 +27,17 @@ class ProductAdmin(admin.ModelAdmin):
     ]
 
     list_display = [
+        "image_preview",
         "name",
         "brand",
         "price",
         "category",
+        "stock",
+        "is_active",
+    ]
+
+    list_editable = [
+        "price",
         "stock",
         "is_active",
     ]
@@ -45,5 +53,18 @@ class ProductAdmin(admin.ModelAdmin):
         "sku",
     ]
 
+    ordering = ["name"]
+
     prepopulated_fields = {"slug": ("name",)}
+
+    @admin.display(description="Изображение")
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" width="60" height="60" '
+                'style="object-fit: contain; border-radius: 6px;" />',
+                obj.image.url,
+            )
+
+        return "—"
 
