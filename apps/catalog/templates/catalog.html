@@ -115,9 +115,9 @@
                   </div>
                   <div class="product-card__footer">
                     <div>
-                      <span class="product-card__price">{{ product.price }} Rub</span>
+                      <span class="product-card__price">{{ product.price }} $</span>
                       {% if product.old_price %}
-                        <span class="product-card__price-old">{{ product.old_price }} Rub</span>
+                        <span class="product-card__price-old">{{ product.old_price }} $</span>
                       {% endif %}
                     </div>
                     <form method="post" action="{% url 'cart:add_to_cart' product.id %}">

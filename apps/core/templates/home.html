@@ -181,9 +181,9 @@
                   </div>
                   <div class="product-card__footer">
                     <div>
-                      <span class="product-card__price">{{ product.price }} Rub</span>
+                      <span class="product-card__price">{{ product.price }} $</span>
                       {% if product.old_price %}
-                        <span class="product-card__price-old">{{ product.old_price }} Rub</span>
+                        <span class="product-card__price-old">{{ product.old_price }} $</span>
                       {% endif %}
                     </div>
                     <form method="post" action="{% url 'cart:add_to_cart' product.id %}">
@@ -252,12 +252,16 @@
               <p class="newsletter__text">Join 12,000+ gamers. Exclusive deals, restock alerts, and setup inspiration — no spam.</p>
             </div>
             <div class="col-span-6 newsletter__form-wrap">
-              <form class="newsletter-form" data-newsletter-form novalidate>
+              <form class="newsletter-form" data-newsletter-form method="post" action="{% url 'newsletter:subscribe' %}" novalidate>
+                {% csrf_token %}
+
                 <label for="newsletter-email" class="visually-hidden">Email address</label>
-                <input type="email" id="newsletter-email" class="input" placeholder="you@email.com" required>
-                <button type="submit" class="btn btn--primary">Subscribe</button>
+                <input type="email" id="newsletter-email" name="email" class="input" placeholder="you@email.com" required>
+                <button type="submit" class="btn btn--primary">
+                    Subscribe
+                </button>
               </form>
-              <p class="newsletter__hint" data-newsletter-message role="status" aria-live="polite"></p>
+            <p class="newsletter__hint" data-newsletter-message role="status" aria-live="polite"></p>
             </div>
           </div>
         </div>
