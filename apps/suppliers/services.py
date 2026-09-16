@@ -7,9 +7,18 @@ from django.utils.text import slugify
 
 def get_supplier_products():
     url = 'http://127.0.0.1:8000/suppliers/products/'
-    response = requests.get(url)
-    response.raise_for_status()
-    return response.json()
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        return response.json()
+
+    except requests.exceptions.RequestException as error:
+        print(f'Ошибка запроса к API поставщика: {error}')
+        return []
+
+    except ValueError as error:
+        print(f'Ошибка обработки JSON: {error}')
+        return []
 
 
 def import_supplier_products():
@@ -34,3 +43,18 @@ def import_supplier_products():
         )
 
         print(product, created)
+
+
+def update_supplier_products():
+    products = get_supplier_products()
+
+    for product_data in products:
+        product = Product.objects.get(sku=product_data['sku'])
+
+        product.price = product_data['price']
+        product.old_price = product_data['old_price']
+        product.stock = product_data['stock']
+
+        product.save(update_fields=['price', 'stock'])
+
+        print(product, product.price, product.stock)
