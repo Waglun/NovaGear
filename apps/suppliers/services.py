@@ -1,0 +1,36 @@
+import requests
+from apps.catalog.models import Brand
+from apps.catalog.models import Category
+from apps.catalog.models import Product
+from django.utils.text import slugify
+
+
+def get_supplier_products():
+    url = 'http://127.0.0.1:8000/suppliers/products/'
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.json()
+
+
+def import_supplier_products():
+    products = get_supplier_products()
+
+    for product_data in products:
+        brand = Brand.objects.get(name=product_data['brand'])
+        category = Category.objects.get(name=product_data['category'])
+
+        product, created = Product.objects.update_or_create(
+            sku=product_data['sku'],
+            defaults={
+                'name': product_data['name'],
+                'price': product_data['price'],
+                'old_price': product_data['old_price'],
+                'description': product_data['description'],
+                'brand': brand,
+                'category': category,
+                'stock': product_data['stock'],
+                'slug': slugify(product_data['name'])
+            }
+        )
+
+        print(product, created)

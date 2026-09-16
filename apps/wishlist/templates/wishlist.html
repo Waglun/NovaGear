@@ -28,7 +28,7 @@
 
     <section class="section" style="padding-top:0">
       <div class="container">
-<!--        Спислк карточек товаров -->
+<!--        Список карточек товаров -->
         {% if products %}
           <div class="grid-12 products__grid">
             {% for product in products %}
@@ -58,9 +58,9 @@
                   </div>
                   <div class="product-card__footer">
                     <div>
-                      <span class="product-card__price">{{ product.price }} Rub</span>
+                      <span class="product-card__price">{{ product.price }} $</span>
                       {% if product.old_price %}
-                        <span class="product-card__price-old">{{ product.old_price }} Rub</span>
+                        <span class="product-card__price-old">{{ product.old_price }} $</span>
                       {% endif %}
                     </div>
                     <form method="post" action="{% url 'cart:add_to_cart' product.id %}">

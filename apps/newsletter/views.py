@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -33,19 +35,31 @@ def subscribe(request):
         subscriber.is_active = True
         subscriber.save(update_fields=['is_active'])
 
-    send_mail(
+    html_message = render_to_string(
+        'welcome_email.html',
+        {
+            'email': email,
+        }
+    )
+
+    email_message = EmailMultiAlternatives(
         subject='Welcome to NovaGear newsletter!',
-        message=(
-            'Hello!\n\n'
-            'You have successfully subscribed to the NovaGear newsletter.\n\n'
-            'We will send you information about new products, '
-            'discounts, arrivals, and other updates.\n\n'
-            'Sincerely, \n'
-            'The NovaGear team'
+        body=(
+            'Здравствуйте!\n\n'
+            'Вы успешно подписались на рассылку NovaGear.\n\n'
+            'С уважением,\n'
+            'Команда NovaGear'
         ),
         from_email=None,
-        recipient_list=[email],
+        to=[email],
     )
+
+    email_message.attach_alternative(
+        html_message,
+        'text/html',
+    )
+
+    email_message.send()
 
     return JsonResponse({
         'success': True,
