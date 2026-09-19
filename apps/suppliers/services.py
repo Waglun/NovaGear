@@ -49,12 +49,15 @@ def update_supplier_products():
     products = get_supplier_products()
 
     for product_data in products:
-        product = Product.objects.get(sku=product_data['sku'])
+        try:
+            product = Product.objects.get(sku=product_data['sku'])
 
-        product.price = product_data['price']
-        product.old_price = product_data['old_price']
-        product.stock = product_data['stock']
+            product.price = product_data['price']
+            product.old_price = product_data['old_price']
+            product.stock = product_data['stock']
 
-        product.save(update_fields=['price', 'stock'])
+            product.save(update_fields=['price', 'stock', 'old_price'])
 
-        print(product, product.price, product.stock)
+            print(product, product.price, product.stock)
+        except Product.DoesNotExist:
+            print(f"Товар с SKU {product_data['sku']} не найден в NovaGear")

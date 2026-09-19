@@ -21,7 +21,7 @@ def supplier_products(request):
         "description": "Механическая игровая клавиатура с подсветкой.",
         "brand": "ASUS",
         "category": "Keyboards",
-        "stock": 8,
+        "stock": 10,
     },
 ]
 
