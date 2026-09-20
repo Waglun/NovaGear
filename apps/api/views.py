@@ -48,3 +48,19 @@ def cart(request):
     serializer = CartSerializer(cart)
     return Response(serializer.data)
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def cart_item_create(request):
+    cart = request.user.cart
+    serializer = CartItemCreateSerializer(data=request.data)
+
+    if serializer.is_valid():
+        cart_item = serializer.save(cart=cart)
+
+        return Response(
+            CartItemSerializer(cart_item).data,
+            status=201
+        )
+
+    return Response(serializer.errors, status=400)
