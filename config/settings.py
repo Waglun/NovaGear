@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'apps.accounts',
     'apps.core',
     'apps.catalog',
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     'apps.orders',
     'apps.newsletter',
     'apps.suppliers',
+    'apps.api',
 ]
 
 MIDDLEWARE = [
@@ -174,4 +176,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'apps.suppliers.tasks.update_supplier_products_task',
         'schedule': 900.0,
     },
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 3,
 }
