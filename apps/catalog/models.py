@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinValueValidator
+from django.utils.text import slugify
 
 
 class Product(models.Model):
@@ -21,6 +22,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('catalog:product_detail', kwargs={'slug': self.slug})

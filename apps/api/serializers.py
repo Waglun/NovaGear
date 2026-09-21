@@ -10,6 +10,12 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'slug', 'price', 'old_price', 'image', 'category', 'brand', 'stock', 'sku']
 
 
+class ProductCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['name', 'price', 'old_price', 'description', 'category', 'brand', 'sku', 'stock', 'is_active',]
+
+
 class CartItemSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='product.name', read_only=True)
     price = serializers.DecimalField(

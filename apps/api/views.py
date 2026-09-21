@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.db.models import Q
 from rest_framework.pagination import PageNumberPagination
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from apps.catalog.models import Product
-from .serializers import ProductSerializer, CartSerializer, CartItemSerializer, CartItemCreateSerializer
+from .serializers import ProductSerializer, CartSerializer, CartItemSerializer, CartItemCreateSerializer, \
+    ProductCreateSerializer
 
 
 @api_view(['GET'])
@@ -33,6 +34,25 @@ def products(request):
     result_page = paginator.paginate_queryset(products, request)
     serializer = ProductSerializer(result_page, many=True)
     return paginator.get_paginated_response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def product_create(request):
+    serializer = ProductCreateSerializer(data=request.data)
+
+    if serializer.is_valid():
+        product = serializer.save()
+
+        return Response(
+            ProductSerializer(product).data,
+            status=status.HTTP_201_CREATED
+        )
+
+    return Response(
+        serializer.errors,
+        status=status.HTTP_400_BAD_REQUEST
+    )
 
 
 @api_view(['GET'])
