@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 from rest_framework.pagination import PageNumberPagination
@@ -6,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from apps.catalog.models import Product
-from .serializers import ProductSerializer, CartSerializer
+from .serializers import ProductSerializer, CartSerializer, CartItemSerializer, CartItemCreateSerializer
 
 
 @api_view(['GET'])
@@ -56,11 +57,25 @@ def cart_item_create(request):
     serializer = CartItemCreateSerializer(data=request.data)
 
     if serializer.is_valid():
-        cart_item = serializer.save(cart=cart)
+        product = serializer.validated_data['product']
+        quantity = serializer.validated_data['quantity']
+
+        if quantity > product.stock:
+            return Response(
+                {'detail': 'Недостаточно товара на складе.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        cart_item = cart.items.filter(product=product).first()
+        if cart_item:
+            cart_item.quantity = quantity
+            cart_item.save(update_fields=['quantity'])
+        else:
+            cart_item = serializer.save(cart=cart)
 
         return Response(
             CartItemSerializer(cart_item).data,
-            status=201
+            status=status.HTTP_201_CREATED
         )
 
-    return Response(serializer.errors, status=400)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
