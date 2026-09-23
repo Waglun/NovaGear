@@ -88,14 +88,14 @@
               <form method="post" action="{% url 'cart:add_to_cart' product.id %}">
                 {% csrf_token %}
 
-                <button class="btn btn--primary btn--lg" onclick="addToCart()">
-                  Add to Cart — {{ product.price }} Rub
+                <button class="btn btn--primary btn--lg btn--block" onclick="addToCart()">
+                  Add to Cart — ${{ product.price }}
                 </button>
 
               </form>
               {% else %}
-              <button class="btn btn--primary btn--lg btn--disabled" disabled>
-                  Add to Cart — {{ product.price }} Rub
+              <button class="btn btn--primary btn--lg btn--disabled btn--block" disabled>
+                  Add to Cart — ${{ product.price }}
               </button>
               </form>
               {% endif %}
@@ -103,13 +103,6 @@
                 <span style="font-size: 1.2em;">♡</span> Add to Wishlist
               </button>
             </div>
-
-<!--            &lt;!&ndash; Short description &ndash;&gt;-->
-<!--            <div>-->
-<!--              <p style="color: var(&#45;&#45;color-text-secondary); line-height: var(&#45;&#45;leading-relaxed);">-->
-<!--                {{ product.description }}-->
-<!--              </p>-->
-<!--            </div>-->
 
             <!-- Quick specs -->
             <div class="specs-grid">
@@ -131,12 +124,6 @@
             <button class="tabs__btn" data-tab="reviews">Reviews</button>
           </div>
 
-<!--          <div class="tabs" style="max-width: 420px;">-->
-<!--            <button class="tabs__btn tabs__btn&#45;&#45;active" onclick="switchTab(0)">Description</button>-->
-<!--            <button class="tabs__btn" onclick="switchTab(1)">Specifications</button>-->
-<!--            <button class="tabs__btn" onclick="switchTab(2)">Reviews</button>-->
-<!--          </div>-->
-
           <!-- Description Tab -->
           <div id="tab-description" class="tab-content" data-tab-content>
             <div class="grid-12" style="gap: var(--space-12);">
@@ -146,8 +133,8 @@
                   {{ product.description }}
                 </p>
                 <ul style="color: var(--color-text-secondary); line-height: 1.8;">
-                  {% for attr in extra_bullets %}
-                    <li>✓ {{ attr.value }}</li>
+                  {% for spec in quick_specs %}
+                    <li>✓ {{ spec.value }}</li>
                   {% endfor %}
                 </ul>
               </div>
@@ -155,13 +142,19 @@
                 <div class="glow-border" style="padding: var(--space-6);">
                   <h3 style="margin-bottom: var(--space-4);">Key Features</h3>
                   <div style="display: flex; flex-direction: column; gap: var(--space-4);">
-                    <div style="display: flex; gap: var(--space-3);">
-                      <div style="width: 24px; height: 24px; background: var(--gradient-brand); border-radius: 6px; flex-shrink: 0;"></div>
-                      <div>
-                        <div style="font-weight: var(--font-semibold);">Precision Sensor</div>
-                        <div style="font-size: var(--text-sm); color: var(--color-text-muted);">Track every movement with 1:1 accuracy</div>
+                    {% for feature in features %}
+                      <div style="display: flex; gap: var(--space-3);">
+                        <div style="width: 24px; height: 24px; background: var(--gradient-brand); border-radius: 6px; flex-shrink: 0;"></div>
+                        <div>
+                          <div style="font-weight: var(--font-semibold);">
+                            {{ feature.name }}
+                          </div>
+<!--                          <div style="font-size: var(&#45;&#45;text-sm); color: var(&#45;&#45;color-text-muted);">-->
+<!--                            {{ feature.value }}-->
+<!--                          </div>-->
+                        </div>
                       </div>
-                    </div>
+                    {% endfor %}
                   </div>
                 </div>
               </div>
@@ -179,10 +172,10 @@
                 <td style="padding: var(--space-4); color: var(--color-text-muted);">Model</td>
                 <td style="padding: var(--space-4); font-weight: var(--font-medium);">{{ product.name }}</td>
               </tr>
-              {% for attr in table_specs %}
+              {% for spec in table_specs %}
                 <tr style="border-bottom: 1px solid var(--color-border);">
-                  <td style="padding: var(--space-4); color: var(--color-text-muted); width: 40%;">{{ attr.name }}</td>
-                  <td style="padding: var(--space-4); font-weight: var(--font-medium);">{{ attr.value }}</td>
+                  <td style="padding: var(--space-4); color: var(--color-text-muted); width: 40%;">{{ spec.name }}</td>
+                  <td style="padding: var(--space-4); font-weight: var(--font-medium);">{{ spec.value }}</td>
                 </tr>
               {% endfor %}
             </table>

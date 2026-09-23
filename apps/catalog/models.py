@@ -78,6 +78,19 @@ class Brand(models.Model):
 
 
 class ProductAttribute(models.Model):
+    ATTRIBUTE_TYPES = (
+        ('primary', 'Primary Specification'),
+        ('secondary', 'Secondary Specification'),
+        ('feature', 'Key Feature'),
+    )
+
+    attribute_type = models.CharField(
+        max_length=20,
+        choices=ATTRIBUTE_TYPES,
+        default='secondary',
+        verbose_name='Тип'
+    )
+
     product = models.ForeignKey(Product, related_name='attributes', on_delete=models.CASCADE) # Связь многие к одному
     name = models.CharField(max_length=100, verbose_name='Название характеристики')
     value = models.CharField(max_length=255, verbose_name='Значение')

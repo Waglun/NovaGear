@@ -5,7 +5,6 @@ from .models import Product, Category, Brand, ProductAttribute, ProductImage
 
 admin.site.register(Category)
 admin.site.register(Brand)
-admin.site.register(ProductAttribute)
 
 
 class ProductImageInline(admin.TabularInline):
@@ -17,6 +16,15 @@ class ProductImageInline(admin.TabularInline):
 class ProductAttributeInline(admin.TabularInline):
     model = ProductAttribute
     extra = 1
+
+    fields = [
+        "attribute_type",
+        "name",
+        "value",
+        "sort_order",
+    ]
+
+    ordering = ["attribute_type", "sort_order"]
 
 
 @admin.register(Product)

@@ -58,40 +58,43 @@ def catalog(request):
 
 def product_detail(request, slug):
     product = get_object_or_404(
-        Product.objects.select_related('brand', 'category')
-                        .prefetch_related('images', 'attributes'),
+        Product.objects
+        .select_related('brand', 'category')
+        .prefetch_related('images', 'attributes'),
         slug=slug
     )
 
-    quick_specs = []
-    description_bullets = []
-    table_specs = []
-    extra_bullets = []
+    quick_specs = product.attributes.filter(
+        attribute_type='primary'
+    )
+
+    table_specs = product.attributes.filter(
+        attribute_type__in=['primary', 'secondary']
+
+    )
+
+    features = product.attributes.filter(
+        attribute_type='feature'
+    )
+
     breadcrumbs = [
         {'name': 'Home', 'url': 'core:home'},
         {'name': 'Catalog', 'url': 'catalog:catalog'},
         {'name': product.name, 'url': None},
     ]
 
-    for attr in product.attributes.all():
-        if attr.sort_order == 1:
-            quick_specs.append(attr)
-        if attr.sort_order == 2:
-            description_bullets.append(attr)
-        if attr.sort_order < 3:
-            table_specs.append(attr)
-        if attr.sort_order == 3:
-            extra_bullets.append(attr)
-
     context = {
         'product': product,
         'quick_specs': quick_specs,
-        'description_bullets': description_bullets,
         'table_specs': table_specs,
-        'extra_bullets': extra_bullets,
+        'features': features,
         'breadcrumbs': breadcrumbs,
     }
 
-    return render(request, 'product_detail.html', context)
+    return render(
+        request,
+        'product_detail.html',
+        context
+    )
 
 

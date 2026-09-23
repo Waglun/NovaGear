@@ -4,7 +4,7 @@ from apps.catalog.models import Product
 
 
 def home(request):
-    products = Product.objects.filter(is_active=True).select_related('category', 'brand')[:8]
+    products = Product.objects.filter(is_active=True).select_related('category', 'brand').order_by('-time_created')[:8]
 
     wishlist_ids = (
         set(request.user.wishlist.values_list("product_id", flat=True))
