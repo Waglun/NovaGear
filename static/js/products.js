@@ -24,14 +24,96 @@
       }, 2800);
     }
 
-    function toggleWishlist(btn) {
-      if (btn.classList.contains('is-active')) {
-        btn.innerHTML = `<span style="font-size: 1.2em;">♡</span> Add to Wishlist`;
-        btn.classList.remove('is-active');
-      } else {
-        btn.innerHTML = `<span style="font-size: 1.2em;">♥</span> In Wishlist`;
-        btn.classList.add('is-active');
-      }
+    async function toggleWishlist(btn) {
+        const url = btn.dataset.wishlistUrl;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            updateWishlistButton(btn, data.is_in_wishlist);
+
+        } catch (error) {
+            console.error('Wishlist error:', error);
+        }
+    }
+
+
+    function updateWishlistButton(btn, isInWishlist) {
+
+        btn.classList.toggle('is-active', isInWishlist);
+
+        // Страница товара
+        if (btn.classList.contains('product-wishlist-btn')) {
+
+            btn.innerHTML = isInWishlist
+                ? `<span style="font-size: 1.2em;">♥</span> In Wishlist`
+                : `<span style="font-size: 1.2em;">♡</span> Add to Wishlist`;
+
+            return;
+        }
+
+        // Каталог
+        if (btn.classList.contains('product-card__wishlist')) {
+
+            const svg = btn.querySelector('svg');
+
+            if (!svg) return;
+
+            svg.setAttribute(
+                'fill',
+                isInWishlist ? '#3b82f6' : 'none'
+            );
+
+            svg.setAttribute(
+                'stroke',
+                isInWishlist ? '#3b82f6' : '#64748b'
+            );
+
+            btn.setAttribute(
+                'aria-label',
+                isInWishlist
+                    ? 'Remove from wishlist'
+                    : 'Add to wishlist'
+            );
+        }
+    }
+
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+
+            for (let cookie of cookies) {
+                const cookieTrimmed = cookie.trim();
+
+                if (cookieTrimmed.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(
+                        cookieTrimmed.substring(name.length + 1)
+                    );
+                    break;
+                }
+            }
+        }
+
+        return cookieValue;
     }
 
     function switchTab(n) {

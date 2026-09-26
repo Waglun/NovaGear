@@ -27,7 +27,7 @@ def cart(request):
         total_item = session_cart.total_item()
         is_empty = session_cart.is_empty()
 
-    shipping = 0 if total_price >= 5000 else 1200
+    shipping = 0 if total_price >= 200 else 20
 
     context = {
         'cart_items': cart_items,

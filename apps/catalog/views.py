@@ -64,6 +64,12 @@ def product_detail(request, slug):
         slug=slug
     )
 
+    is_in_wishlist = (
+        request.user.wishlist.filter(product=product).exists()
+        if request.user.is_authenticated
+        else False
+    )
+
     quick_specs = product.attributes.filter(
         attribute_type='primary'
     )
@@ -89,6 +95,7 @@ def product_detail(request, slug):
         'table_specs': table_specs,
         'features': features,
         'breadcrumbs': breadcrumbs,
+        'is_in_wishlist': is_in_wishlist,
     }
 
     return render(

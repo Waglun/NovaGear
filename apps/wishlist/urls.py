@@ -3,6 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    path("wishlist", views.wishlist, name="wishlist"),
-    path("wishlist/toggle/<int:product_id>", views.toggle_wishlist, name="toggle_wishlist"),
+    path("", views.wishlist, name="wishlist"),
+    path("toggle/<int:product_id>/", views.toggle_wishlist, name="toggle_wishlist"),
 ]

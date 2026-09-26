@@ -99,8 +99,17 @@
               </button>
               </form>
               {% endif %}
-              <button class="btn btn--outline" onclick="toggleWishlist(this)">
-                <span style="font-size: 1.2em;">♡</span> Add to Wishlist
+              <button
+                type="button"
+                class="btn btn--outline product-wishlist-btn {% if is_in_wishlist %}is-active{% endif %}"
+                data-wishlist-url="{% url 'toggle_wishlist' product.id %}"
+                onclick="toggleWishlist(this)"
+              >
+                {% if is_in_wishlist %}
+                  <span style="font-size: 1.2em;">♥</span> In Wishlist
+                {% else %}
+                  <span style="font-size: 1.2em;">♡</span> Add to Wishlist
+                {% endif %}
               </button>
             </div>
 

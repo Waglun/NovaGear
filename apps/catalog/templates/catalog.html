@@ -94,17 +94,20 @@
                       <img src="{{ product.image.url }}" class="product-card__image">
                     {% endif %}
                   </div>
-                  <a href="{% url 'toggle_wishlist' product.id %}?next={{ request.path }}#product-{{ product.id }}"
-                     class="product-card__wishlist {% if product.id in wishlist_ids %}is-active{% endif %}"
-                     aria-label="{% if product.id in wishlist_ids %}Remove from{% else %}Add to{% endif %} wishlist">
-
+                  <button
+                    type="button"
+                    class="product-card__wishlist {% if product.id in wishlist_ids %}is-active{% endif %}"
+                    data-wishlist-url="{% url 'toggle_wishlist' product.id %}"
+                    onclick="toggleWishlist(this)"
+                    aria-label="{% if product.id in wishlist_ids %}Remove from{% else %}Add to{% endif %} wishlist"
+                  >
                     <svg width="18" height="18" viewBox="0 0 24 24"
-                         fill="{% if product.id in wishlist_ids %}#3b82f6{% else %}none{% endif %}"
-                         stroke="{% if product.id in wishlist_ids %}#3b82f6{% else %}#64748b{% endif %}"
-                         stroke-width="2">
+                      fill="{% if product.id in wishlist_ids %}#3b82f6{% else %}none{% endif %}"
+                      stroke="{% if product.id in wishlist_ids %}#3b82f6{% else %}#64748b{% endif %}"
+                      stroke-width="2">
                       <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
                     </svg>
-                  </a>
+                  </button>
                 </div>
                 <div class="product-card__body">
                   <span class="product-card__category">{{ product.category.name }}</span>
@@ -126,7 +129,6 @@
                         Add to Cart
                       </button>
                     </form>
-<!--                    <a href="{% url 'cart:add_to_cart' product.id %}" class="btn btn&#45;&#45;primary btn&#45;&#45;sm">Add to cart</a>-->
                   </div>
                 </div>
               </article>

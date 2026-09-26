@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
 from ..catalog.models import Product
@@ -21,9 +22,9 @@ def wishlist(request):
 def toggle_wishlist(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
-    obj, create = Wishlist.objects.get_or_create(user=request.user, product=product)
+    obj, created = Wishlist.objects.get_or_create(user=request.user, product=product)
 
-    if not create:
+    if not created:
         obj.delete()
 
-    return redirect(request.META.get('HTTP_REFERER', 'catalog:catalog'))
+    return JsonResponse({'is_in_wishlist': created,})
