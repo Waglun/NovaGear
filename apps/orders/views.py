@@ -18,7 +18,7 @@ def checkout(request):
         return redirect('cart:cart')
 
     total_price = cart.total_price
-    shipping = 0 if total_price >= 5000 else 1200
+    shipping = 0 if total_price >= 200 else 20
     grand_total = total_price + shipping
 
     if request.method == 'POST':
@@ -106,7 +106,7 @@ def payment(request, order_id):
 
     grand_total = order.grand_total
     total_price = order.total_price
-    shipping = 'Бесплатно' if total_price >= 5000 else '1200 ₽'
+    shipping = 'Free' if total_price >= 200 else '20'
 
     if request.method == 'POST':
 

@@ -25,21 +25,21 @@
           <span class="breadcrumb__sep">/</span>
           <span>Payment</span>
         </nav>
-        <h1 class="page-hero__title">Оплата <span class="text-gradient">заказа</span></h1>
-        <p class="page-hero__desc">Выберите способ оплаты и подтвердите платёж — это демо без реального списания.</p>
+        <h1 class="page-hero__title">Order <span class="text-gradient">payment</span></h1>
+        <p class="page-hero__desc">Choose a payment method and confirm the payment — this is a demo with no actual charge.</p>
       </div>
 
       <div class="grid-12 payment-layout__inner">
         <div class="col-span-7">
           <section class="payment-delivery" data-payment-delivery hidden>
-            <h2 class="payment-delivery__title">Доставка</h2>
+            <h2 class="payment-delivery__title">Delivery</h2>
             <dl class="payment-delivery__meta">
               <div class="payment-delivery__row">
-                <dt>Адрес</dt>
+                <dt>Address</dt>
                 <dd data-payment-address>—</dd>
               </div>
               <div class="payment-delivery__row">
-                <dt>Телефон</dt>
+                <dt>Phone</dt>
                 <dd data-payment-phone>—</dd>
               </div>
             </dl>
@@ -49,12 +49,12 @@
              {% csrf_token %}
 
             <div class="payment-form__header">
-              <h2 class="payment-form__title">Способ оплаты</h2>
+              <h2 class="payment-form__title">Payment method</h2>
               <span class="payment-secure" aria-label="Безопасная оплата">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6l-8-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                 </svg>
-                Безопасная оплата
+                Secure payment
               </span>
             </div>
 
@@ -63,7 +63,7 @@
                 <input type="radio" name="payment_method" value="card" checked data-payment-method>
                 <span class="payment-method__content">
                   <span class="payment-method__icon" aria-hidden="true">💳</span>
-                  <span class="payment-method__label">Банковская карта</span>
+                  <span class="payment-method__label">Bank card</span>
                 </span>
               </label>
 
@@ -87,20 +87,20 @@
             <div class="payment-card-fields" data-payment-card-fields>
               {{ form.non_field_errors }}
               <div class="form-field">
-                <label for="id_card_name">Имя на карте</label>
+                <label for="id_card_name">Name on the card</label>
                 {{ form.card_name }}
                 {{ form.card_name.errors }}
               </div>
 
               <div class="form-field">
-                <label for="id_card_number">Номер карты</label>
+                <label for="id_card_number">Card number</label>
                 {{ form.card_number }}
                 {{ form.card_number.errors }}
               </div>
 
               <div class="payment-form__row">
                 <div class="form-field">
-                  <label for="id_card_expiry">Срок действия</label>
+                  <label for="id_card_expiry">Validity period</label>
                   {{ form.card_expiry }}
                   {{ form.card_expiry.errors }}
                 </div>
@@ -114,42 +114,42 @@
             </div>
 
             <p class="payment-form__note" data-payment-wallet-note hidden>
-              Нажмите «Оплатить» — откроется имитация окна оплаты кошельком.
+              Click “Pay” — a simulated wallet payment window will open.
             </p>
 
             <div class="payment-form__actions">
 
               <button type="submit" name="payment_action" value="success" class="btn btn--primary btn--lg">
-                Оплатить
+                To pay
               </button>
 
-              <button type="submit" name="payment_action" value="failed" class="btn btn--outline btn--lg">
-                Имитировать ошибку
-              </button>
+<!--              <button type="submit" name="payment_action" value="failed" class="btn btn&#45;&#45;outline btn&#45;&#45;lg">-->
+<!--                To simulate an error-->
+<!--              </button>-->
 
-              <a href="{% url 'orders:checkout' %}" class="btn btn--outline">Назад к оформлению</a>
+              <a href="{% url 'orders:checkout' %}" class="btn btn--outline">Back to the design process</a>
             </div>
           </form>
         </div>
 
         <aside class="col-span-5 checkout-summary" data-payment-summary>
-          <h2 class="checkout-summary__title">Ваш заказ</h2>
+          <h2 class="checkout-summary__title">Your order</h2>
           <ul class="checkout-items" data-payment-items role="list"></ul>
           <div class="checkout-summary__rows">
             <div class="checkout-summary__row">
-              <span>Товары</span>
-              <span>{{ total_price }} ₽</span>
+              <span>Products</span>
+              <span>${{ total_price }}</span>
             </div>
             <div class="checkout-summary__row">
-              <span>Доставка</span>
-              <span>{{ shipping }}</span>
+              <span>Shipping</span>
+              <span>${{ shipping }}</span>
             </div>
             <div class="checkout-summary__row checkout-summary__row--total">
-              <span>К оплате</span>
-              <span>{{ grand_total }} ₽</span>
+              <span>For payment</span>
+              <span>${{ grand_total }}</span>
             </div>
           </div>
-          <p class="checkout-summary__note">Демо-режим: средства не списываются</p>
+          <p class="checkout-summary__note">Demo mode: no funds are deducted</p>
         </aside>
       </div>
     </div>

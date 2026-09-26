@@ -23,8 +23,8 @@
           <span class="breadcrumb__sep">/</span>
           <span>Checkout</span>
         </nav>
-        <h1 class="page-hero__title">Оформление <span class="text-gradient">заказа</span></h1>
-        <p class="page-hero__desc">Укажите адрес и контакты — мы отправим заказ в обработку.</p>
+        <h1 class="page-hero__title">Order <span class="text-gradient">placement</span></h1>
+        <p class="page-hero__desc">Please provide the address and contact information — we will process the order.</p>
       </div>
 
       <div class="grid-12 checkout-layout__inner">
@@ -32,64 +32,64 @@
           <form class="checkout-form glow-border" method="post" data-checkout-form novalidate>
             {% csrf_token %}
 
-            <h2 class="checkout-form__title">Данные доставки</h2>
+            <h2 class="checkout-form__title">Delivery data</h2>
 
             <div class="form-stack">
               <div class="form-field">
-                <label for="id_address">Адрес доставки</label>
+                <label for="id_address">Delivery address</label>
                 {{ form.address }}
                 {{ form.address.errors }}
               </div>
 
               <div class="form-field">
-                <label for="id_phone">Телефон</label>
+                <label for="id_phone">Phone</label>
                 {{ form.phone }}
                 {{ form.phone.errors }}
               </div>
 
               <div class="form-field">
-                <label for="id_comment">Комментарий <span class="form-field__optional">(необязательно)</span></label>
+                <label for="id_comment">Comment <span class="form-field__optional">(optional)</span></label>
                 {{ form.comment }}
                 {{ form.comment.errors }}
               </div>
               
               <div class="checkout-form__actions">
-                <button type="submit" class="btn btn--primary btn--lg">Подтвердить заказ</button>
-                <a href="{% url 'cart:cart' %}" class="btn btn--outline">Вернуться в корзину</a>
+                <button type="submit" class="btn btn--primary btn--lg">Confirm the order</button>
+                <a href="{% url 'cart:cart' %}" class="btn btn--outline">Return to the cart</a>
               </div>
             </div>
           </form>
         </div>
 
         <aside class="col-span-5 checkout-summary" data-checkout-summary>
-          <h2 class="checkout-summary__title">Ваш заказ</h2>
+          <h2 class="checkout-summary__title">Your order</h2>
           <ul class="checkout-items" data-checkout-items role="list">
             {% for item in cart_items %}
             <li class="checkout-item">
               <div class="checkout-item__img product-card__img--placeholder product-card__img--mouse-1"></div>
               <div class="checkout-item__info">
-                <span class="checkout-item__name">{{ item.product.name }} ₽</span>
-                <span class="checkout-item__meta">{{ item.quantity }} × {{ item.product.price }} ₽</span>
+                <span class="checkout-item__name">${{ item.product.name }}</span>
+                <span class="checkout-item__meta">${{ item.quantity }} × {{ item.product.price }}</span>
               </div>
-              <span class="checkout-item__line-total">{{ item.subtotal_price }} ₽</span>
+              <span class="checkout-item__line-total">${{ item.subtotal_price }}</span>
             </li>
             {% endfor %}
           </ul>
           <div class="checkout-summary__rows">
             <div class="checkout-summary__row">
-              <span>Товары</span>
-              <span data-checkout-subtotal>{{ total_price }} ₽</span>
+              <span>Products</span>
+              <span data-checkout-subtotal>${{ total_price }}</span>
             </div>
             <div class="checkout-summary__row">
-              <span>Доставка</span>
-              <span data-checkout-shipping>{{ shipping }} ₽</span>
+              <span>Delivery</span>
+              <span data-checkout-shipping>${{ shipping }}</span>
             </div>
             <div class="checkout-summary__row checkout-summary__row--total">
-              <span>Итого</span>
-              <span data-checkout-total>{{ grand_total }} ₽</span>
+              <span>Total</span>
+              <span data-checkout-total>${{ grand_total }}</span>
             </div>
           </div>
-          <p class="checkout-summary__note">Бесплатная доставка при заказе от 5000 ₽</p>
+          <p class="checkout-summary__note">Free shipping on orders over $200</p>
         </aside>
       </div>
     </div>
