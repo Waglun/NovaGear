@@ -17,19 +17,19 @@
     <div class="container">
       <div class="page-hero order-detail-page__hero">
         <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="{% url 'core:home' %}">Главная</a>
+          <a href="{% url 'core:home' %}">Home</a>
           <span class="breadcrumb__sep">/</span>
 
-          <a href="{% url 'accounts:profile' %}">Профиль</a>
+          <a href="{% url 'accounts:profile' %}">Profile</a>
           <span class="breadcrumb__sep">/</span>
 
-          <span>Заказ #{{ order.id }}</span>
+          <span>Order #{{ order.id }}</span>
         </nav>
 
         <div class="order-detail-page__heading">
           <div>
             <h1 class="page-hero__title">
-              Заказ
+              Order
               <span class="text-gradient">#{{ order.id }}</span>
             </h1>
             <p class="page-hero__desc">
@@ -49,17 +49,17 @@
           <!-- Состав заказа -->
           <section class="order-detail-panel">
             <h2 class="order-detail-panel__title">
-              Состав заказа
+              Order composition
             </h2>
 
             <div class="cart-table-wrap">
               <table class="cart-table order-detail-table">
                 <thead>
                   <tr>
-                    <th>Товар</th>
-                    <th>Цена</th>
-                    <th>Кол-во</th>
-                    <th>Сумма</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -128,17 +128,17 @@
         <!-- Итог -->
         <aside class="col-span-4 order-detail-summary">
           <h2 class="order-detail-summary__title">
-            Итого
+            Total
           </h2>
 
           <div class="order-detail-summary__rows">
             <div class="order-detail-summary__row">
-              <span>Товары</span>
+              <span>Products</span>
               <span>${{ order.total_price }}</span>
             </div>
 
             <div class="order-detail-summary__row">
-              <span>Доставка</span>
+              <span>Shipping</span>
               <span>
                 {% if order.shipping == 0 %}
                   Бесплатно
@@ -149,7 +149,7 @@
             </div>
 
             <div class="order-detail-summary__row order-detail-summary__row--total">
-              <span>Итого</span>
+              <span>Total</span>
               <span>
                 ${{ order.grand_total }}
               </span>
@@ -157,24 +157,24 @@
           </div>
 
           <div class="order-detail-summary__payment">
-            <span>Оплата</span>
+            <span>Payment</span>
             <span class="status-badge status-badge--{{ order.payment_status }}">
               {{ order.get_payment_status_display }}
             </span>
           </div>
 
-          <a href="{% url 'accounts:profile' %}" class="btn btn--outline btn--block">
-            К списку заказов
+          <a href="{% url 'accounts:profile' %}?tab=orders" class="btn btn--outline btn--block">
+            To the order list
           </a>
 
           {% if order.payment_status == 'pending' %}
             <a href="{% url 'orders:payment' order.id %}" class="btn btn--primary btn--block">
-              Оплатить заказ
+              Pay for the order
             </a>
           {% endif %}
 
           <a href="{% url 'catalog:catalog' %}" class="btn btn--outline btn--block">
-            Продолжить покупки
+            Continue shopping
           </a>
         </aside>
       </div>

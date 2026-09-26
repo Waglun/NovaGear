@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, SetPasswordForm, PasswordResetForm
-from .models import User
 from .utils import StyledFieldsMixin
 
 
@@ -83,7 +82,7 @@ class ProfileForm(StyledFieldsMixin, forms.ModelForm):
             "birthday": forms.DateInput(attrs={
                 "type": "date",
             }),
-            "avatar": forms.ClearableFileInput(attrs={
+            "avatar": forms.FileInput(attrs={
                 "accept": "image/*",
             }),
         }

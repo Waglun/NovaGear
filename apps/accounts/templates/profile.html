@@ -31,14 +31,10 @@
                 </p>
             </div>
 
-
             <div class="grid-12 profile-layout__inner">
-
                 <!-- Sidebar -->
                 <aside class="profile-sidebar col-span-3">
-
                     <div class="profile-sidebar__user">
-
                         <div class="profile-sidebar__avatar">
                             {% if user.avatar %}
                                 <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
@@ -46,20 +42,15 @@
                                 {{ user.username|first|upper }}
                             {% endif %}
                         </div>
-
                         <p class="profile-sidebar__name">
                             {{ user.username }}
                         </p>
-
                         <p class="profile-sidebar__email">
                             {{ user.email }}
                         </p>
-
                     </div>
 
-
                     <nav class="profile-nav" aria-label="Account sections">
-
                         <button
                             type="button"
                             class="profile-nav__item profile-nav__item--active"
@@ -67,7 +58,6 @@
                         >
                             Overview
                         </button>
-
                         <button
                             type="button"
                             class="profile-nav__item"
@@ -75,7 +65,6 @@
                         >
                             Orders
                         </button>
-
                         <button
                             type="button"
                             class="profile-nav__item"
@@ -83,9 +72,7 @@
                         >
                             Settings
                         </button>
-
                     </nav>
-
 
                     <form method="post" action="{% url 'accounts:logout' %}">
                         {% csrf_token %}
@@ -97,7 +84,6 @@
                             Sign out
                         </button>
                     </form>
-
                 </aside>
 
 
@@ -109,35 +95,28 @@
                             class="profile-panel"
                             data-profile-panel="overview"
                         >
-
                             <h2 class="profile-panel__title">
                                 Overview
                             </h2>
 
-
                             <div class="profile-stats">
-
                                 <div class="profile-stat">
                                     <span class="profile-stat__value">
                                         {{ orders_count }}
                                     </span>
-
                                     <span class="profile-stat__label">
                                         Orders
                                     </span>
                                 </div>
 
-
                                 <div class="profile-stat">
                                     <span class="profile-stat__value">
                                         {{ wishlist_count }}
                                     </span>
-
                                     <span class="profile-stat__label">
                                         Wishlist
                                     </span>
                                 </div>
-
 
                                 <div class="profile-stat">
                                     <span class="profile-stat__value">
@@ -148,26 +127,20 @@
                                         Member since
                                     </span>
                                 </div>
-
                             </div>
-
 
                             <p style="color:var(--color-text-secondary);font-size:var(--text-sm)">
                                 Member since
-
                                 <strong>
                                     {{ user.created_at|date:"d F Y" }}
                                 </strong>.
-
                                 <a
                                     href="{% url 'wishlist' %}"
                                     style="color:var(--color-accent-blue-bright)"
                                 >
                                     View wishlist
                                 </a>
-
                                 ·
-
                                 <a
                                     href="{% url 'cart:cart' %}"
                                     style="color:var(--color-accent-blue-bright)"
@@ -175,9 +148,7 @@
                                     Go to cart
                                 </a>
                             </p>
-
                         </div>
-
 
                         <!-- Orders -->
                         <div class="profile-panel" data-profile-panel="orders" hidden>
@@ -185,11 +156,8 @@
                                 Order history
                             </h2>
 
-
                             <div class="orders-table-wrap">
-
                                 <table class="orders-table">
-
                                     <thead>
                                         <tr>
                                             <th>Order</th>
@@ -199,7 +167,6 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-
 
                                     <tbody>
                                         {% for order in orders %}
@@ -216,9 +183,8 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    {{ order.total_price }} ₽
+                                                    ${{ order.total_price }}
                                                 </td>
-
 
                                                 <td>
                                                     <a
@@ -228,26 +194,18 @@
                                                         Подробнее
                                                     </a>
                                                 </td>
-
                                             </tr>
 
-
                                         {% empty %}
-
                                             <tr>
                                                 <td colspan="5">
                                                     Заказов пока нет.
                                                 </td>
                                             </tr>
-
                                         {% endfor %}
-
                                     </tbody>
-
                                 </table>
-
                             </div>
-
                         </div>
 
 
@@ -283,19 +241,30 @@
                                 </div>
 
                                 <div class="form-field">
-                                    <label>Avatar</label>
-                                    {{ form.avatar }}
+                                    <div class="avatar-upload">
+
+                                        <label for="{{ form.avatar.id_for_label }}" class="avatar-upload__button">
+                                            Change avatar
+                                        </label>
+
+                                        {{ form.avatar }}
+
+                                        {% if form.avatar.errors %}
+                                            <div class="field-error">
+                                                {{ form.avatar.errors }}
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
                                 </div>
 
                                 <button type="submit" class="btn btn--primary">
                                     Save changes
                                 </button>
                             </form>
-                        </div>
 
-                        <div class="profile-panel" data-profile-panel="settings" hidden>
                             <a href="{% url 'accounts:password_change' %}"
-                               style="color:var(--color-accent-blue-bright)">
+                               class="change-password-button">
                                 Change password
                             </a>
                         </div>

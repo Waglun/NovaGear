@@ -30,62 +30,42 @@
     return merged.sort((a, b) => b.date.localeCompare(a.date));
   }
 
-  function renderOrders() {
-    const tbody = document.querySelector("[data-orders-body]");
-    if (!tbody) return;
-
-    tbody.innerHTML = getAllOrders().map(
-      (o) => `
-      <tr>
-        <td><strong>${o.id}</strong></td>
-        <td>${o.date}</td>
-        <td><span class="status-badge status-badge--${o.status.toLowerCase()}">${o.status}</span></td>
-        // <td>${NovaGear.formatPrice(o.total)}</td>
-        <td>${o.total}</td>
-        <td><a href="order_detail.html?id=${encodeURIComponent(o.id)}" class="btn btn--ghost btn--sm">View</a></td>
-      </tr>`
-    ).join("");
-  }
-
-  function renderWishlistPreview() {
-    const el = document.querySelector("[data-profile-wishlist-count]");
-    if (el) el.textContent = String(NovaGear.getWishlist().length);
-  }
-
-  function bindProfileForm() {
-    document.querySelector("[data-profile-form]")?.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const user = NovaGear.getUser();
-      NovaGear.setUser({
-        ...user,
-        displayName: form.displayName.value.trim(),
-        email: form.email.value.trim(),
-      });
-      NovaGear.showToast("Profile updated");
-    });
-  }
-
   function bindTabs() {
-    document.querySelectorAll("[data-profile-tab]").forEach((btn) => {
+    const buttons = document.querySelectorAll("[data-profile-tab]");
+    const panels = document.querySelectorAll("[data-profile-panel]");
+
+    function activateTab(tab) {
+      buttons.forEach((btn) => {
+        btn.classList.toggle(
+          "profile-nav__item--active",
+          btn.dataset.profileTab === tab
+        );
+      });
+
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.profilePanel !== tab;
+      });
+    }
+
+    buttons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const tab = btn.dataset.profileTab;
-        document.querySelectorAll("[data-profile-tab]").forEach((b) => {
-          b.classList.toggle("profile-nav__item--active", b.dataset.profileTab === tab);
-        });
-        document.querySelectorAll("[data-profile-panel]").forEach((p) => {
-          p.hidden = p.dataset.profilePanel !== tab;
-        });
+
+        activateTab(tab);
       });
     });
+
+    // Определяем вкладку из URL
+    const params = new URLSearchParams(window.location.search);
+    const tabFromUrl = params.get("tab");
+
+    // Если в URL нет tab — используем overview
+    activateTab(tabFromUrl || "overview");
   }
 
   function init() {
     if (document.body.dataset.page !== "profile") return;
 
-    renderOrders();
-    renderWishlistPreview();
-    bindProfileForm();
     bindTabs();
 
   }
