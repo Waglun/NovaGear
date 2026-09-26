@@ -56,30 +56,44 @@
         <div class="hero__visual col-span-5">
           <div class="hero__setup-card">
               <div class="hero__setup-visual" role="img">
-                  <img src="{% static 'images/hero/gaming-setup.png' %}"
+                  <img src="{{ hero.main_image.url }}"
                       alt="Gaming setup with NovaGear gaming monitor and keyboard"
                       class="hero__setup-image">
               </div>
           </div>
           <!-- Featured preview in hero -->
           <div class="hero__preview">
-              <article class="product-mini" data-product-id="hero-1">
-                  <div class="product-mini__img product-mini__img--mouse"></div>
-                  <div class="product-mini__info">
-                      <span class="product-mini__name">ASUS ROG Swift OLED</span>
-                      <span class="product-mini__price">$832,00</span>
-                  </div>
-              </article>
-              <article class="product-mini" data-product-id="hero-2">
-                  <div class="product-mini__img product-mini__img--keyboard"></div>
+            <a href="{% url 'catalog:product_detail' hero.product_1.slug %}" class="product-mini">
+              <div class="product-mini__img">
+                  <img src="{{ hero.product_1.image.url }}"
+                       alt="{{ hero.product_1.name }}">
+              </div>
+              <div class="product-mini__info">
+                  <span class="product-mini__name">
+                      {{ hero.product_1.name }}
+                  </span>
+                  <span class="product-mini__price">
+                      ${{ hero.product_1.price }}
+                  </span>
+              </div>
+            </a>
 
-                  <div class="product-mini__info">
-                      <span class="product-mini__name">Razer BlackWidow V4</span>
-                      <span class="product-mini__price">$79,00</span>
-                  </div>
-              </article>
+            <a href="{% url 'catalog:product_detail' hero.product_2.slug %}" class="product-mini">
+              <div class="product-mini__img">
+                  <img src="{{ hero.product_2.image.url }}"
+                       alt="{{ hero.product_2.name }}">
+              </div>
+              <div class="product-mini__info">
+                  <span class="product-mini__name">
+                      {{ hero.product_2.name }}
+                  </span>
+                  <span class="product-mini__price">
+                      ${{ hero.product_2.price }}
+                  </span>
+              </div>
+            </a>
           </div>
-      </div>
+        </div>
       </div>
     </section>
 

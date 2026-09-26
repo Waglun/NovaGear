@@ -179,8 +179,19 @@
 .product-mini__img {
   width: 48px;
   height: 48px;
+  flex-shrink: 0;
+
   border-radius: var(--radius-sm);
   background: var(--color-bg-muted);
+
+  overflow: hidden;
+}
+
+.product-mini__img img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
 .product-mini__img--mouse {
